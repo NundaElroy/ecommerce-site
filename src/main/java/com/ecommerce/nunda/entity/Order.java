@@ -3,6 +3,7 @@ package com.ecommerce.nunda.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Order {
@@ -17,6 +18,12 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
+
+    @OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
+    private Payment payment;
 
     public Order(){}
 

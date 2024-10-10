@@ -2,6 +2,8 @@ package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Cart {
     @Id
@@ -11,7 +13,21 @@ public class Cart {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItemList;
+
+
     Cart(){}
+
+    public void addCartItem(CartItem cartItem){
+        cartItemList.add(cartItem);
+        cartItem.setCart(this);
+    }
+
+    public void removeCartItem(CartItem cartItem){
+        cartItemList.remove(cartItem);
+        cartItem.setCart(null);
+    }
 
     public Long getCart_id() {
         return cart_id;
