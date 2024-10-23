@@ -275,7 +275,7 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="index.html">
+        <a class="nav-link " th:href="@{/admin/home}">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -287,7 +287,7 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="components-alerts.html">
+            <a th:href="@{/admin/products}">
               <i class="bi bi-circle"></i><span>Products</span>
             </a>
           </li>
@@ -306,7 +306,7 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
+            <a th:href="@{/admin/orders}">
               <i class="bi bi-circle"></i><span>Orders</span>
             </a>
           </li>
@@ -320,15 +320,15 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="tables-general.html">
+            <a th:href="@{/admin/users}">
               <i class="bi bi-circle"></i><span>Users</span>
             </a>
-          </li>
-          <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>User Details</span>
-            </a>
-          </li>
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a href="tables-data.html">-->
+<!--              <i class="bi bi-circle"></i><span>User Details</span>-->
+<!--            </a>-->
+<!--          </li>-->
         </ul>
       </li><!-- End Tables Nav -->
 
@@ -338,7 +338,7 @@
         </a>
         <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="/charts-chartjs.html">
+            <a th:href="@{/admin/payments}">
               <i class="bi bi-circle"></i><span>View payments</span>
             </a>
           </li>
