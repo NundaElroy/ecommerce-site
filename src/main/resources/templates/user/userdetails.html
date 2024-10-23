@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments :: head(title ='User Page')"></th:block>
+<body>
+<!-- Body content goes here -->
+<th:block th:replace="fragments :: header"></th:block>
+
+<th:block th:replace="fragments :: sidebar"></th:block>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Users</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">User management</li>
+                <li class="breadcrumb-item active">users</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+
+
+
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">User Management</h5>
+
+                <!-- Add button -->
+                <div class="mb-3">
+                    <a href="#" class="btn btn-primary">Add User</a>
+                </div>
+
+                <!-- Table with stripped rows -->
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Created At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>brandon.jacob@example.com</td>
+                        <td>2023-01-15</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>bridie.kessler@example.com</td>
+                        <td>2023-01-18</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>ashleigh.langosh@example.com</td>
+                        <td>2023-01-20</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">4</th>
+                        <td>angus.grady@example.com</td>
+                        <td>2023-01-22</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">5</th>
+                        <td>raheem.lehner@example.com</td>
+                        <td>2023-01-25</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+
+            </div>
+        </div>
+
+
+
+
+
+        </div>
+
+    </section>
+
+</main><!-- End #main -->
+
+<th:block th:replace="fragments :: scripts"></th:block>
+</body>
+</html>
