@@ -16,7 +16,7 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Orders order;
 
     Payment(){}
 
@@ -28,11 +28,11 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Order getOrder() {
+    public Orders getOrder() {
         return order;
     }
 
-    public void setOrder(Order order) {
+    public void setOrder(Orders order) {
         this.order = order;
     }
 

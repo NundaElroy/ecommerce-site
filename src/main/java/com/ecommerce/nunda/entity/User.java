@@ -2,6 +2,7 @@ package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -15,19 +16,34 @@ public class User {
     private String password;
     @Column
     private String role;
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Column
+    private LocalDateTime createdAt;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Order> orders;
+    private List<Orders> orders;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Cart cart;
 
     User(){}
 
-    public void addOrder(Order order){
+    public void addOrder(Orders order){
         orders.add(order);
         order.setUser(this);
     }
     //handling the bidirectional relationship
-    public void removeOrder(Order order){
+    public void removeOrder(Orders order){
         orders.remove(order);
         order.setUser(null);
     }
@@ -52,11 +68,11 @@ public class User {
         this.email = email;
     }
 
-    public List<Order> getOrders() {
+    public List<Orders> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Order> orders) {
+    public void setOrders(List<Orders> orders) {
         this.orders = orders;
     }
 

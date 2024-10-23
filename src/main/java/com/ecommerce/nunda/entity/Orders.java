@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class Order {
+public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long order_id;
@@ -19,13 +19,13 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     @OneToOne(mappedBy = "order",cascade = CascadeType.ALL)
     private Payment payment;
 
-    public Order(){}
+    public Orders(){}
 
     public LocalDateTime getTimeStamp() {
         return timeStamp;
