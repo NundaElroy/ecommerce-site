@@ -1,7 +1,6 @@
 package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -15,27 +14,36 @@ public class Product {
     private Double price;
     private Integer stockQuantity;
 
+    // New ratings field
+    private Double ratings;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItemList;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+    // Constructors, getters, and setters
+    public Product() {}
 
-    Product(){}
+    public Double getRatings() {
+        return ratings;
+    }
 
+    public void setRatings(Double ratings) {
+        this.ratings = ratings;
+    }
 
-
-    public void addCartItem(CartItem cartItem){
+    public void addCartItem(CartItem cartItem) {
         cartItemList.add(cartItem);
         cartItem.setProduct(this);
     }
 
-    public void removeCartItem(CartItem cartItem){
+    public void removeCartItem(CartItem cartItem) {
         cartItemList.remove(cartItem);
         cartItem.setProduct(null);
     }
@@ -46,7 +54,7 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
-        if(category != null){
+        if (category != null) {
             category.addProduct(this);
         }
     }
