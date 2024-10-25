@@ -4,10 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class UserAdminController {
-    @GetMapping("/admin/users")
-    public String  getUser(){
-        return "user/userdetails";
+public class PaymentController {
+    @GetMapping("/admin/payments")
+    public String getPayment(){
+        return "payment/payment";
     }
-
 }

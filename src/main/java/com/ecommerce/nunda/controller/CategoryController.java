@@ -4,10 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class UserAdminController {
-    @GetMapping("/admin/users")
-    public String  getUser(){
-        return "user/userdetails";
-    }
+public class CategoryController {
 
+    @GetMapping("/admin/category")
+    public String getCategory(){
+        return "product/category";
+    }
 }
