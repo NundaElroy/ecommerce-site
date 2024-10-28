@@ -17,6 +17,10 @@ public class User {
     @Column
     private String role;
 
+    public User(){
+
+    }
+
     public Cart getCart() {
         return cart;
     }
@@ -36,7 +40,7 @@ public class User {
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Cart cart;
 
-    User(){}
+
 
     public void addOrder(Orders order){
         orders.add(order);
