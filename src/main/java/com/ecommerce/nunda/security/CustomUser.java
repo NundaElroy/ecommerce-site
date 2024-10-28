@@ -50,7 +50,5 @@ public class CustomUser  implements UserDetails {
         return true;
     }
 
-//    public String getRole() {
-//        return true;
-//    }
+
 }
