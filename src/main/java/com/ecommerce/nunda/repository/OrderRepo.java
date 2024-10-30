@@ -1,7 +1,11 @@
 package com.ecommerce.nunda.repository;
 
+
+
 import com.ecommerce.nunda.entity.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OrderService  extends JpaRepository<Orders,Long> {
+@Repository
+public interface OrderRepo  extends JpaRepository<Orders,Long> {
 }
