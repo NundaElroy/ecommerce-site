@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,10 +19,12 @@ public class UserServiceImp  implements UserService {
         this.userRepo = userRepo;
     }
 
+    //get user by email
     public Optional<User> getUserByEmail(String email) {
         return userRepo.findByEmail(email); // Ensure this returns Optional<User>
     }
 
+    //register user
     public void registerUser(User user) {
         if (user.getEmail() == null || user.getPassword() == null) {
             throw new IllegalArgumentException("Email and password must not be null");
@@ -34,7 +37,12 @@ public class UserServiceImp  implements UserService {
         user.setCreatedAt(LocalDateTime.now());
         userRepo.save(user);
     }
+
+    //get all users
+    public List<User> getAllUsers() {
+        return userRepo.findAll();
     }
+}
 
 
 

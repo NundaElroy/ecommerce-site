@@ -1,15 +1,12 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="fragments :: head(title ='User Page')"></th:block>
 <body>
 <!-- Body content goes here -->
 <th:block th:replace="fragments :: header"></th:block>
-
 <th:block th:replace="fragments :: sidebar"></th:block>
 
 <main id="main" class="main">
-
     <div class="pagetitle">
         <h1>Users</h1>
         <nav>
@@ -22,10 +19,6 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-
-
-
-
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">User Management</h5>
@@ -40,35 +33,22 @@
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Phone Number</th>
                         <th scope="col">Created At</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>brandon.jacob@example.com</td>
-                        <td>2023-01-15</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>bridie.kessler@example.com</td>
-                        <td>2023-01-18</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>ashleigh.langosh@example.com</td>
-                        <td>2023-01-20</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">4</th>
-                        <td>angus.grady@example.com</td>
-                        <td>2023-01-22</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">5</th>
-                        <td>raheem.lehner@example.com</td>
-                        <td>2023-01-25</td>
+                    <tr th:each="user : ${users}">
+                        <th scope="row" th:text="${user.user_id}">1</th>
+                        <td th:text="${user.firstName}">John</td>
+                        <td th:text="${user.lastName}">Doe</td>
+                        <td th:text="${user.email}">john.doe@example.com</td>
+                        <td th:text="${user.phoneNumber}">123-456-7890</td>
+                        <!-- Safe LocalDateTime formatting with null check -->
+                        <td th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'yyyy-MM-dd') : '-'}">2024-01-01</td>
                     </tr>
                     </tbody>
                 </table>
@@ -76,15 +56,7 @@
 
             </div>
         </div>
-
-
-
-
-
-        </div>
-
     </section>
-
 </main><!-- End #main -->
 
 <th:block th:replace="fragments :: scripts"></th:block>

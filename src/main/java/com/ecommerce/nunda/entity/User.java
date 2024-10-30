@@ -11,11 +11,59 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long user_id;
     @Column
+    private String profilePictureUrl;
+    @Column
+    private String firstName;
+    @Column
+    private String lastName;
+    @Column
+    private String phoneNumber;
+    @Column
     private String email;
     @Column
     private String password;
     @Column
     private String role;
+    @Column
+    private LocalDateTime createdAt;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Orders> orders;
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    private Cart cart;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
+    }
+
+
 
     public User(){
 
@@ -33,12 +81,7 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    @Column
-    private LocalDateTime createdAt;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Orders> orders;
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
-    private Cart cart;
+
 
 
 
@@ -46,6 +89,7 @@ public class User {
         orders.add(order);
         order.setUser(this);
     }
+
     //handling the bidirectional relationship
     public void removeOrder(Orders order){
         orders.remove(order);
