@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
+@Table(name = "`user`") //user happens to be a reserved key word for many DBs
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +15,19 @@ public class User {
     private String profilePictureUrl;
     @Column
     private String firstName;
+
+    public User(Long user_id, String role, String profilePictureUrl, String phoneNumber, String password, String lastName, String firstName, String email, LocalDateTime createdAt) {
+        this.user_id = user_id;
+        this.role = role;
+        this.profilePictureUrl = profilePictureUrl;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
+
     @Column
     private String lastName;
     @Column
