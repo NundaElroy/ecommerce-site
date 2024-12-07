@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments :: head(title ='Product Page')"></th:block>
+<body>
+<!-- Body content goes here -->
+<th:block th:replace="fragments :: header"></th:block>
+
+<th:block th:replace="fragments :: sidebar"></th:block>
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Add Product</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item">Product Management</li>
+                <li class="breadcrumb-item active">Add Product</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <!-- Add Product Form -->
+    <form th:object="${productForm}" method="post" action="/admin/addproduct" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="productName" class="form-label">Product Name</label>
+            <input type="text" class="form-control" th:field="*{name}" id="productName" required>
+            <div class="invalid-feedback">Please provide a product name.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="productDescription" class="form-label">Description</label>
+            <textarea class="form-control" th:field="*{description}" id="productDescription" rows="3" required></textarea>
+            <div class="invalid-feedback">Please provide a product description.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="productPrice" class="form-label">Price</label>
+            <input type="number" class="form-control" th:field="*{price}" id="productPrice" step="0.01" required>
+            <div class="invalid-feedback">Please provide a valid price.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="stockQuantity" class="form-label">Stock Quantity</label>
+            <input type="number" class="form-control" th:field="*{stockQuantity}" id="stockQuantity" required>
+            <div class="invalid-feedback">Please provide the stock quantity.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" th:field="*{category}" id="category" required>
+                <option value="" disabled selected>Select a category</option>
+                <th:block th:each="category : ${categories}">
+                    <option th:value="${category.category_id}" th:text="${category.name}"></option>
+                </th:block>
+            </select>
+            <div class="invalid-feedback">Please select a category.</div>
+        </div>
+
+        <div class="mb-3">
+            <label for="productImage" class="form-label">Product Image</label>
+            <input type="file" class="form-control" th:field="*{image}" id="productImage" accept="image/*" required>
+            <div class="invalid-feedback">Please upload a product image.</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Add Product</button>
+    </form>
+
+
+</main><!-- End #main -->
+
+
+
+<th:block th:replace="fragments :: scripts"></th:block>
+</body>
+</html>

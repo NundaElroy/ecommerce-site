@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="fragments :: head(title ='Product Page')"></th:block>
@@ -15,121 +15,56 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item">product management</li>
-                <li class="breadcrumb-item active">products</li>
+                <li class="breadcrumb-item">Product Management</li>
+                <li class="breadcrumb-item active">Products</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
 
-    <section class="section">
+    <!-- Header Section for Adding Products -->
+    <div class="mb-4 d-flex justify-content-between">
+        <a th:href="@{/admin/addproduct}" class="btn btn-primary">Add Product</a>
+        <a href="/bulk-upload" class="btn btn-secondary">Bulk Upload</a>
+    </div>
 
-
-
-
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Product Management</h5>
-
-                        <!-- Add button -->
-                        <div class="mb-3">
-                            <a href="#" class="btn btn-primary">Add Product</a>
-                        </div>
-
-                        <!-- Table with stripped rows -->
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Picture</th>
-                                <th scope="col">Description</th>
-                                <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Category</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Brandon Jacob</td>
-                                <td><img src="path/to/image1.jpg" alt="Picture of Brandon Jacob" class="img-fluid" style="max-width: 50px;"></td>
-                                <td>Designer at XYZ</td>
-                                <td>$150.00</td>
-                                <td>10</td>
-                                <td>Design</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Bridie Kessler</td>
-                                <td><img src="path/to/image2.jpg" alt="Picture of Bridie Kessler" class="img-fluid" style="max-width: 50px;"></td>
-                                <td>Developer at ABC</td>
-                                <td>$120.00</td>
-                                <td>5</td>
-                                <td>Development</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Ashleigh Langosh</td>
-                                <td><img src="path/to/image3.jpg" alt="Picture of Ashleigh Langosh" class="img-fluid" style="max-width: 50px;"></td>
-                                <td>Finance Manager</td>
-                                <td>$200.00</td>
-                                <td>8</td>
-                                <td>Finance</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Angus Grady</td>
-                                <td><img src="path/to/image4.jpg" alt="Picture of Angus Grady" class="img-fluid" style="max-width: 50px;"></td>
-                                <td>HR Specialist</td>
-                                <td>$180.00</td>
-                                <td>12</td>
-                                <td>Human Resources</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Raheem Lehner</td>
-                                <td><img src="path/to/image5.jpg" alt="Picture of Raheem Lehner" class="img-fluid" style="max-width: 50px;"></td>
-                                <td>Dynamic Division Officer</td>
-                                <td>$250.00</td>
-                                <td>15</td>
-                                <td>Management</td>
-                                <td>
-                                    <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <!-- End Table with stripped rows -->
-
-                    </div>
-                </div>
-
-
-
-
-            </div>
-
-    </section>
+    <!-- Product List Table -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock Quantity</th>
+            <th scope="col">Ratings</th>
+            <th scope="col">Category</th>
+            <th scope="col">Image</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Product Name</td>
+            <td>Product Description</td>
+            <td>$150.00</td>
+            <td>10</td>
+            <td>4.5</td>
+            <td>Category Name</td>
+            <td>
+                <img src="path/to/image.jpg" alt="Product Image" class="img-fluid" style="max-width: 50px; max-height: 50px;">
+            </td>
+            <td>
+                <a href="#" class="btn btn-warning btn-sm">Edit</a>
+                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        <!-- More rows here -->
+        </tbody>
+    </table>
 
 </main><!-- End #main -->
+
 
 <th:block th:replace="fragments :: scripts"></th:block>
 </body>
