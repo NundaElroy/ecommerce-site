@@ -23,31 +23,48 @@
 
     <!-- Add Product Form -->
     <form th:object="${productForm}" method="post" action="/admin/addproduct" enctype="multipart/form-data" class="needs-validation" novalidate>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
         <div class="mb-3">
+            <div th:if="${#fields.hasErrors('name')}" class="error">
+                <p th:errors="*{name}">Name error</p>
+            </div>
             <label for="productName" class="form-label">Product Name</label>
             <input type="text" class="form-control" th:field="*{name}" id="productName" required>
             <div class="invalid-feedback">Please provide a product name.</div>
         </div>
 
         <div class="mb-3">
+            <div th:if="${#fields.hasErrors('description')}" class="error">
+                <p th:errors="*{description}">Name error</p>
+            </div>
             <label for="productDescription" class="form-label">Description</label>
             <textarea class="form-control" th:field="*{description}" id="productDescription" rows="3" required></textarea>
             <div class="invalid-feedback">Please provide a product description.</div>
         </div>
 
         <div class="mb-3">
+            <div th:if="${#fields.hasErrors('price')}" class="error">
+                <p th:errors="*{price}">Name error</p>
+            </div>
             <label for="productPrice" class="form-label">Price</label>
-            <input type="number" class="form-control" th:field="*{price}" id="productPrice" step="0.01" required>
+            <input type="number" class="form-control" th:field="*{price}" id="productPrice"  required>
             <div class="invalid-feedback">Please provide a valid price.</div>
         </div>
 
         <div class="mb-3">
+            <div th:if="${#fields.hasErrors('stockQuantity')}" class="error">
+                <p th:errors="*{stockQuantity}">Name error</p>
+            </div>
             <label for="stockQuantity" class="form-label">Stock Quantity</label>
             <input type="number" class="form-control" th:field="*{stockQuantity}" id="stockQuantity" required>
             <div class="invalid-feedback">Please provide the stock quantity.</div>
         </div>
 
         <div class="mb-3">
+            <div th:if="${#fields.hasErrors('category')}" class="error">
+                <p th:errors="*{category}">Name error</p>
+            </div>
             <label for="category" class="form-label">Category</label>
             <select class="form-select" th:field="*{category}" id="category" required>
                 <option value="" disabled selected>Select a category</option>
@@ -59,9 +76,13 @@
         </div>
 
         <div class="mb-3">
+            <div th:if="${#fields.hasErrors('image')}" class="error">
+                <p th:errors="*{image}">Name error</p>
+            </div>
             <label for="productImage" class="form-label">Product Image</label>
-            <input type="file" class="form-control" th:field="*{image}" id="productImage" accept="image/*" required>
+            <input type="file" class="form-control" th:field="*{image}" id="productImage" name="image" accept="image/*" required>
             <div class="invalid-feedback">Please upload a product image.</div>
+
         </div>
 
         <button type="submit" class="btn btn-primary">Add Product</button>

@@ -27,7 +27,6 @@
         <a href="/bulk-upload" class="btn btn-secondary">Bulk Upload</a>
     </div>
 
-    <!-- Product List Table -->
     <table class="table table-striped">
         <thead>
         <tr>
@@ -43,25 +42,28 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Product Name</td>
-            <td>Product Description</td>
-            <td>$150.00</td>
-            <td>10</td>
-            <td>4.5</td>
-            <td>Category Name</td>
+        <tr th:each="product : ${products}">
+            <th scope="row" th:text="${product.product_id}"></th>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.description}"></td>
+            <td th:text="${product.price}"></td>
+            <td th:text="${product.stockQuantity}"></td>
+            <td th:text="${product.ratings}"></td>
+            <td th:text="${product.category.name}"></td>
             <td>
-                <img src="path/to/image.jpg" alt="Product Image" class="img-fluid" style="max-width: 50px; max-height: 50px;">
+                <img th:src="@{'/images/products/' + ${product.productImage}}"
+                     alt="Product Image"
+                     class="img-fluid"
+                     style="max-width: 50px; max-height: 50px;">
             </td>
             <td>
                 <a href="#" class="btn btn-warning btn-sm">Edit</a>
                 <a href="#" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
-        <!-- More rows here -->
         </tbody>
     </table>
+
 
 </main><!-- End #main -->
 
