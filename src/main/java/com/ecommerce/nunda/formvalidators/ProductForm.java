@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.formvalidators;
 
 import jakarta.validation.constraints.*;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ProductForm {
 
@@ -23,7 +24,7 @@ public class ProductForm {
         private Long category;
 
         @NotNull(message = "Product image is required.")
-        private String image; // Store the image filename or path
+        private MultipartFile image;  // Store the image filename or path
 
         // Getters and setters
         public String getName() {
@@ -67,11 +68,11 @@ public class ProductForm {
             this.category = category;
         }
 
-        public String getImage() {
+        public  MultipartFile getImage() {
             return image;
         }
 
-        public void setImage(String image) {
+        public void setImage(MultipartFile image) {
             this.image = image;
         }
     }

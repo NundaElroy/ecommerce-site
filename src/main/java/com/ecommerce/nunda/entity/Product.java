@@ -10,6 +10,9 @@ public class Product {
     private Long product_id;
 
     private String name;
+
+    @Lob
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
     private Double price;
     private Integer stockQuantity;
@@ -62,9 +65,9 @@ public class Product {
     }
 
     public void setCategory(Category category) {
-        this.category = category;
+
         if (category != null) {
-            category.addProduct(this);
+            this.category = category;
         }
     }
 

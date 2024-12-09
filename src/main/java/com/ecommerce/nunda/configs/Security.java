@@ -27,6 +27,7 @@ public class Security {
         http
 //                .userDetailsService(customUserDetailsService)
                 .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/images/products/**").permitAll()
                 .requestMatchers("/login", "/register").permitAll() // Open routes
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin pages require ADMIN role
                 .anyRequest().authenticated() // Restrict other routes
