@@ -57,8 +57,8 @@
                      style="max-width: 50px; max-height: 50px;">
             </td>
             <td>
-                <a href="#" class="btn btn-warning btn-sm">Edit</a>
-                <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                <a th:href= "@{/admin/viewproduct/{id}(id=${product.product_id})}" class="btn btn-warning btn-sm">view</a>
+                <a th:href="@{/admin/deleteproduct/{id}(id=${product.product_id})}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         </tbody>

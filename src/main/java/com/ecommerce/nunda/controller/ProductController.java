@@ -11,10 +11,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
@@ -85,43 +82,29 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
-    @GetMapping
-    public String deleteProduct(@RequestParam("product_id") Long id){
+    @GetMapping("/admin/deleteproduct/{id}")
+    public String deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
         return "redirect:/admin/products";
     }
 
-    @PostMapping("/admin/editproduct.html")
-    public String editProduct(@RequestParam("product_id") Long id, Model model){
+    @GetMapping("/admin/viewproduct/{id}")
+    public String viewProduct(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
-        ProductForm productForm = new ProductForm();
-        productForm.setName(product.getName());
-        productForm.setDescription(product.getDescription());
-        productForm.setCategory(product.getCategory().getCategory_id());
-        productForm.setPrice(product.getPrice());
-        productForm.setStockQuantity(product.getStockQuantity());
+        model.addAttribute("product", product);
+        return "product/viewproduct";
+    }
 
-        return "redirect:/admin/products";
+
+    @PostMapping("/admin/editproduct/{id}")
+    public String editProduct(){
+          return null;
     }
 
     @GetMapping("/admin/editproduct")
-    public String getProductForm(@RequestParam("id") Long productId, Model model) {
-        // Retrieve the product from the database using the product ID
-        Product product = productService.getProductById(productId);
-
-        if (product != null) {
-            model.addAttribute("productForm", product);
-        } else {
-            // Redirect to an error page or show a message if the product doesn't exist
-            model.addAttribute("errorMessage", "Product not found");
-            return "error"; // Or any error page template
-        }
-
-        // Optionally, load categories or other required data
-        List<Category> categories =  categoryService.getAllCategories();
-        model.addAttribute("categories", categories);
-
-        return "editproduct"; // This should be the name of your Thymeleaf template
+    public String getProductForm() {
+       return null;
     }
+
 
 }
