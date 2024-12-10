@@ -2,6 +2,7 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
+import com.ecommerce.nunda.formvalidators.OnAdd;
 import com.ecommerce.nunda.formvalidators.ProductForm;
 import com.ecommerce.nunda.service.CategoryService;
 import com.ecommerce.nunda.service.FileStorageHandlerService;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -44,7 +46,7 @@ public class ProductController {
     }
 
     @PostMapping("/admin/addproduct")
-    public String addProduct(@Valid  @ModelAttribute("productForm")  ProductForm productForm,BindingResult bindingResult
+    public String addProduct(@Validated(OnAdd.class)  @ModelAttribute("productForm")  ProductForm productForm, BindingResult bindingResult
                              , Model model)  {
 
         if(bindingResult.hasErrors()){
@@ -96,15 +98,32 @@ public class ProductController {
     }
 
 
-    @PostMapping("/admin/editproduct/{id}")
-    public String editProduct(){
-          return null;
+    @GetMapping("/admin/editproduct/{id}")
+    public String showEditProductForm(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id);
+        ProductForm productForm = productService.convertToForm(product);
+        model.addAttribute("productForm", productForm);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("product_id", id);
+        return "product/editproduct";
     }
 
-    @GetMapping("/admin/editproduct")
-    public String getProductForm() {
-       return null;
+    @PostMapping("/admin/editproduct")
+    public String updateProduct(@Valid @ModelAttribute ProductForm productForm, BindingResult result, Model model,
+                                @RequestParam("productId") Long id) {
+        if (result.hasErrors()) {
+            model.addAttribute("product_id", id);
+            model.addAttribute("categories", categoryService.getAllCategories());
+            return "product/editproduct";
+        }
+        Product product = productService.convertToEntity(productForm,id);
+        productService.saveProduct(product);
+        return "redirect:/admin/products";
     }
+
+
+
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.entity.Product;
+import com.ecommerce.nunda.formvalidators.ProductForm;
 
 import java.util.List;
 
@@ -11,4 +12,8 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     Product getProductById(Long id);
+
+    ProductForm convertToForm(Product product);
+
+    Product convertToEntity(ProductForm productForm, Long id);
 }

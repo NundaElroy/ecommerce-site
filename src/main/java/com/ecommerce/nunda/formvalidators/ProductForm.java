@@ -23,7 +23,7 @@ public class ProductForm {
         @NotNull(message = "Category is required.")
         private Long category;
 
-        @NotNull(message = "Product image is required.")
+    @NotNull(message = "Product image is required.", groups = OnAdd.class)
         private MultipartFile image;  // Store the image filename or path
 
         // Getters and setters
