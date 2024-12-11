@@ -21,13 +21,7 @@ public class Product {
     private Double ratings;
     private String productImage;
 
-    public String getProductImage() {
-        return productImage;
-    }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
-    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -39,8 +33,38 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<ProductImage> productImages;
+
+
     // Constructors, getters, and setters
     public Product() {}
+
+    //get the images associated with the product
+    public List<ProductImage> getProductImages() {
+        return productImages;
+    }
+
+    //add image to the list of products associated with it
+    public void addProductImages(ProductImage productImage) {
+        productImage.setProduct(this);
+        productImages.add(productImage);
+
+    }
+    public  void removeProductImage(ProductImage productImage){
+        productImage.setProduct(null);
+        productImages.remove(productImage);
+    }
+
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
 
     public Double getRatings() {
         return ratings;

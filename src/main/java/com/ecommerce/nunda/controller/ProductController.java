@@ -2,10 +2,12 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
+import com.ecommerce.nunda.entity.ProductImage;
 import com.ecommerce.nunda.formvalidators.OnAdd;
 import com.ecommerce.nunda.formvalidators.ProductForm;
 import com.ecommerce.nunda.service.CategoryService;
 import com.ecommerce.nunda.service.FileStorageHandlerService;
+import com.ecommerce.nunda.service.ProductImageService;
 import com.ecommerce.nunda.service.ProductService;
 import com.ecommerce.nunda.serviceImp.FileStorageHandlerServiceImp;
 import jakarta.validation.Valid;
@@ -25,11 +27,13 @@ public class ProductController {
     private final CategoryService categoryService;
     private final FileStorageHandlerService  fileStorageHandlerService;
     private final ProductService productService;
+    private final ProductImageService productImageService;
 
-    public ProductController(CategoryService categoryService, FileStorageHandlerService fileStorageHandlerService, ProductService productService){
+    public ProductController(CategoryService categoryService, FileStorageHandlerService fileStorageHandlerService, ProductService productService, ProductImageService productImageService){
         this.categoryService = categoryService;
         this.fileStorageHandlerService = fileStorageHandlerService;
         this.productService = productService;
+        this.productImageService = productImageService;
     }
 
     @GetMapping("/admin/products")
@@ -84,7 +88,7 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
-    @GetMapping("/admin/deleteproduct/{id}")
+    @PostMapping("/admin/deleteproduct/{id}")
     public String deleteProduct(@PathVariable Long id){
         productService.deleteProduct(id);
         return "redirect:/admin/products";
@@ -105,6 +109,7 @@ public class ProductController {
         model.addAttribute("productForm", productForm);
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("product_id", id);
+
         return "product/editproduct";
     }
 
@@ -118,8 +123,55 @@ public class ProductController {
         }
         Product product = productService.convertToEntity(productForm,id);
         productService.saveProduct(product);
+
+        //redirect
         return "redirect:/admin/products";
     }
+
+    @GetMapping("/admin/changeimage/{id}")
+    public String manageImages(@PathVariable Long id , Model model){
+        Product product = productService.getProductById(id);
+        List<ProductImage> imageFilenames = productImageService.getAllProductImageById(id);
+
+        // Add data to the model
+        model.addAttribute("productId", id);
+        model.addAttribute("mainImage", product.getProductImage());
+        model.addAttribute("images", imageFilenames);
+
+        // Return the template name
+        return "product/manageproductimages";
+    }
+
+    @PostMapping("/admin/addimage")
+    public String addNewImages(@RequestParam("imageFile")MultipartFile file , @RequestParam("productId") Long id){
+       //product associated with image being added
+        Product product  = productService.getProductById(id);
+        ProductImage productImage = new ProductImage();
+        String filepath = fileStorageHandlerService.storeProductImages(file);
+
+        //save image
+        productImageService.save(product,filepath,productImage);
+
+        return "redirect:/admin/changeimage/" + id;
+
+
+    }
+
+    //deleteimage
+    @PostMapping("/admin/deleteimage/{id}")
+    public String deleteImage(@PathVariable Long id) {
+        ProductImage productImage = productImageService.getProductImageById(id);
+        Product product = productImage.getProduct();
+
+        // delete image
+        productImageService.delete(product, productImage);
+        // id of product associated with image
+        Long product_id = product.getProduct_id();
+
+        // redirect back to change image after deletion
+        return "redirect:/admin/changeimage/" + product_id;
+    }
+
 
 
 
