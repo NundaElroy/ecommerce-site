@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="fragments :: head(title='Manage Product Images')"></th:block>
+<body>
+<th:block th:replace="fragments :: header"></th:block>
+<th:block th:replace="fragments :: sidebar"></th:block>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Manage Product Images</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item"><a href="/admin/viewproducts">Products</a></li>
+                <li class="breadcrumb-item active">Manage Images</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Product Images</h5>
+
+                <!-- Main Image Display -->
+                <div class="text-center mb-4">
+                    <h6>Main Image</h6>
+                    <img th:src="@{/images/products/{filename}(filename=${mainImage})}"
+                         alt="Main Image"
+                         style="max-width: 300px; height: auto; border: 1px solid #ddd;">
+                </div>
+
+                <!-- Add Image Button -->
+                <div class="mb-3 text-end">
+                    <button class="btn btn-success" onclick="showPopup()">Add Image</button>
+                </div>
+
+                <!-- Popup Modal -->
+                <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000;">
+                    <div style="background: #fff; margin: 50px auto; padding: 20px; width: 300px; border-radius: 5px; position: relative;">
+                        <h5>Add Image</h5>
+                        <form th:action="@{/admin/addimage}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <input type="hidden" th:name="productId" th:value="${productId}">
+
+                            <div class="mb-3">
+                                <label for="imageFile" class="form-label">Select Image</label>
+                                <input type="file" class="form-control" name="imageFile" id="imageFile" accept="image/*" required>
+                                <div class="invalid-feedback">Please select an image file.</div>
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Save Image</button>
+                                <button type="button" class="btn btn-secondary" onclick="hidePopup()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    function showPopup() {
+                        document.getElementById('imageModal').style.display = 'block';
+                    }
+
+                    function hidePopup() {
+                        document.getElementById('imageModal').style.display = 'none';
+                    }
+                </script>
+
+
+                <!-- Additional Images Display -->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="image, iterStat : ${images}">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <img th:src="@{/images/products/{filename}(filename=${image.imagePath})}"
+                                     alt="Additional Image"
+                                     style="max-width: 100px; height: auto; border: 1px solid #ddd;">
+                            </td>
+                            <td>
+                                <form th:action="@{/admin/deleteimage/{id}(id=${image.id})}" method="POST">
+                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+
+<th:block th:replace="fragments :: scripts"></th:block>
+</body>
+</html>
