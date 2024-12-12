@@ -25,13 +25,14 @@ public class Security {
     @Bean
     public SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
         http
-//                .userDetailsService(customUserDetailsService)
-                .authorizeHttpRequests((authorize) -> authorize
+                .authorizeHttpRequests(authorize -> authorize
+                        // Permit access to static resources
+                        .requestMatchers("/assets/**").permitAll()
                         .requestMatchers("/images/products/**").permitAll()
-                .requestMatchers("/login", "/register").permitAll() // Open routes
+                        .requestMatchers("/login", "/register", "/guest").permitAll() // Open routes
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin pages require ADMIN role
-                .anyRequest().authenticated() // Restrict other routes
-        )
+                        .anyRequest().authenticated() // Restrict other routes
+                )
                 .formLogin(form -> form
                         .loginPage("/login") // Set your custom login page
                         .usernameParameter("email") // Use email instead of username
@@ -43,19 +44,19 @@ public class Security {
                                     .map(GrantedAuthority::getAuthority)
                                     .orElse("");
 
-                            if (role.equals("ROLE_ADMIN")) {
+                            if ("ROLE_ADMIN".equals(role)) {
                                 response.sendRedirect("/admin/home"); // Redirect to admin dashboard
                             } else {
                                 response.sendRedirect("/customer/home"); // Redirect to customer home
                             }
-                        })// Redirect after successful login
+                        }) // Redirect after successful login
                         .failureUrl("/login?error=true") // Redirect on failure
                         .permitAll() // Allow everyone to access the login page
                 );
 
-
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
