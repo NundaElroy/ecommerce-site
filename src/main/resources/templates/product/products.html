@@ -23,9 +23,38 @@
 
     <!-- Header Section for Adding Products -->
     <div class="mb-4 d-flex justify-content-between">
+        <!-- Add Single Product Button -->
         <a th:href="@{/admin/addproduct}" class="btn btn-primary">Add Product</a>
-        <a href="/bulk-upload" class="btn btn-secondary">Bulk Upload</a>
+
+        <!-- Bulk Upload Button -->
+        <a href="#" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#bulkUploadModal">Bulk Upload</a>
     </div>
+
+    <!-- Bulk Upload Modal -->
+    <div class="modal fade" id="bulkUploadModal" tabindex="-1" aria-labelledby="bulkUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bulkUploadModalLabel">Bulk Upload Products</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Upload Form -->
+                    <form th:action="@{/admin/addProduct/bulkUpload}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="excelFile" class="form-label">Upload Excel File</label>
+                            <input type="file" class="form-control" id="excelFile" name="file" required>
+                        </div>
+                        <div class="mb-3">
+                            <p class="text-muted">Ensure the Excel file matches the required format.</p>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <table class="table table-striped">
         <thead>
