@@ -3,30 +3,25 @@ package com.ecommerce.nunda.serviceImp;
 import com.ecommerce.nunda.configs.FileHandlerConfig;
 import com.ecommerce.nunda.customexceptions.EmptyFileException;
 import com.ecommerce.nunda.customexceptions.FileLocationNotFoundException;
-import com.ecommerce.nunda.service.FileStorageHandlerService;
-import org.springframework.stereotype.Service;
+import com.ecommerce.nunda.service.ExcelFileService;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-@Service
-public class FileStorageHandlerServiceImp implements FileStorageHandlerService {
+public class ExcelFileServiceImp implements ExcelFileService {
+    private final FileHandlerConfig fileHandlerConfig;
 
-    private  final FileHandlerConfig fileHandlerConfig;
-
-    public FileStorageHandlerServiceImp(FileHandlerConfig fileHandlerConfig) {
+    public ExcelFileServiceImp(FileHandlerConfig fileHandlerConfig) {
         this.fileHandlerConfig = fileHandlerConfig;
     }
 
-    //method to handle saving of files
+    //save excel file method
     @Override
-    public String storeProductImages(MultipartFile file) {
-
+    public String saveFile(MultipartFile file) {
         if(file.isEmpty()){
             throw new EmptyFileException("Failed to store empty file.");
         }
@@ -35,7 +30,7 @@ public class FileStorageHandlerServiceImp implements FileStorageHandlerService {
         String originalFilename = file.getOriginalFilename();
 
         //file location
-        String fileLocation = fileHandlerConfig.getProductLocation();
+        String fileLocation = fileHandlerConfig.getExcelFileLocation();
 
         if(fileLocation == null){
             throw  new FileLocationNotFoundException("file location not found");
@@ -68,3 +63,4 @@ public class FileStorageHandlerServiceImp implements FileStorageHandlerService {
         return uniqueFilename;
     }
 }
+

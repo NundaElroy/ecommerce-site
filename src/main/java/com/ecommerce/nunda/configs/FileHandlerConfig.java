@@ -8,6 +8,17 @@ import org.springframework.stereotype.Component;
 public class FileHandlerConfig {
     private String productLocation;
     private String profileLocation;
+    private String excelFileLocation;
+
+    public String getExcelFileLocation() {
+        return excelFileLocation;
+    }
+
+    public void setExcelFileLocation(String excelFileLocation) {
+        this.excelFileLocation = excelFileLocation;
+    }
+
+
 
 
     public String getProfileLocation() {
