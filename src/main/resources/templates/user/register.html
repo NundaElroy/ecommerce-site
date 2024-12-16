@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{user/userfragments :: head(title='register')}">
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<!-- HEADER -->
+<header th:replace="~{user/userfragments :: header}"></header>
+
+<!-- NAVIGATION -->
+<nav th:replace="~{user/userfragments :: navbar}"></nav>
+
+<!-- REGISTRATION SECTION -->
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="login-form">
+                    <h2 class="text-center">Create an Account</h2>
+                    <p class="text-center text-muted">Please fill in the details to register</p>
+
+                    <!-- Registration Form -->
+                    <form th:action="@{/register}" method="post" th:object="${userForm}">
+
+                        <!-- First Name -->
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="firstName" class="input" th:field="*{firstName}" required>
+                            <p th:errors="*{firstName}" class="text-danger"></p>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lastName" class="input" th:field="*{lastName}" required>
+                            <p th:errors="*{lastName}" class="text-danger"></p>
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" name="phoneNumber" class="input" th:field="*{phoneNumber}" required>
+                            <p th:errors="*{phoneNumber}" class="text-danger"></p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" name="email" class="input" th:field="*{email}" required>
+                            <p th:errors="*{email}" class="text-danger"></p>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" name="password" class="input" th:field="*{password}" required>
+                            <p th:errors="*{password}" class="text-danger"></p>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" name="confirmPassword" class="input" required>
+                            <!-- You can validate `confirmPassword` on the server side and add a custom error -->
+                            <p th:errors="*{confirmPassword}" class="text-danger"></p>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" required>
+                                    I agree to the <a href="/terms">Terms and Conditions</a>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Register Button -->
+                        <button type="submit" class="primary-btn btn-block">Register</button>
+
+                        <!-- Login Link -->
+                        <div class="text-center" style="margin-top: 20px;">
+                            <p>
+                                Already have an account? <a href="/login">Sign in</a>
+                            </p>
+                        </div>
+                    </form>
+
+                    <!-- Social Registration -->
+                    <div class="text-center" style="margin-top: 20px; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+                        <p class="text-muted">Or register with</p>
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="/auth/google" class="btn btn-block" style="background-color: #ea4335; color: white;">
+                                    <i class="fa fa-google"></i> Google
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="/auth/facebook" class="btn btn-block" style="background-color: #3b5998; color: white;">
+                                    <i class="fa fa-facebook"></i> Facebook
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer th:replace="~{user/userfragments :: footer}"></footer>
+
+<!-- SCRIPTS -->
+<div th:replace="~{user/userfragments :: scripts}"></div>
+</body>
+</html>

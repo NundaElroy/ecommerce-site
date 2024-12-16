@@ -2,6 +2,7 @@ package com.ecommerce.nunda.serviceImp;
 
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.repository.UserRepo;
+import com.ecommerce.nunda.service.EmailService;
 import com.ecommerce.nunda.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,10 @@ public class UserServiceImp  implements UserService {
     private final UserRepo userRepo;
 
 
+
     public UserServiceImp(UserRepo userRepo) {
         this.userRepo = userRepo;
+
     }
 
     //get user by email
@@ -34,8 +37,13 @@ public class UserServiceImp  implements UserService {
             throw new IllegalArgumentException("Email is already in use");
         }
 
+
+
         user.setCreatedAt(LocalDateTime.now());
         userRepo.save(user);
+
+        //send confirmation email
+
     }
 
     //get all users
