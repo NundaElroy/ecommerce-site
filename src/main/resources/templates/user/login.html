@@ -1,119 +1,93 @@
 <!DOCTYPE html>
-<html   xmlns:th="http://www.thymeleaf.org" lang="en"  >
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Your Store</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .login-container {
-            min-height: 100vh;
-            background-color: #f8f9fa;
-        }
-        .login-box {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-        .brand-logo {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #0d6efd;
-        }
-        .social-login {
-            border-top: 1px solid #dee2e6;
-        }
-        .btn-google {
-            background-color: #ea4335;
-            color: white;
-        }
-        .btn-google:hover {
-            background-color: #d33426;
-            color: white;
-        }
-        .btn-facebook {
-            background-color: #3b5998;
-            color: white;
-        }
-        .btn-facebook:hover {
-            background-color: #2d4373;
-            color: white;
-        }
-    </style>
+    <title>Login</title>
 </head>
 <body>
-<div class="login-container d-flex align-items-center justify-content-center py-5">
+
+
+<th:block th:replace="user/userfragments :: head(title ='Guest')"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+<th:block th:replace="user/userfragments :: header"></th:block>
+
+<!-- LOGIN SECTION -->
+<div class="section">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="login-box p-4 p-md-5">
-                    <!-- Logo and Title -->
-                    <div class="text-center mb-4">
-                        <div class="brand-logo mb-3">Store</div>
-                        <h2 class="h4 mb-3">Welcome back</h2>
-                        <p class="text-muted">Please enter your login details</p>
-                    </div>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="login-form">
+                    <h2 class="text-center">Welcome back</h2>
+                    <p class="text-center text-muted">Please enter your login details</p>
 
-                    <!-- Login Form -->
-                    <form th:action="@{/login}" method="POST">
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email address</label>
-                            <input type="email" class="form-control form-control-lg" id="email" name="email" required>
+                    <!-- Spring Security Login Form -->
+                    <form th:action="@{/login}" method="post">
+                        <!-- Error Message -->
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            Invalid username or password.
                         </div>
 
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label for="password" class="form-label mb-0">Password</label>
-                                <a href="/forgot-password" class="text-decoration-none small">Forgot password?</a>
+                        <!-- Logout Message -->
+                        <div th:if="${param.logout}" class="alert alert-success">
+                            You have been logged out.
+                        </div>
+
+                        <!-- Email Input -->
+                        <div class="form-group">
+                            <label>Email address</label>
+                            <input type="email" name="email" class="input" required>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="form-group">
+                            <div class="clearfix">
+                                <label class="pull-left">Password</label>
+                                <a href="/forgot-password" class="pull-right">Forgot Password?</a>
                             </div>
-                            <input type="password" class="form-control form-control-lg" id="password" name="password" required>
+                            <input type="password" name="password" class="input" required>
                         </div>
 
-                        <div class="mb-4">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                                <label class="form-check-label" for="remember">Remember me</label>
+                        <!-- Remember Me Checkbox -->
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember"> Remember Me
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg w-100 mb-4">Sign in</button>
+                        <!-- Login Button -->
+                        <button type="submit" class="primary-btn btn-block">Sign in</button>
 
-                        <p class="text-center mb-0">
-                            Don't have an account?
-                            <a href="/register" class="text-decoration-none">Create account</a>
-                        </p>
+                        <!-- Not Registered -->
+                        <div class="text-center" style="margin-top: 20px;">
+                            <p>
+                                Don't have an account? <a href="/register">Create account</a>
+                            </p>
+                        </div>
                     </form>
 
                     <!-- Social Login -->
-                    <div class="social-login text-center mt-4 pt-4">
-                        <p class="text-muted mb-4">Or continue with</p>
-                        <div class="row g-3">
+                    <div class="text-center" style="margin-top: 20px; border-top: 1px solid #e0e0e0; padding-top: 20px;">
+                        <p class="text-muted">Or continue with</p>
+                        <div class="row">
                             <div class="col-6">
-                                <a href="/auth/google" class="btn btn-google w-100">
-                                    Google
+                                <a href="/auth/google" class="btn btn-block" style="background-color: #ea4335; color: white;">
+                                    <i class="fa fa-google"></i> Google
                                 </a>
                             </div>
-                            <div class="col-6">
-                                <a href="/auth/facebook" class="btn btn-facebook w-100">
-                                    Facebook
-                                </a>
-                            </div>
+
                         </div>
                     </div>
-                </div>
-
-                <!-- Footer Links -->
-                <div class="text-center mt-4">
-                    <small class="text-muted">
-                        <a href="/terms" class="text-decoration-none text-muted">Terms</a> •
-                        <a href="/privacy" class="text-decoration-none text-muted">Privacy</a> •
-                        <a href="/help" class="text-decoration-none text-muted">Help</a>
-                    </small>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
 </body>
+</html>
