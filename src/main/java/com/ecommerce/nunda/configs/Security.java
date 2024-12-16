@@ -28,6 +28,7 @@ public class Security {
                 .authorizeHttpRequests(authorize -> authorize
                         // Permit access to static resources
                         .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/register").permitAll()
                         .requestMatchers("/images/products/**").permitAll()
                         .requestMatchers("/login", "/register", "/guest").permitAll() // Open routes
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin pages require ADMIN role
