@@ -15,19 +15,6 @@ public class User {
     private String profilePictureUrl;
     @Column
     private String firstName;
-
-    public User(Long user_id, String role, String profilePictureUrl, String phoneNumber, String password, String lastName, String firstName, String email, LocalDateTime createdAt) {
-        this.user_id = user_id;
-        this.role = role;
-        this.profilePictureUrl = profilePictureUrl;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-        this.createdAt = createdAt;
-    }
-
     @Column
     private String lastName;
     @Column
@@ -44,6 +31,20 @@ public class User {
     private List<Orders> orders;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Cart cart;
+
+
+    public User(Long user_id, String role, String profilePictureUrl, String phoneNumber, String password, String lastName, String firstName, String email, LocalDateTime createdAt) {
+        this.user_id = user_id;
+        this.role = role;
+        this.profilePictureUrl = profilePictureUrl;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
+
 
     public String getFirstName() {
         return firstName;
