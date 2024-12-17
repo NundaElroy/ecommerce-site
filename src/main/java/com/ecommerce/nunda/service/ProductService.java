@@ -16,4 +16,7 @@ public interface ProductService {
     ProductForm convertToForm(Product product);
 
     Product convertToEntity(ProductForm productForm, Long id);
+
+    void saveProductAndImages(String name, String description, double price, int stockQuantity,
+                         Long categoryId, List<String> imagePaths);
 }

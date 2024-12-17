@@ -1,6 +1,8 @@
 package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,11 +37,20 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<ProductImage> productImages;
+    private List<ProductImage> productImages = new ArrayList<>();
 
 
     // Constructors, getters, and setters
     public Product() {}
+
+    public Product(String name, String description, double price, int stockQuantity, Category category, String mainImage) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stockQuantity = stockQuantity;
+        this.category = category;
+        this.productImage = mainImage;
+    }
 
     //get the images associated with the product
     public List<ProductImage> getProductImages() {

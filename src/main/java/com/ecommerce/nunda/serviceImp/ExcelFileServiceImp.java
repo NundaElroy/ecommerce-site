@@ -4,6 +4,12 @@ import com.ecommerce.nunda.configs.FileHandlerConfig;
 import com.ecommerce.nunda.customexceptions.EmptyFileException;
 import com.ecommerce.nunda.customexceptions.FileLocationNotFoundException;
 import com.ecommerce.nunda.service.ExcelFileService;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,8 +18,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+@Service
 public class ExcelFileServiceImp implements ExcelFileService {
     private final FileHandlerConfig fileHandlerConfig;
+    private static final Logger logger = LoggerFactory.getLogger(ExcelFileServiceImp.class);
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
 
     public ExcelFileServiceImp(FileHandlerConfig fileHandlerConfig) {
         this.fileHandlerConfig = fileHandlerConfig;
@@ -58,9 +69,31 @@ public class ExcelFileServiceImp implements ExcelFileService {
             throw new FileLocationNotFoundException("storage failed ",e);
 
         }
+        //get relative location of excel file
+        String resolvedPath = Paths.get(uploadDir).resolve(uniqueFilename).normalize().toString();
+        logger.info("File saved successfully at: {}", resolvedPath);
 
+        return resolvedPath;
+    }
 
-        return uniqueFilename;
+    // Helper method to get the cell value
+    public String getCellValue(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        switch (cell.getCellType()) {
+            case STRING:
+                return cell.getStringCellValue();
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
+                    return String.valueOf(cell.getDateCellValue());
+                }
+                return String.valueOf((long) cell.getNumericCellValue());
+            case BOOLEAN:
+                return String.valueOf(cell.getBooleanCellValue());
+            default:
+                return null;
+        }
     }
 }
 
