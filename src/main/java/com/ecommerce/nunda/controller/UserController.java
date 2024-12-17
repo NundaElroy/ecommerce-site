@@ -11,4 +11,9 @@ public class UserController {
     public String index() {
         return "user/guest_user" ;
     }
+
+    @GetMapping("/customer/home")
+    public String authenticatedUserHomePage() {
+        return "user/guest_user" ;
+    }
 }

@@ -29,6 +29,7 @@ public class Security {
                         // Permit access to static resources
                         .requestMatchers("/assets/**").permitAll()
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/guest").permitAll()
                         .requestMatchers("/images/products/**").permitAll()
                         .requestMatchers("/login", "/register", "/guest").permitAll() // Open routes
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Admin pages require ADMIN role
@@ -53,6 +54,12 @@ public class Security {
                         }) // Redirect after successful login
                         .failureUrl("/login?error=true") // Redirect on failure
                         .permitAll() // Allow everyone to access the login page
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout") // Set logout URL
+                        .logoutSuccessUrl("/guest") // Redirect after logout
+                        .invalidateHttpSession(true) // Invalidate session
+                        .deleteCookies("JSESSIONID") // Delete cookies
                 );
 
         return http.build();
