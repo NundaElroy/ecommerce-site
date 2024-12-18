@@ -17,6 +17,11 @@ public class ProductImage {
 
     public ProductImage(){}
 
+    public ProductImage(Product product, String s) {
+        this.product = product;
+        this.imagePath = s;
+    }
+
 
     public Long getId() {
         return id;

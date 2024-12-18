@@ -1,22 +1,31 @@
 package com.ecommerce.nunda.controller;
 
+import com.ecommerce.nunda.customexceptions.StorageException;
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.ProductImage;
 import com.ecommerce.nunda.formvalidators.OnAdd;
 import com.ecommerce.nunda.formvalidators.ProductForm;
-import com.ecommerce.nunda.service.CategoryService;
-import com.ecommerce.nunda.service.FileStorageHandlerService;
-import com.ecommerce.nunda.service.ProductImageService;
-import com.ecommerce.nunda.service.ProductService;
+import com.ecommerce.nunda.service.*;
+import com.ecommerce.nunda.serviceImp.ExcelFileServiceImp;
 import com.ecommerce.nunda.serviceImp.FileStorageHandlerServiceImp;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import java.io.IOException;
@@ -25,36 +34,42 @@ import java.io.IOException;
 public class ProductController {
 
     private final CategoryService categoryService;
-    private final FileStorageHandlerService  fileStorageHandlerService;
+    private final FileStorageHandlerService fileStorageHandlerService;
     private final ProductService productService;
     private final ProductImageService productImageService;
+    private final ExcelFileService excelFileService;
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
 
-    public ProductController(CategoryService categoryService, FileStorageHandlerService fileStorageHandlerService, ProductService productService, ProductImageService productImageService){
+    public ProductController(CategoryService categoryService, FileStorageHandlerService fileStorageHandlerService, ProductService productService, ProductImageService productImageService, ExcelFileService excelFileService) {
         this.categoryService = categoryService;
         this.fileStorageHandlerService = fileStorageHandlerService;
         this.productService = productService;
         this.productImageService = productImageService;
+        this.excelFileService = excelFileService;
     }
 
+    //products page/template
     @GetMapping("/admin/products")
-    public String getProducts(Model model){
-        model.addAttribute("products",productService.getAllProducts());
+    public String getProducts(Model model) {
+        model.addAttribute("products", productService.getAllProducts());
         return "product/products";
     }
 
+    //get template for adding new product
     @GetMapping("/admin/addproduct")
-    public String  addProduct(Model model){
-        model.addAttribute("categories",categoryService.getAllCategories());
+    public String addProduct(Model model) {
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("productForm", new ProductForm());
         return "product/addproduct";
     }
 
+    //add new product
     @PostMapping("/admin/addproduct")
-    public String addProduct(@Validated(OnAdd.class)  @ModelAttribute("productForm")  ProductForm productForm, BindingResult bindingResult
-                             , Model model)  {
+    public String addProduct(@Validated(OnAdd.class) @ModelAttribute("productForm") ProductForm productForm, BindingResult bindingResult
+            , Model model) {
 
-        if(bindingResult.hasErrors()){
-            model.addAttribute("categories",categoryService.getAllCategories());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("categories", categoryService.getAllCategories());
             return "product/addproduct";
         }
 
@@ -83,17 +98,17 @@ public class ProductController {
         productService.saveProduct(product);
 
 
-
-
         return "redirect:/admin/products";
     }
 
+    //delete product
     @PostMapping("/admin/deleteproduct/{id}")
-    public String deleteProduct(@PathVariable Long id){
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/admin/products";
     }
 
+    //view product
     @GetMapping("/admin/viewproduct/{id}")
     public String viewProduct(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
@@ -101,7 +116,7 @@ public class ProductController {
         return "product/viewproduct";
     }
 
-
+    //get edit product template
     @GetMapping("/admin/editproduct/{id}")
     public String showEditProductForm(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
@@ -113,6 +128,7 @@ public class ProductController {
         return "product/editproduct";
     }
 
+    //update/edited product
     @PostMapping("/admin/editproduct")
     public String updateProduct(@Valid @ModelAttribute ProductForm productForm, BindingResult result, Model model,
                                 @RequestParam("productId") Long id) {
@@ -121,15 +137,16 @@ public class ProductController {
             model.addAttribute("categories", categoryService.getAllCategories());
             return "product/editproduct";
         }
-        Product product = productService.convertToEntity(productForm,id);
+        Product product = productService.convertToEntity(productForm, id);
         productService.saveProduct(product);
 
         //redirect
         return "redirect:/admin/products";
     }
 
+    //get template for adding new images
     @GetMapping("/admin/changeimage/{id}")
-    public String manageImages(@PathVariable Long id , Model model){
+    public String manageImages(@PathVariable Long id, Model model) {
         Product product = productService.getProductById(id);
         List<ProductImage> imageFilenames = productImageService.getAllProductImageById(id);
 
@@ -142,15 +159,16 @@ public class ProductController {
         return "product/manageproductimages";
     }
 
+    //post mapping for adding new images
     @PostMapping("/admin/addimage")
-    public String addNewImages(@RequestParam("imageFile")MultipartFile file , @RequestParam("productId") Long id){
-       //product associated with image being added
-        Product product  = productService.getProductById(id);
+    public String addNewImages(@RequestParam("imageFile") MultipartFile file, @RequestParam("productId") Long id) {
+        //product associated with image being added
+        Product product = productService.getProductById(id);
         ProductImage productImage = new ProductImage();
         String filepath = fileStorageHandlerService.storeProductImages(file);
 
         //save image
-        productImageService.save(product,filepath,productImage);
+        productImageService.save(product, filepath, productImage);
 
         return "redirect:/admin/changeimage/" + id;
 
@@ -172,10 +190,70 @@ public class ProductController {
         return "redirect:/admin/changeimage/" + product_id;
     }
 
+    //bulk upload using excel file
+    @PostMapping("/admin/addProduct/bulkUpload")
+    public String addNewProductsInBulk(@RequestParam("file") MultipartFile file) {
+        logger.info("Bulk upload initiated for file: {}", file.getOriginalFilename());
 
+        String filename = excelFileService.saveFile(file);
+        logger.info("File saved successfully at path: {}", filename);
 
+        try (FileInputStream fis = new FileInputStream(filename)) {
+            Workbook workbook = new XSSFWorkbook(fis);
+            Sheet sheet = workbook.getSheetAt(0);
+            logger.info("Reading sheet: '{}' from workbook", sheet.getSheetName());
 
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    logger.debug("Skipping header row");
+                    continue; // Skip header row
+                }
 
+                // Extract standard fields from the row
+                String name = excelFileService.getCellValue(row.getCell(0));
+                String description = excelFileService.getCellValue(row.getCell(1));
+                String priceStr = excelFileService.getCellValue(row.getCell(2));
+                String stockQuantityStr = excelFileService.getCellValue(row.getCell(3));
+                String categoryIdStr = excelFileService.getCellValue(row.getCell(4));
 
+                // Log extracted values
+                logger.debug("Row {} - Name: {}, Description: {}, Price: {}, Stock: {}, Category: {}",
+                        row.getRowNum(), name, description, priceStr, stockQuantityStr, categoryIdStr);
+
+                try {
+                    double price = Double.parseDouble(priceStr);
+                    int stockQuantity = Integer.parseInt(stockQuantityStr);
+                    Long categoryId = Long.parseLong(categoryIdStr);
+
+                    // Collect image paths dynamically (start from column index 5)
+                    List<String> imagePaths = new ArrayList<>();
+                    for (int colIndex = 5; colIndex < row.getLastCellNum(); colIndex++) {
+                        String imagePath = excelFileService.getCellValue(row.getCell(colIndex));
+                        if (imagePath != null && !imagePath.isEmpty()) {
+                            imagePaths.add(imagePath);
+                        }
+                    }
+
+                    // Log image paths
+                    logger.debug("Row {} - Image Paths: {}", row.getRowNum(), imagePaths);
+
+                    // Process product and images
+                    productService.saveProductAndImages(name, description, price, stockQuantity, categoryId, imagePaths);
+                    logger.info("Row {} processed successfully", row.getRowNum());
+
+                } catch (NumberFormatException e) {
+                    logger.error("Error parsing numerical fields in row {}: {}", row.getRowNum(), e.getMessage());
+                }
+            }
+
+            workbook.close();
+            logger.info("Bulk upload completed successfully for file: {}", file.getOriginalFilename());
+            return "redirect:/admin/products"; // Redirect or return success message
+
+        } catch (IOException e) {
+            logger.error("An error occurred while processing the file: {}", e.getMessage());
+            throw new StorageException("An error occurred. Storage Failed", e);
+        }
+    }
 
 }
