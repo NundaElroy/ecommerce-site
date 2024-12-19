@@ -2,6 +2,7 @@ package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.formvalidators.ProductForm;
+import com.ecommerce.nunda.formvalidators.PromotionsDTO;
 
 import java.util.List;
 
@@ -19,4 +20,8 @@ public interface ProductService {
 
     void saveProductAndImages(String name, String description, double price, int stockQuantity,
                          Long categoryId, List<String> imagePaths);
+
+    void addPromotion(PromotionsDTO promotionsDTO);
+
+    void deletePromotion(Long productid);
 }

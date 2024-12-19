@@ -6,6 +6,7 @@ import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.ProductImage;
 import com.ecommerce.nunda.formvalidators.ProductForm;
+import com.ecommerce.nunda.formvalidators.PromotionsDTO;
 import com.ecommerce.nunda.repository.ProductRepo;
 import com.ecommerce.nunda.service.CategoryService;
 import com.ecommerce.nunda.service.ProductImageService;
@@ -106,4 +107,30 @@ public class ProductServiceImp implements ProductService {
 
         logger.info("Product and images saved successfully for product ID: {}", productAfterPersistence.getProduct_id());
     }
+
+    @Override
+    public void addPromotion(PromotionsDTO promotionsDTO) {
+        Product product = productRepo.getReferenceById(promotionsDTO.getProductId());
+        product.setDiscountPercentage(promotionsDTO.getDiscountPercentage());
+        product.setDiscountStartTime(promotionsDTO.getDiscountStartTime());
+        product.setDiscountEndTime(promotionsDTO.getDiscountEndTime());
+
+        productRepo.save(product);
+
+        logger.info("Product promotions saved successfully for product ID: {}", product.getProduct_id());
+    }
+
+    @Override
+    public void deletePromotion(Long productid) {
+        Product product = productRepo.getReferenceById(productid);
+        product.setDiscountPercentage(null);
+        product.setDiscountStartTime(null);
+        product.setDiscountEndTime(null);
+
+        productRepo.save(product);
+
+        logger.info("Product promotions deleted successfully for product ID: {}", product.getProduct_id());
+    }
+
+
 }

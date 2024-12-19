@@ -2,6 +2,7 @@ package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,18 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
+
+    //section dealing with promotions and discounts
+    @Column
+    private Double discountPercentage;
+
+
+    @Column
+    private LocalDateTime discountStartTime;
+
+    @Column
+    private LocalDateTime discountEndTime;
+
 
 
     // Constructors, getters, and setters
@@ -144,5 +157,29 @@ public class Product {
 
     public void setProduct_id(Long product_id) {
         this.product_id = product_id;
+    }
+
+    public LocalDateTime getDiscountStartTime() {
+        return discountStartTime;
+    }
+
+    public void setDiscountStartTime(LocalDateTime discountStartTime) {
+        this.discountStartTime = discountStartTime;
+    }
+
+    public LocalDateTime getDiscountEndTime() {
+        return discountEndTime;
+    }
+
+    public void setDiscountEndTime(LocalDateTime discountEndTime) {
+        this.discountEndTime = discountEndTime;
+    }
+
+    public Double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(Double discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 }

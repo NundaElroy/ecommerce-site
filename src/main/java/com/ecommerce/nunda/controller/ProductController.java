@@ -6,6 +6,7 @@ import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.ProductImage;
 import com.ecommerce.nunda.formvalidators.OnAdd;
 import com.ecommerce.nunda.formvalidators.ProductForm;
+import com.ecommerce.nunda.formvalidators.PromotionsDTO;
 import com.ecommerce.nunda.service.*;
 import com.ecommerce.nunda.serviceImp.ExcelFileServiceImp;
 import com.ecommerce.nunda.serviceImp.FileStorageHandlerServiceImp;
@@ -254,6 +255,43 @@ public class ProductController {
             logger.error("An error occurred while processing the file: {}", e.getMessage());
             throw new StorageException("An error occurred. Storage Failed", e);
         }
+    }
+
+    //promotions template
+    @GetMapping("/admin/promotions")
+    public String getPromotions(Model model){
+        model.addAttribute("promotionDTO", new PromotionsDTO());
+        model.addAttribute("products",productService.getAllProducts());
+        return "product/promotions";
+
+    }
+
+    @PostMapping("/admin/addpromotion")
+    public String addPromotion(@Valid @ModelAttribute("promotionDTO") PromotionsDTO promotionsDTO,
+                               BindingResult bindingResult,
+                               Model model) {
+        if (bindingResult.hasErrors()) {
+            // Log detailed errors
+            bindingResult.getAllErrors().forEach(error -> {
+                logger.error("Validation error: {}", error.getDefaultMessage());
+            });
+
+            // Reload data for the modal
+            model.addAttribute("promotionDTO", promotionsDTO);
+            model.addAttribute("products", productService.getAllProducts());
+            model.addAttribute("showModal", true); // Signal to reopen modal
+
+            return "product/promotions";
+        }
+
+        productService.addPromotion(promotionsDTO);
+        return "redirect:/admin/promotions";
+    }
+
+    @PostMapping("/admin/deletepromotion/{id}")
+    public String deletePromotion(@PathVariable("id") Long productid){
+        productService.deletePromotion(productid);
+        return "redirect:/admin/promotions";
     }
 
 }
