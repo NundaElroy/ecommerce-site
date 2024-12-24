@@ -16,7 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImp implements ProductService {
@@ -130,6 +132,22 @@ public class ProductServiceImp implements ProductService {
         productRepo.save(product);
 
         logger.info("Product promotions deleted successfully for product ID: {}", product.getProduct_id());
+    }
+
+    //get all products with active promotions
+    @Override
+    public List<Product> getActivePromotions() {
+        LocalDateTime now = LocalDateTime.now();
+
+        //get all products
+        List<Product> allproducts =  productRepo.findAll();
+        //get all products with active promotions
+        return allproducts.stream()
+                .filter(product -> product.getDiscountPercentage() != null)// Ensure discount percentage is set
+                .filter(product -> product.getDiscountStartTime() != null && product.getDiscountEndTime() != null) // Ensure both start and end times are set
+                .filter(product -> now.isAfter(product.getDiscountStartTime()) && now.isBefore(product.getDiscountEndTime()))  // Ensure the promotion has started
+                .collect(Collectors.toList());
+
     }
 
 

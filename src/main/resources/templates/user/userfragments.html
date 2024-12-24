@@ -32,6 +32,9 @@
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="/assets/css_user/style.css"/>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -51,12 +54,9 @@
                 <!-- NAV -->
                 <ul class="main-nav nav navbar-nav">
                     <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Hot Deals</a></li>
-                    <li><a href="#">Categories</a></li>
-                    <li><a href="#">Laptops</a></li>
-                    <li><a href="#">Smartphones</a></li>
-                    <li><a href="#">Cameras</a></li>
-                    <li><a href="#">Accessories</a></li>
+                    <li><a th:href="@{/hotdeals}">Hot Deals</a></li>
+<!--                    <li><a href="#">Categories</a></li>-->
+
                 </ul>
                 <!-- /NAV -->
             </div>
@@ -129,7 +129,7 @@
                         <form>
                             <select class="input-select">
                                 <option value="0">All Categories</option>
-                                <option th:each="category ,iter : ${categoriesForDropdown}"
+                                <option th:each="category ,iter : ${categories}"
                                         th:value="${iter.count}"
                                         th:text ="${category.name}">
                                     Category 01

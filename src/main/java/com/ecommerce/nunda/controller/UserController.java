@@ -18,7 +18,7 @@ public class UserController {
     //guest page for non auth users
     @GetMapping({"/guest",""})
     public String index(Model model ) {
-        model.addAttribute("categoriesForDropdown", categoryService.getAllCategories());
+
         return "user/guest_user" ;
     }
 

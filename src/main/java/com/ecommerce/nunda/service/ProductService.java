@@ -24,4 +24,6 @@ public interface ProductService {
     void addPromotion(PromotionsDTO promotionsDTO);
 
     void deletePromotion(Long productid);
+
+    List<Product>  getActivePromotions();
 }

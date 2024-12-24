@@ -28,7 +28,7 @@ public class Security {
                 .authorizeHttpRequests(authorize -> authorize
                         // Permit access to static resources
                         .requestMatchers("/assets/**").permitAll()
-                        .requestMatchers("/register").permitAll()
+                        .requestMatchers("/hotdeals","/view_product/**").permitAll()
                         .requestMatchers("/guest").permitAll()
                         .requestMatchers("/images/products/**").permitAll()
                         .requestMatchers("/login", "/register", "/guest").permitAll() // Open routes

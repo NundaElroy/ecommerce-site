@@ -266,6 +266,7 @@ public class ProductController {
 
     }
 
+    //add promotion
     @PostMapping("/admin/addpromotion")
     public String addPromotion(@Valid @ModelAttribute("promotionDTO") PromotionsDTO promotionsDTO,
                                BindingResult bindingResult,
@@ -288,6 +289,7 @@ public class ProductController {
         return "redirect:/admin/promotions";
     }
 
+    //delete promotion
     @PostMapping("/admin/deletepromotion/{id}")
     public String deletePromotion(@PathVariable("id") Long productid){
         productService.deletePromotion(productid);
