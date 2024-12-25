@@ -1,5 +1,6 @@
 package com.ecommerce.nunda.controller;
 
+import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.Review;
 import com.ecommerce.nunda.formvalidators.ReviewForm;
 import com.ecommerce.nunda.service.CategoryService;
@@ -34,11 +35,16 @@ public class ProductUserController {
         model.addAttribute("products", productService.getActivePromotions());
         return "product/hotdeals";
     }
-
+//view individual products
     @GetMapping("/view_product/{id}")
     public String viewProduct(@PathVariable("id")Long id,Model model){
-        model.addAttribute("review", new ReviewForm());
-        model.addAttribute("product", productService.getProductById(id));
+        Product product = productService.getProductById(id);
+
+//        model.addAttribute("review", new ReviewForm());
+        model.addAttribute("product", product);
+        // Get related products
+        model.addAttribute("relatedProducts", productService.getRelatedProducts(product));
+
         return "product/viewindividualproduct";
     }
 

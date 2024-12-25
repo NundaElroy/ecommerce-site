@@ -1,5 +1,6 @@
 package com.ecommerce.nunda.service;
 
+import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.formvalidators.ProductForm;
 import com.ecommerce.nunda.formvalidators.PromotionsDTO;
@@ -26,4 +27,6 @@ public interface ProductService {
     void deletePromotion(Long productid);
 
     List<Product>  getActivePromotions();
+
+    List<Product> getRelatedProducts(Product product);
 }

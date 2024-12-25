@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.serviceImp;
 
 import com.ecommerce.nunda.entity.Category;
+import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.repository.CategoryRepo;
 import com.ecommerce.nunda.service.CategoryService;
 import org.springframework.stereotype.Service;
@@ -34,4 +35,6 @@ public class CategoryServiceImp implements CategoryService {
     public Category getCategoryById(Long id) {
         return categoryRepo.findById(id).orElse(null);
     }
+
+
 }

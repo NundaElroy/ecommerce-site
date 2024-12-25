@@ -150,5 +150,16 @@ public class ProductServiceImp implements ProductService {
 
     }
 
+    @Override
+    public List<Product> getRelatedProducts(Product product) {
+        List<Product> relatedProducts = product.getCategory().getProducts()
+                .stream()
+                .filter((p) -> !(p.getProduct_id()).equals(product.getProduct_id())) // Exclude the current product
+                .limit(4)
+                .collect(Collectors.toList());
+
+        return relatedProducts;
+    }
+
 
 }
