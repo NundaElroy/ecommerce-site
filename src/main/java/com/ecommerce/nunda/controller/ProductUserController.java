@@ -10,13 +10,11 @@ import com.ecommerce.nunda.serviceImp.ProductServiceImp;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class ProductUserController {
@@ -30,17 +28,44 @@ public class ProductUserController {
     }
 
     @GetMapping("/hotdeals")
-    public String hotDeals(Model model) {
+    public String hotDeals() {
         // Get all active promotions
-        model.addAttribute("products", productService.getActivePromotions());
+//        model.addAttribute("products", productService.getActivePromotions());
         return "product/hotdeals";
     }
+
+//get products by category
+@GetMapping("/category/{category_name}/{id}")
+public String viewCategoryProducts(
+        @PathVariable("category_name") String categoryName,
+        @PathVariable("id") Long id,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "9") int size,
+        Model model) {
+    // Fetch paginated products for the given category
+    Page<Product> productPage = productService.getProductsByCategory(page, size,id);
+
+    // Add data to the model
+    // Pass data to the model
+    model.addAttribute("products", productPage.getContent()); // Current page's products
+    model.addAttribute("totalProducts", productPage.getTotalElements()); // Total number of products
+    model.addAttribute("totalPages", productPage.getTotalPages()); // Total pages
+    model.addAttribute("currentPage", productPage.getNumber()); // Current page number (0-based)
+    model.addAttribute("size", productPage.getSize()); // Page size
+    model.addAttribute("category_name", categoryName); // Category name
+    model.addAttribute("id", id); // Category ID
+
+
+    return "product/hotdeals"; // View name
+
+    }
+
 //view individual products
     @GetMapping("/view_product/{id}")
     public String viewProduct(@PathVariable("id")Long id,Model model){
         Product product = productService.getProductById(id);
 
-//        model.addAttribute("review", new ReviewForm());
+        //model.addAttribute("review", new ReviewForm());
         model.addAttribute("product", product);
         // Get related products
         model.addAttribute("relatedProducts", productService.getRelatedProducts(product));

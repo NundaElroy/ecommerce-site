@@ -11,125 +11,191 @@
 <th:block th:replace="user/userfragments :: navbar"></th:block>
 
 
-<div id="store" style="
-  background-color: white;
-  width: 100%;
-  padding: 20px;
-  padding-bottom: 60px;  /* Added bottom padding */
-  margin-bottom: 40px;   /* Added margin for footer */
-  box-sizing: border-box;">
-    <!-- store products -->
-    <div class="row" style="
-    display: flex;
-    flex-wrap: wrap;
-    margin: -8px;
-    width: calc(100% + 16px);
-    justify-content: center;  /* Changed to center */
-    max-width: 1200px;       /* Added max-width */
-    margin-left: auto;       /* Center the container */
-    margin-right: auto;">
-        <!-- product -->
-        <div th:each="product : ${products}" class="col-md-3 col-xs-6" style="
-      width: 240px;
-      padding: 8px;
-      box-sizing: border-box;
-      flex-grow: 0;
-      flex-shrink: 0;">
-            <div class="product" style="
-        position: relative;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        -webkit-box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
-        box-shadow: 0px 0px 0px 0px #E4E7ED, 0px 0px 0px 1px #E4E7ED;
-        -webkit-transition: 0.2s all;
-        transition: 0.2s all;">
-                <div class="product-img" style="
-          position: relative;
-          width: 100%;
-          padding-top: 75%;
-          background-color: #fff;
-          overflow: hidden;">
-                    <img th:src="@{/images/products/{productImage}(productImage=${product.productImage})}" alt="Product Image" style="
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: auto;
-            height: auto;
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;">
-                    <div class="product-label" style="position: absolute; top: 10px; left: 10px; display: flex; gap: 5px;">
-                        <span th:if="${product.discountPercentage > 0}" class="sale" style="background-color: #ff4757; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;" th:text="'-' + ${product.discountPercentage} + '%'"></span>
-                        <span th:if="${product.discountPercentage == null}" class="new" style="background-color: #2ed573; color: white; padding: 5px 10px; border-radius: 5px; font-size: 12px;">NEW</span>
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- ASIDE -->
+            <div id="aside" class="col-md-3">
+
+
+
+
+                <!-- aside Widget -->
+                <div class="aside">
+                    <h3 class="aside-title">Top selling</h3>
+                    <div class="product-widget">
+                        <div class="product-img">
+                            <img src="/assets/img_user/product01.png" alt="">
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                        </div>
+                    </div>
+
+                    <div class="product-widget">
+                        <div class="product-img">
+                            <img src="/assets/img_user/product02.png" alt="">
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                        </div>
+                    </div>
+
+                    <div class="product-widget">
+                        <div class="product-img">
+                            <img src="/assets/img_user/product03.png" alt="">
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                        </div>
                     </div>
                 </div>
-                <div class="product-body" style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1;">
-                    <p class="product-category" style="font-size: 14px; color: #888; margin: 0;" th:text="${product.category.name}">Category</p>
-                    <h3 class="product-name" style="font-size: 16px; margin: 10px 0; flex-grow: 1;">
-                        <a th:href="@{/product/{id}(id=${product.product_id})}" style="text-decoration: none; color: #333;" th:text="${product.name}">Product name goes here</a>
-                    </h3>
-                    <h4 class="product-price" style="font-size: 18px; color: #333; margin: 10px 0;">
-                        <span th:text="${product.price - (product.price * product.discountPercentage / 100)}">$980.00</span>
-                        <del th:if="${product.discountPercentage > 0}" style="font-size: 14px; color: #aaa;" th:text="${product.price}">$990.00</del>
-                    </h4>
-                    <div class="product-rating" style="color: #FFD700; margin-bottom: 10px;">
-                        <i class="fa fa-star" th:each="i : ${#numbers.sequence(1, 5)}"
-                           th:classappend="${i <= (product.ratings != null ? product.ratings.intValue() : 0) ? '' : '-o'}">
-                        </i>
-                    </div>
-
-                    <div class="product-btns" style="display: flex; justify-content: space-around; padding: 10px 0;">
-                        <button class="add-to-wishlist" style="background: none; border: none; cursor: pointer; padding: 5px;">
-                            <i class="fa fa-heart-o"></i>
-                            <span class="tooltipp" style="display: none;">add to wishlist</span>
-                        </button>
-
-                        <button class="add-to-cart-btn" style="background: none; border: none; cursor: pointer; padding: 5px;">
-                            <i class="fa fa-shopping-cart"></i>
-                            <span class="tooltipp" style="display: none;">add to cart</span>
-                        </button>
-
-                        <button class="quick-view" style="background: none; border: none; cursor: pointer; padding: 5px;" onclick="window.location.href='@{/product/view/{id}(id=${product.product_id})}'">
-                            <i class="fa fa-eye"></i>
-                            <span class="tooltipp" style="display: none;">quick view</span>
-                        </button>
-                    </div>
-                </div>
+                <!-- /aside Widget -->
             </div>
+            <!-- /ASIDE -->
+
+            <!-- STORE -->
+            <div id="store" class="col-md-9">
+                <!-- store top filter -->
+                <div class="store-filter clearfix">
+                    <div class="store-sort">
+                        <label>
+                            Sort By:
+                            <select class="input-select">
+                                <option value="0">Popular</option>
+                                <option value="1">Position</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Show:
+                            <select class="input-select">
+                                <option value="0">20</option>
+                                <option value="1">50</option>
+                            </select>
+                        </label>
+                    </div>
+
+                </div>
+                <!-- /store top filter -->
+
+                <div>
+                    Total Results: <span th:text="${totalProducts}"></span>
+                </div>
+
+
+                <!-- store products -->
+                <div class="row">
+
+                    <!--product-->
+                    <!-- product -->
+                    <div class="col-md-4 col-xs-6" th:each="product : ${products}">
+                        <div class="product">
+                            <!-- Original image code -->
+                            <div class="product-img" style="width: 100%; aspect-ratio: 16/9;">
+                                <img th:src="@{/images/products/{main} (main = ${product.productImage})}" alt="" style="width: 100%; height: 100%; object-fit: contain;">
+                                <div class="product-label" th:if="${product.discountPercentage != null}">
+                                    <span th:text="${product.discountPercentage} + '%'" class="sale">-30%</span>
+                                </div>
+                            </div>
+                            <div class="product-body">
+                                <p class="product-category" th:text="${product.category.name}">Category</p>
+                                <!-- Fixed height product name with ellipsis -->
+                                <h3 class="product-name" style="height: 40px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.2em; margin: 0 0 10px 0;">
+                                    <a href="#" th:text="${product.name}" style="text-decoration: none; color: inherit;">product name goes here</a>
+                                </h3>
+                                <h4 class="product-price" style="font-size: 1.5rem;">
+                                    <th:block th:if="${product.discountPercentage != null}">
+                                        <span th:text="${'UGX ' + (product.price - (product.price * product.discountPercentage / 100))}"></span>
+                                        <del th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></del>
+                                    </th:block>
+                                    <th:block th:unless="${product.discountPercentage != null}">
+                                        <span th:text="${'UGX ' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                    </th:block>
+                                </h4>
+                                <div th:if="${product.ratings != null}">
+                <span class="fw-bold">
+                    <span th:text="${#numbers.formatDecimal(product.ratings, 1, 1)} + '/5'" class="text-warning"></span> stars
+                </span>
+                                </div>
+                                <div th:unless="${product.ratings != null}">
+                                    <span class="text-muted">No ratings yet</span>
+                                </div>
+                                <div class="product-btns">
+                                    <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                                    <a th:href="@{/view_product/{id}(id=${product.product_id})}" style="text-decoration: none;">
+                                        <i class="fa fa-eye quick-view"></i>
+                                        <span class="tooltipp">quick view</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <!-- /store products -->
+
+                <!-- store bottom filter -->
+                <!-- Store bottom filter -->
+                <div class="store-filter clearfix">
+                    <!-- Display the range of products being shown -->
+                    <span class="store-qty">
+    Showing
+    <span th:text="${(currentPage * size + 1) > totalProducts ? totalProducts : (currentPage * size + 1)}"></span>-
+    <span th:text="${((currentPage + 1) * size) > totalProducts ? totalProducts : ((currentPage + 1) * size)}"></span>
+    of
+    <span th:text="${totalProducts}"></span> products
+</span>
+
+
+
+                    <!-- Pagination controls -->
+                    <ul class="store-pagination">
+                        <!-- Previous Page Button -->
+                        <li th:if="${currentPage > 0}">
+                            <a th:href="@{/category/{category_name}/{id}(category_name=${category_name}, id=${id}, page=${currentPage - 1}, size=${size})}">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        <li th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                            th:class="${pageNum == currentPage} ? 'active'">
+                            <a th:href="@{/category/{category_name}/{id}(category_name=${category_name}, id=${id}, page=${pageNum}, size=${size})}"
+                               th:text="${pageNum + 1}"></a>
+                        </li>
+
+                        <!-- Next Page Button -->
+                        <li th:if="${currentPage < totalPages - 1}">
+                            <a th:href="@{/category/{category_name}/{id}(category_name=${category_name}, id=${id}, page=${currentPage + 1}, size=${size})}">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- /store bottom filter -->
+            </div>
+            <!-- /STORE -->
         </div>
-        <!-- /product -->
+        <!-- /row -->
     </div>
-    <!-- /store products -->
+    <!-- /container -->
 </div>
-
-<style>
-    @media (max-width: 1200px) {
-      .col-md-3 {
-        width: 220px !important;
-      }
-    }
-
-    @media (max-width: 991px) {
-      .col-md-3 {
-        width: calc(33.333% - 16px) !important;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .col-md-3 {
-        width: calc(50% - 16px) !important;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .col-md-3 {
-        width: calc(100% - 16px) !important;
-      }
-    }
-</style>
-
+<!-- /SECTION -->
 
 
 <th:block th:replace="user/userfragments :: footer"></th:block>

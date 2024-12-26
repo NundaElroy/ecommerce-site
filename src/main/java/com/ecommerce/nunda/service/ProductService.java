@@ -4,6 +4,7 @@ import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.formvalidators.ProductForm;
 import com.ecommerce.nunda.formvalidators.PromotionsDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -29,4 +30,6 @@ public interface ProductService {
     List<Product>  getActivePromotions();
 
     List<Product> getRelatedProducts(Product product);
+
+    Page<Product> getProductsByCategory(int page, int size,Long id);
 }
