@@ -32,4 +32,6 @@ public interface ProductService {
     List<Product> getRelatedProducts(Product product);
 
     Page<Product> getProductsByCategory(int page, int size,Long id);
+
+    Page<Product> getNewProduct(int page , int size);
 }

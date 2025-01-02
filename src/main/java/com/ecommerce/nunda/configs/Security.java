@@ -49,7 +49,7 @@ public class Security {
                             if ("ROLE_ADMIN".equals(role)) {
                                 response.sendRedirect("/admin/home"); // Redirect to admin dashboard
                             } else {
-                                response.sendRedirect("/customer/home"); // Redirect to customer home
+                                response.sendRedirect("/home"); // Redirect to customer home
                             }
                         }) // Redirect after successful login
                         .failureUrl("/login?error=true") // Redirect on failure

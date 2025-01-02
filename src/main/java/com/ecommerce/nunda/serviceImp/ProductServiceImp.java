@@ -35,6 +35,7 @@ public class ProductServiceImp implements ProductService {
         this.categoryService = categoryService;
         this.productImageService = productImageService;
     }
+
     @Override
     public void saveProduct(Product product) {
      productRepo.save(product);
@@ -59,7 +60,6 @@ public class ProductServiceImp implements ProductService {
         ProductForm productForm = new ProductForm();
         productForm.setName(product.getName());
         productForm.setStockQuantity(product.getStockQuantity());
-//        productForm.setCategory(product.getCategory().getCategory_id());
         productForm.setDescription(product.getDescription());
         productForm.setPrice(product.getPrice());
 
@@ -175,6 +175,13 @@ public class ProductServiceImp implements ProductService {
         // Create a pageable object
         Pageable pageable = PageRequest.of(page, size);
         return productRepo.findProductsByCategoryId(id, pageable);
+    }
+
+    //get new products using pagination
+    @Override
+    public Page<Product> getNewProduct(int page, int size) {
+        Pageable pageable = PageRequest.of(page,size);
+         return  productRepo.getNewProducts(pageable);
     }
 
 
