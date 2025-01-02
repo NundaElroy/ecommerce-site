@@ -16,7 +16,7 @@ public class UserController {
     }
 
     //guest page for non auth users
-    @GetMapping({"/guest",""})
+    @GetMapping({"/guest","","/home"})
     public String index(Model model ) {
 
         return "user/guest_user" ;
@@ -26,4 +26,6 @@ public class UserController {
     public String authenticatedUserHomePage() {
         return "user/guest_user" ;
     }
+
+
 }

@@ -78,6 +78,7 @@ public class ProductServiceImp implements ProductService {
         product.setDescription(productForm.getDescription());
         return product;
     }
+
     @Transactional
     public void saveProductAndImages(String name, String description, double price, int stockQuantity,
                                      Long categoryId, List<String> imagePaths) {
@@ -115,6 +116,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void addPromotion(PromotionsDTO promotionsDTO) {
+
         Product product = productRepo.getReferenceById(promotionsDTO.getProductId());
         product.setDiscountPercentage(promotionsDTO.getDiscountPercentage());
         product.setDiscountStartTime(promotionsDTO.getDiscountStartTime());
@@ -127,6 +129,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void deletePromotion(Long productid) {
+
         Product product = productRepo.getReferenceById(productid);
         product.setDiscountPercentage(null);
         product.setDiscountStartTime(null);
@@ -155,6 +158,7 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public List<Product> getRelatedProducts(Product product) {
+
         List<Product> relatedProducts = product.getCategory().getProducts()
                 .stream()
                 .filter((p) -> !(p.getProduct_id()).equals(product.getProduct_id())) // Exclude the current product
@@ -163,6 +167,8 @@ public class ProductServiceImp implements ProductService {
 
         return relatedProducts;
     }
+
+
     //get products by category using pagination
     @Override
     public Page<Product> getProductsByCategory(int page, int size,Long id) {
