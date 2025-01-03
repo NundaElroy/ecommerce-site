@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<th:block th:replace="user/userfragments :: head(title ='cart')"></th:block>
+<th:block th:replace="user/userfragments :: header"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+
+
+<!--section-->
+<!-- Cart Section -->
+<!-- Cart Section -->
+<div class="container">
+    <h2 class="mb-20">Cart (1)</h2>
+
+    <!-- Cart Items -->
+    <div class="panel panel-default mb-20">
+        <div class="panel-body">
+            <div class="row cart-item">
+                <div class="col-xs-12 col-sm-2 text-center">
+                    <img src="/assets/img_user/product02.png" alt="Product" class="img-responsive product-image img-rounded">
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <h5 class="mb-10">Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor</h5>
+
+                    <div class="clearfix">
+                        <span class="discount-badge">-39%</span>
+                        <small class="units-left pull-right" >
+                            <i class="glyphicon glyphicon-time"></i> 20 units left
+                        </small>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 text-right">
+                    <div class="mb-10">
+                        <div class="original-price">UGX 46,094</div>
+                        <div class="fw-bold price-per-unit">UGX 28,242</div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 text-right">
+                    <div class="quantity-control mb-10">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-m"  type="button">-</button>
+                            </span>
+
+                            <input type="text" class="form-control text-center quantity-input"  value="1">
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-m"  type="button">+</button>
+                            </span>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger btn-sm">
+                        Remove
+                    </button>
+
+                    <div class="item-total-price">UGX 28,242</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h5 class="panel-title">CART SUMMARY</h5>
+            <div class="clearfix">
+                <span>Subtotal</span>
+                <span class="pull-right text-bold cart-total-price">
+                    28,242</span>
+            </div>
+            <button class="btn btn-danger btn-block mt-20 ">
+                Checkout
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bootstrap Modal for Alert -->
+<div id="custom-alert" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Alert</h4>
+            </div>
+            <div class="modal-body">
+                <p id="alert-message">This is a custom alert!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    //change item quantity using buttons
+    function changeItemQuantity(button) {
+        const unitsLeftElement = button.closest('.cart-item').querySelector('.units-left');
+        //regex pattern to get numeric value
+        const maxUnits = parseInt(unitsLeftElement.textContent.match(/(\d+) units left/)[0]);
+
+        const quantityInput = button.closest('.input-group').querySelector('.quantity-input');
+
+
+        let currentQuantity = parseInt(quantityInput.value);
+
+        if (button.textContent.trim() === "+") {
+
+             // Increase quantity but not exceed the max units
+            if (currentQuantity < maxUnits) {
+                currentQuantity += 1;
+            } else {
+
+                showCustomAlert("You cannot add more than the available units!");
+            }
+
+        } else if (button.textContent.trim() === "-" && currentQuantity > 1) {
+            currentQuantity -= 1;
+        }
+
+        quantityInput.value = currentQuantity;
+        // Initialize cart total on page load
+        calculateCartTotal();
+    }
+
+    document.querySelectorAll('.btn-m').forEach(button => {
+        button.addEventListener('click', function() {
+            changeItemQuantity(this);
+        });
+    });
+
+
+    //getting total price
+    function calculateCartTotal() {
+        let cartTotal = 0;
+
+        document.querySelectorAll('.cart-item').forEach(cartItem => {
+            const quantity = parseInt(cartItem.querySelector('.quantity-input').value);
+
+            const pricePerUnit = parseFloat(
+                  cartItem.querySelector('.price-per-unit').textContent.replace(/[^\d.]/g, '')
+
+             );
+
+            const itemTotal = quantity * pricePerUnit;
+
+           // Update individual item total
+           if (!isNaN(itemTotal)){
+            cartItem.querySelector('.item-total-price').textContent = 'UGX ' + itemTotal.toLocaleString();
+           }
+            // Add to cart total
+            cartTotal += itemTotal;
+        });
+
+        // Update total price in the DOM
+        if (!isNaN(cartTotal)){
+        document.querySelector('.cart-total-price').textContent = 'UGX ' + cartTotal.toLocaleString();
+        }
+    }
+
+    // Add event listeners to all quantity inputs
+    document.querySelectorAll('.quantity-input').forEach(input => {
+
+            input.addEventListener('input', calculateCartTotal);
+
+
+    });
+
+    // Initialize cart total on page load
+    calculateCartTotal();
+
+     // Constants for min and max quantity
+     const MIN_QUANTITY = 1;
+
+    document.querySelectorAll('.quantity-input').forEach(inputField => {
+        // Event listener for direct user input
+        inputField.addEventListener('input', function () {
+            let value = this.value;
+
+            // Allow only numbers
+            if (!/^\d*$/.test(value)) {
+                showCustomAlert("Only numeric values are allowed.");
+                this.value = value.replace(/\D/g, ""); // Remove non-numeric characters
+                return;
+            }
+
+            // Check against bounds
+            const maxQuantity = parseInt(this.closest('.cart-item')
+                .querySelector('.units-left').textContent.match(/\d+/)[0]);
+
+            if (value === "") {
+                return; // Allow temporary empty value
+            } else if (parseInt(value) < MIN_QUANTITY) {
+                showCustomAlert(`Quantity cannot be less than ${MIN_QUANTITY}`);
+                this.value = MIN_QUANTITY;
+            } else if (parseInt(value) > maxQuantity) {
+                showCustomAlert(`Quantity cannot exceed ${maxQuantity}`);
+                this.value = maxQuantity;
+            }
+        });
+
+        // Event listener to validate on blur (when the user leaves the input)
+        inputField.addEventListener('blur', function () {
+            if (this.value === "") {
+                this.value = MIN_QUANTITY; // Reset to minimum if empty
+            }
+        });
+    });
+
+
+    //show alert
+    function showCustomAlert(message) {
+        const alertMessage = document.getElementById('alert-message');
+        alertMessage.textContent = message;
+
+        // Show the Bootstrap modal
+        $('#custom-alert').modal('show');
+    }
+
+    // Example Usage:
+    document.getElementById('example-button').addEventListener('click', function () {
+        showCustomAlert('This is a Bootstrap-styled alert!');
+    });
+
+
+
+
+</script>
+<!-- section -->
+<!-- NEWSLETTER -->
+<div id="newsletter" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="newsletter">
+                    <p>Sign Up for the <strong>NEWSLETTER</strong></p>
+                    <form>
+                        <input class="input" type="email" placeholder="Enter Your Email">
+                        <button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+                    </form>
+                    <ul class="newsletter-follow">
+                        <li>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /NEWSLETTER -->
+
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
+
+</body>
+</html>

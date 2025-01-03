@@ -29,6 +29,11 @@ public class UserController {
         return "user/guest_user" ;
     }
 
+    @GetMapping("/cart")
+    public String getUserCart(){
+        return "user/cart";
+    }
+
 //    @GetMapping("/customer/home")
 //    public String authenticatedUserHomePage() {
 //        return "user/guest_user" ;
