@@ -127,7 +127,7 @@ public class Product {
 
     public void addCartItem(CartItem cartItem) {
         cartItemList.add(cartItem);
-        cartItem.setProduct(this);
+
     }
 
     public void removeCartItem(CartItem cartItem) {

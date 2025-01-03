@@ -1,6 +1,10 @@
 package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class CartItem {
@@ -16,6 +20,14 @@ public class CartItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     CartItem(){}
 
@@ -40,6 +52,7 @@ public class CartItem {
     }
 
     public void setProduct(Product product) {
+        product.addCartItem(this);
         this.product = product;
     }
 
