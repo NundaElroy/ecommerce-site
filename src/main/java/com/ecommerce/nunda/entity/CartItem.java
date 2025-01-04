@@ -11,7 +11,7 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cart_item_id;
-    private Integer quantity;
+    private Integer quantity = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
@@ -29,13 +29,14 @@ public class CartItem {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    CartItem(){}
+    public CartItem(){}
 
     public Cart getCart() {
         return cart;
     }
 
     public void setCart(Cart cart) {
+        cart.addCartItem(this);
         this.cart = cart;
     }
 

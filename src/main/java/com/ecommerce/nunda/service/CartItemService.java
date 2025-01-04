@@ -1,7 +1,11 @@
 package com.ecommerce.nunda.service;
 
+import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
+import com.ecommerce.nunda.entity.Product;
 
 public interface CartItemService {
-    void saveCartItem(CartItem cartItem);
+
+
+    void addItemToCart(Cart cart, Product productById);
 }

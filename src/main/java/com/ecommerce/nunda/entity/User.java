@@ -47,6 +47,10 @@ public class User implements Serializable {
         this.createdAt = createdAt;
     }
 
+    public User(){
+
+    }
+
 
     public String getFirstName() {
         return firstName;
@@ -82,10 +86,6 @@ public class User implements Serializable {
 
 
 
-    public User(){
-
-    }
-
     public Cart getCart() {
         return cart;
     }
@@ -113,9 +113,10 @@ public class User implements Serializable {
         order.setUser(null);
     }
     public void setCart(Cart cart) {
-        this.cart = cart;
+
         if (cart != null) {
             cart.setUser(this);  // Sync the relationship
+            this.cart = cart;
         }
     }
 
