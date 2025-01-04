@@ -42,6 +42,75 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <style>
+        .btn-danger {
+            background-color: #dc0000;
+            border-color: #dc0000;
+        }
+
+        .discount-badge {
+            border: 1px solid #dc0000;
+            color: #dc0000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            background: white;
+            display: inline-block;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .units-left {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .quantity-control {
+            max-width: 120px;
+            margin: 0 auto;
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+
+        .mt-20 {
+            margin-top: 20px;
+        }
+
+        .text-bold {
+            font-weight: bold;
+        }
+
+        .text-strike {
+            text-decoration: line-through;
+        }
+
+        @media (max-width: 768px) {
+            .text-right {
+                text-align: left;
+            }
+
+            .quantity-control {
+                max-width: 100%;
+            }
+        }
+    </style>
+
 </head>
 
 <div th:fragment = "navbar">
@@ -65,6 +134,12 @@
         <!-- /container -->
     </nav>
     <!-- /NAVIGATION -->
+
+    <div id="notification-container" style="display: none;">
+        <div id="notification" class="alert alert-success" role="alert">
+            <span id="notification-message"></span>
+        </div>
+    </div>
 </div>
 
 <!-- HEADER -->
@@ -161,39 +236,12 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>Your Cart</span>
-                                <div class="qty">3</div>
+                                <div class="qty" sec:authorize="isAuthenticated()" th:text="${cartCount}">3</div>
+                                <div class="qty" sec:authorize="!isAuthenticated()" >0</div>
                             </a>
                             <div class="cart-dropdown">
-                                <div class="cart-list">
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="/assets/img_user/product01.png" alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                        </div>
-                                        <button class="delete"><i class="fa fa-close"></i></button>
-                                    </div>
-
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="/assets/img_user/product02.png" alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                        </div>
-                                        <button class="d
-                                        elete"><i class="fa fa-close"></i></button>
-                                    </div>
-                                </div>
-                                <div class="cart-summary">
-                                    <small>3 Item(s) selected</small>
-                                    <h5>SUBTOTAL: $2940.00</h5>
-                                </div>
                                 <div class="cart-btns">
-                                    <a href="#">View Cart</a>
+                                    <a th:href="@{/cart}">View Cart</a>
                                     <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
@@ -316,6 +364,81 @@
 </div>
 
 <div th:fragment="scripts">
+
+    <script>
+
+        console.log('Total buttons found:', document.querySelectorAll('.add-to-cart-btn').length);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    console.log('Add to cart button clicked');
+                    const product_id = button.parentElement.querySelector('input[name="productId"]').value;
+                    const data = { productId: product_id };
+                    submitFormData(data);
+                });
+            });
+        });
+
+        function makeRequest(data, url) {
+            return new Promise((resolve, reject) => {
+                let request = new XMLHttpRequest();
+                request.open('POST', url);
+
+                request.onreadystatechange = () => {
+                    if(request.readyState === 4) {
+                        if(request.status === 201 || request.status === 200) {
+                            resolve(JSON.parse(request.response));
+                        } else {
+                            reject(JSON.parse(request.response));
+                        }
+                    }
+                };
+
+                const token = document.querySelector('input[name="_csrf"]').value;
+                request.setRequestHeader('X-CSRF-TOKEN', token);
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.withCredentials = true;
+
+                // Rest of your request code
+                request.send(JSON.stringify(data));
+            });
+        }
+
+        async function submitFormData(data) {
+            const notification = document.getElementById("notification");
+            const notificationContainer = notification.parentElement;
+            const notificationMessage = document.getElementById("notification-message");
+
+            try {
+                const response = await makeRequest(data, '/addItemToCart'); // Add your API endpoint here
+
+                notification.className = "alert alert-success";
+                notificationMessage.textContent = response.message || "Request successful!";
+                notificationContainer.style.display = "block";
+
+                setTimeout(() => {
+                    notificationContainer.style.display = "none";
+                }, 5000);
+
+            } catch (errorResponse) {
+                if (errorResponse.status === 404) {
+                    notification.className = "alert alert-danger";
+                    notificationMessage.textContent = errorResponse.message || "An error occurred!";
+                } else {
+                    notification.className = "alert alert-warning";
+                    notificationMessage.textContent = "Unexpected error occurred!";
+                }
+
+                notificationContainer.style.display = "block";
+                setTimeout(() => {
+                    notificationContainer.style.display = "none";
+                }, 5000);
+            }
+        }
+
+
+    </script>
     <!-- jQuery Plugins -->
     <script src="/assets/js_user/jquery.min.js"></script>
     <script src="/assets/js_user/bootstrap.min.js"></script>

@@ -25,6 +25,7 @@ public class Cart {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItemList = new ArrayList<>();
 
@@ -56,4 +57,13 @@ public class Cart {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public List<CartItem> getCartItemList() {
+        return cartItemList;
+    }
+
+    public void setCartItemList(List<CartItem> cartItemList) {
+        this.cartItemList = cartItemList;
+    }
+
 }

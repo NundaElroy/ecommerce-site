@@ -6,9 +6,12 @@
 </head>
 <body>
 
+
+
 <th:block th:replace="user/userfragments :: head(title ='Guest')"></th:block>
 <th:block th:replace="user/userfragments :: header"></th:block>
 <th:block th:replace="user/userfragments :: navbar"></th:block>
+
 
 <!-- SECTION -->
 <div class="section">
@@ -120,131 +123,26 @@
                                         </div>
                                         <div class="product-btns">
                                             <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i><span class="tooltipp">add to cart</span></button>
+                                            <input type="hidden" id="product_id" name="productId" th:value=${product.product_id}>
+                                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                                             <a th:href="@{/view_product/{id}(id=${product.product_id})}" style="text-decoration: none;">
                                                 <i class="fa fa-eye quick-view"></i>
                                                 <span class="tooltipp">quick view</span>
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="add-to-cart">
-                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                    </div>
+<!--                                    <div class="add-to-cart">-->
+<!--                                        <button class="add-to-cart-btn" type="button"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
+<!--                                            <input type="hidden" id="product_id" name="productId" th:value=${product.product_id}> &lt;!&ndash; Example product ID &ndash;&gt;-->
+
+<!--                                    </div>-->
                                 </div>
                                 <!-- /product -->
 
-<!--                                &lt;!&ndash; product &ndash;&gt;-->
-<!--                                <div class="product">-->
-<!--                                    <div class="product-img">-->
-<!--                                        <img src="/assets/img_user/product02.png" alt="">-->
-<!--                                        <div class="product-label">-->
-<!--                                            <span class="new">NEW</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="product-body">-->
-<!--                                        <p class="product-category">Category</p>-->
-<!--                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>-->
-<!--                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>-->
-<!--                                        <div class="product-rating">-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star-o"></i>-->
-<!--                                        </div>-->
-<!--                                        <div class="product-btns">-->
-<!--                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>-->
-<!--                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>-->
-<!--                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="add-to-cart">-->
-<!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
 
-<!--                                &lt;!&ndash; /product &ndash;&gt;-->
 
-<!--                                &lt;!&ndash; product &ndash;&gt;-->
-<!--                                <div class="product">-->
-<!--                                    <div class="product-img">-->
-<!--                                        <img src="/assets/img_user/product03.png" alt="">-->
-<!--                                        <div class="product-label">-->
-<!--                                            <span class="sale">-30%</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="product-body">-->
-<!--                                        <p class="product-category">Category</p>-->
-<!--                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>-->
-<!--                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>-->
-<!--                                        <div class="product-rating">-->
-<!--                                        </div>-->
-<!--                                        <div class="product-btns">-->
-<!--                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>-->
-<!--                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>-->
-<!--                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="add-to-cart">-->
-<!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                &lt;!&ndash; /product &ndash;&gt;-->
 
-<!--                                &lt;!&ndash; product &ndash;&gt;-->
-<!--                                <div class="product">-->
-<!--                                    <div class="product-img">-->
-<!--                                        <img src="/assets/img_user/product04.png" alt="">-->
-<!--                                    </div>-->
-<!--                                    <div class="product-body">-->
-<!--                                        <p class="product-category">Category</p>-->
-<!--                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>-->
-<!--                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>-->
-<!--                                        <div class="product-rating">-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                        </div>-->
-<!--                                        <div class="product-btns">-->
-<!--                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>-->
-<!--                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>-->
-<!--                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="add-to-cart">-->
-<!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                &lt;!&ndash; /product &ndash;&gt;-->
-
-<!--                                &lt;!&ndash; product &ndash;&gt;-->
-<!--                                <div class="product">-->
-<!--                                    <div class="product-img">-->
-<!--                                        <img src="/assets/img_user/product05.png" alt="">-->
-<!--                                    </div>-->
-<!--                                    <div class="product-body">-->
-<!--                                        <p class="product-category">Category</p>-->
-<!--                                        <h3 class="product-name"><a href="#">product name goes here</a></h3>-->
-<!--                                        <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>-->
-<!--                                        <div class="product-rating">-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                            <i class="fa fa-star"></i>-->
-<!--                                        </div>-->
-<!--                                        <div class="product-btns">-->
-<!--                                            <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>-->
-<!--                                            <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>-->
-<!--                                            <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="add-to-cart">-->
-<!--                                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                                &lt;!&ndash; /product &ndash;&gt;-->
                             </div>
                             <div id="slick-nav-1" class="products-slick-nav"></div>
                         </div>
@@ -820,8 +718,85 @@
 </div>
 <!-- /NEWSLETTER -->
 
+<script>
+
+    console.log('Total buttons found:', document.querySelectorAll('.add-to-cart-btn').length);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                console.log('Add to cart button clicked');
+                const product_id = button.parentElement.querySelector('input[name="productId"]').value;
+                const data = { productId: product_id };
+                submitFormData(data);
+            });
+        });
+    });
+
+    function makeRequest(data, url) {
+        return new Promise((resolve, reject) => {
+            let request = new XMLHttpRequest();
+            request.open('POST', url);
+
+            request.onreadystatechange = () => {
+                if(request.readyState === 4) {
+                    if(request.status === 201 || request.status === 200) {
+                        resolve(JSON.parse(request.response));
+                    } else {
+                        reject(JSON.parse(request.response));
+                    }
+                }
+            };
+
+            const token = document.querySelector('input[name="_csrf"]').value;
+            request.setRequestHeader('X-CSRF-TOKEN', token);
+            request.setRequestHeader('Content-Type', 'application/json');
+            request.withCredentials = true;
+
+            // Rest of your request code
+            request.send(JSON.stringify(data));
+        });
+    }
+
+    async function submitFormData(data) {
+        const notification = document.getElementById("notification");
+        const notificationContainer = notification.parentElement;
+        const notificationMessage = document.getElementById("notification-message");
+
+        try {
+            const response = await makeRequest(data, '/addItemToCart'); // Add your API endpoint here
+
+            notification.className = "alert alert-success";
+            notificationMessage.textContent = response.message || "Request successful!";
+            notificationContainer.style.display = "block";
+
+            setTimeout(() => {
+                notificationContainer.style.display = "none";
+            }, 5000);
+
+        } catch (errorResponse) {
+            if (errorResponse.status === 404) {
+                notification.className = "alert alert-danger";
+                notificationMessage.textContent = errorResponse.message || "An error occurred!";
+            } else {
+                notification.className = "alert alert-warning";
+                notificationMessage.textContent = "Unexpected error occurred!";
+            }
+
+            notificationContainer.style.display = "block";
+            setTimeout(() => {
+                notificationContainer.style.display = "none";
+            }, 5000);
+        }
+    }
+
+
+</script>
+
 <th:block th:replace="user/userfragments :: footer"></th:block>
 <th:block th:replace="user/userfragments :: scripts"></th:block>
+
+
 
 </body>
 </html>
