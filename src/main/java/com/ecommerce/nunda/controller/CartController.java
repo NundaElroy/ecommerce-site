@@ -109,6 +109,12 @@ public class CartController {
             cart = user.get().getCart();
         }
 
+        //check if product is already in cart
+        if (cartItemService.isProductInCart(cart, product)) {
+            logger.info("Product {} is already in cart for user {}", productId, principal.getName());
+            return ResponseEntity.badRequest().body(createErrorResponse("Product already in cart", HttpStatus.BAD_REQUEST));
+        }
+
         cartItemService.addItemToCart(cart, product);
 
         logger.info("Product {} successfully added to cart for user {}", productId, principal.getName());

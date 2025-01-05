@@ -6,4 +6,6 @@ public interface CartService {
     void  saveCart(Cart cart);
 
     Cart createCart();
+
+    Cart getUserCart(Long user_id);
 }

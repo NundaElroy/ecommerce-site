@@ -23,4 +23,15 @@ public class CartItemServiceImp implements CartItemService {
         cartItem.setProduct(product);
         cartItemRepo.save(cartItem);
     }
+
+    @Override
+    public boolean isProductInCart(Cart cart, Product product) {
+        if (cart == null || cart.getCartItemList() == null || product == null) {
+            return false; // Null safety check
+        }
+
+        return cart.getCartItemList().stream()
+                .anyMatch(cartItem -> cartItem.getProduct().equals(product));
+
+    }
 }

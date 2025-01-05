@@ -50,6 +50,10 @@ public class UserServiceImp  implements UserService {
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
+
+    public void saveUser(User user) {
+        userRepo.save(user);
+    }
 }
 
 

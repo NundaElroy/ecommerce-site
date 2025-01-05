@@ -25,5 +25,16 @@ public class CartServiceImp implements CartService {
         return new Cart();
     }
 
+    @Override
+    public Cart getUserCart(Long user_id) {
+//        Cart cart = cartRepo.findByUserId(user_id);
+//        if (cart == null) {
+//            cart = createCart();
+//            cartRepo.save(cart);
+//        }
+
+        return null;
+    }
+
 
 }

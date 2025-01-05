@@ -11,5 +11,7 @@ public interface UserService {
     Optional<User> getUserByEmail(String email);
      void  registerUser(User user);
      List<User> getAllUsers();
+     void  saveUser(User user);
+
 
 }

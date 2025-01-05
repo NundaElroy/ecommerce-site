@@ -49,7 +49,7 @@ public class GlobalAdviceAttributes {
              return  cart.getCartItemList().size();
          }
 
-            return 0;
+             return 0;
     }
 
 }
