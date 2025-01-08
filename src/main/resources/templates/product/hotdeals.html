@@ -132,15 +132,18 @@
                                 </div>
                                 <div class="product-btns">
                                     <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i><span class="tooltipp">add to cart</span></button>
+                                    <input type="hidden" id="product_id" name="productId" th:value=${product.product_id}>
+                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
                                     <a th:href="@{/view_product/{id}(id=${product.product_id})}" style="text-decoration: none;">
                                         <i class="fa fa-eye quick-view"></i>
                                         <span class="tooltipp">quick view</span>
                                     </a>
                                 </div>
                             </div>
-                            <div class="add-to-cart">
-                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                            </div>
+<!--                            <div class="add-to-cart">-->
+<!--                                <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>-->
+<!--                            </div>-->
                         </div>
                     </div>
 
