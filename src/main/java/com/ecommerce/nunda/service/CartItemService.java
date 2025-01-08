@@ -10,4 +10,6 @@ public interface CartItemService {
     void addItemToCart(Cart cart, Product productById);
 
     boolean isProductInCart(Cart cart, Product product);
+
+    CartItem createCartItem(Long productid);
 }

@@ -1,6 +1,9 @@
 package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.entity.Cart;
+import com.ecommerce.nunda.entity.CartItem;
+
+import java.util.List;
 
 public interface CartService {
     void  saveCart(Cart cart);
@@ -8,4 +11,6 @@ public interface CartService {
     Cart createCart();
 
     Cart getUserCart(Long user_id);
+
+    List<CartItem> convertCookieListToCartItems(List<String> cartProductsInCookieCart);
 }

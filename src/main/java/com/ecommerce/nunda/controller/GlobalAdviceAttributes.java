@@ -5,11 +5,13 @@ package com.ecommerce.nunda.controller;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.User;
-import com.ecommerce.nunda.service.CartItemService;
-import com.ecommerce.nunda.service.CartService;
-import com.ecommerce.nunda.service.CategoryService;
-import com.ecommerce.nunda.service.UserService;
+import com.ecommerce.nunda.service.*;
+import com.ecommerce.nunda.serviceImp.JacksonService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.security.Principal;
@@ -23,12 +25,17 @@ public class GlobalAdviceAttributes {
     private final UserService userService;
     private final CartService cartService;
     private final CartItemService cartItemService;
+    private final JacksonService jacksonService;
+    private final CookieService cookieService;
+    private static final Logger logger = LoggerFactory.getLogger(GlobalAdviceAttributes.class);
 
-    public GlobalAdviceAttributes(CategoryService categoryService, UserService userService, CartService cartService, CartItemService cartItemService) {
+    public GlobalAdviceAttributes(CategoryService categoryService, UserService userService, CartService cartService, CartItemService cartItemService, JacksonService jacksonService, CookieService cookieService) {
         this.categoryService = categoryService;
         this.userService = userService;
         this.cartService = cartService;
         this.cartItemService = cartItemService;
+        this.jacksonService = jacksonService;
+        this.cookieService = cookieService;
     }
 
     // Add global attributes to all views
@@ -38,18 +45,31 @@ public class GlobalAdviceAttributes {
     }
 
     @ModelAttribute("cartCount")
-    public  int populateCartCount(Principal principal){
+    public  int populateCartCount(Principal principal,
+                                  @CookieValue(value = "usercart",required = false) String usercart) throws JsonProcessingException {
+         //authenticated user
          if(principal != null){
              Optional<User> user = userService.getUserByEmail(principal.getName());
              Cart cart = user.get().getCart();
              if (cart == null) {
                  return 0;
              }
-
-             return  cart.getCartItemList().size();
+             int size = cart.getCartItemList().size();
+         logger.info("Number of products in cart: {}", size);
+         return  size;
          }
 
+         //non authenticated user
+         if (usercart == null) {
+             logger.info("No cookie cart found");
              return 0;
+         }
+
+         List<String> numberOfProductsInCookieCart =  jacksonService.convertStringCookieToList(cookieService.decodeCookie(usercart));
+
+         int size = numberOfProductsInCookieCart.size();
+         logger.info("Number of products in cookie cart: {}", size);
+         return size;
     }
 
 }

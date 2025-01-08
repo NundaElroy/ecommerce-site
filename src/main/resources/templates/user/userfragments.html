@@ -236,8 +236,8 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span>Your Cart</span>
-                                <div class="qty" sec:authorize="isAuthenticated()" th:text="${cartCount}">3</div>
-                                <div class="qty" sec:authorize="!isAuthenticated()" >0</div>
+                                <div class="qty"  th:text="${cartCount}">3</div>
+
                             </a>
                             <div class="cart-dropdown">
                                 <div class="cart-btns">
@@ -365,7 +365,7 @@
 
 <div th:fragment="scripts">
 
-    <script>
+    <script   sec:authorize="isAuthenticated()">
 
         console.log('Total buttons found:', document.querySelectorAll('.add-to-cart-btn').length);
 
@@ -436,6 +436,103 @@
                 }, 5000);
             }
         }
+
+
+    </script>
+
+
+    <script   sec:authorize="!isAuthenticated()">
+
+        console.log('Total buttons found:', document.querySelectorAll('.add-to-cart-btn').length);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    console.log('Add to cart button clicked');
+                    const product_id = button.parentElement.querySelector('input[name="productId"]').value;
+                    const data = { productId: product_id };
+                    submitFormData(data);
+                });
+            });
+        });
+
+        function makeRequest(data, url) {
+            return new Promise((resolve, reject) => {
+                let request = new XMLHttpRequest();
+                request.open('POST', url);
+
+                request.onreadystatechange = () => {
+                    if(request.readyState === 4) {
+                        if(request.status === 201 || request.status === 200) {
+                            resolve(JSON.parse(request.response));
+                        } else {
+                            reject(JSON.parse(request.response));
+                        }
+                    }
+                };
+
+                const token = document.querySelector('input[name="_csrf"]').value;
+                request.setRequestHeader('X-CSRF-TOKEN', token);
+                request.setRequestHeader('Content-Type', 'application/json');
+                request.withCredentials = true;
+
+                // Check if the usercart cookie exists and add it to the request headers
+                let usercart = getCookie("usercart");
+                if (usercart) {
+                    request.setRequestHeader('Cookie', `usercart=${usercart}`);
+                }
+
+                // Rest of your request code
+                request.send(JSON.stringify(data));
+            });
+        }
+
+        async function submitFormData(data) {
+            const notification = document.getElementById("notification");
+            const notificationContainer = notification.parentElement;
+            const notificationMessage = document.getElementById("notification-message");
+
+            try {
+                const response = await makeRequest(data, '/guest/add'); // Add your API endpoint here
+
+                notification.className = "alert alert-success";
+                notificationMessage.textContent = response.message || "Request successful!";
+                notificationContainer.style.display = "block";
+
+                setTimeout(() => {
+                    notificationContainer.style.display = "none";
+                }, 5000);
+
+            } catch (errorResponse) {
+                if (errorResponse.status === 404) {
+                    notification.className = "alert alert-danger";
+                    notificationMessage.textContent = errorResponse.message || "An error occurred!";
+                } else {
+                    notification.className = "alert alert-warning";
+                    notificationMessage.textContent = "Unexpected error occurred!";
+                }
+
+                notificationContainer.style.display = "block";
+                setTimeout(() => {
+                    notificationContainer.style.display = "none";
+                }, 5000);
+            }
+
+
+
+        }
+
+        // Function to get a cookie by name
+                function getCookie(name) {
+                    let cookieArr = document.cookie.split(";");
+                    for (let i = 0; i < cookieArr.length; i++) {
+                        let cookiePair = cookieArr[i].split("=");
+                        if (name == cookiePair[0].trim()) {
+                            return cookiePair[1];
+                        }
+                    }
+                    return null;
+                }
 
 
     </script>

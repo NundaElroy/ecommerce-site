@@ -5,15 +5,18 @@ import com.ecommerce.nunda.entity.CartItem;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.repository.CartItemRepo;
 import com.ecommerce.nunda.service.CartItemService;
+import com.ecommerce.nunda.service.ProductService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CartItemServiceImp implements CartItemService {
 
     private final CartItemRepo cartItemRepo;
+    private final ProductService productService;
 
-    public CartItemServiceImp(CartItemRepo cartItemRepo) {
+    public CartItemServiceImp(CartItemRepo cartItemRepo, ProductService productService) {
         this.cartItemRepo = cartItemRepo;
+        this.productService = productService;
     }
 
     @Override
@@ -33,5 +36,11 @@ public class CartItemServiceImp implements CartItemService {
         return cart.getCartItemList().stream()
                 .anyMatch(cartItem -> cartItem.getProduct().equals(product));
 
+    }
+
+    public CartItem createCartItem(Long productid){
+          CartItem cartItem = new CartItem();
+          cartItem.setProduct(productService.getProductById(productid));
+          return  cartItem;
     }
 }
