@@ -422,7 +422,7 @@
                 }, 5000);
 
             } catch (errorResponse) {
-                if (errorResponse.status === 404) {
+                if (errorResponse.status == "404" || errorResponse.status == "400" || errorResponse.status == "500") {
                     notification.className = "alert alert-danger";
                     notificationMessage.textContent = errorResponse.message || "An error occurred!";
                 } else {
@@ -504,7 +504,7 @@
                 }, 5000);
 
             } catch (errorResponse) {
-                if (errorResponse.status === 404 || errorResponse.status === 400) {
+                if (errorResponse.status === "404" || errorResponse.status === "400" || errorResponse.status === "500") {
                     notification.className = "alert alert-danger";
                     notificationMessage.textContent = errorResponse.message || "An error occurred!";
                 } else {

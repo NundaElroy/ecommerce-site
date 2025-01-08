@@ -2,6 +2,7 @@ package com.ecommerce.nunda.serviceImp;
 
 
 import com.ecommerce.nunda.controller.ProductController;
+import com.ecommerce.nunda.customexceptions.ProductNotFoundException;
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.ProductImage;
@@ -54,6 +55,17 @@ public class ProductServiceImp implements ProductService {
     public Product getProductById(Long id) {
         return productRepo.findById(id).orElse(null);
     }
+
+    @Override
+    public Product  getProductById(Long id, String className) {
+        Product product = productRepo.findById(id).orElse(null);
+        if (product == null) {
+            logger.warn("Product {} not found or inactive in class {} ", id , className );
+            throw new ProductNotFoundException("Product not found or inactive");
+        }
+        return product;
+    }
+
 
     @Override
     public ProductForm convertToForm(Product product) {

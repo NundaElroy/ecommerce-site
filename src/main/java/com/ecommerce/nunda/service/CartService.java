@@ -2,6 +2,7 @@ package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface CartService {
     List<CartItem> convertCookieListToCartItems(List<String> cartProductsInCookieCart);
 
     void addProductToUserCart(String name, Long productId);
+
+    String addProductToGuestCart(String usercart, Long productId) throws JsonProcessingException;
 }

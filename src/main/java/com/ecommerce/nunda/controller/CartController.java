@@ -69,52 +69,16 @@ public class CartController {
                                                              HttpServletResponse resp,
                                                              HttpServletRequest req) throws JsonProcessingException {
 
-        String productIdString = requestBody.get("productId");
-        Long productId= Long.parseLong(productIdString);
 
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            logger.warn("Product {} not found or inactive", productId);
-            throw new ProductNotFoundException("Product not found or inactive");
-        }
+        Long productId = parseProductId(requestBody.get("productId"));
+        String updatedCart = cartService.addProductToGuestCart(usercart, productId);
 
-        //check if you have some cookies for a given cart
-        if (usercart == null){
-            logger.info("creating new cart for non authenticated user with session id");
-            List<String> productIds = new ArrayList<>();
-            productIds.add(productIdString);
-
-            //create cookie and encode cookie
-
-
-            Cookie cartCookie = cookieService.createCartCookie(jacksonService.convertProductIdsToString(productIds));
-            logger.info("cookie created for non authenticated user with session id ");
-            resp.addCookie(cartCookie);
-
-            return ResponseEntity.ok().body(createErrorResponse("Product added to cart", HttpStatus.OK));
-
-        }
-
-        //for user with existing cookies
-        List<String> productIdsRetrievedFromCart = jacksonService.convertStringCookieToList(cookieService.decodeCookie(usercart));
-        //check if product already exists in cart
-        Boolean check  = productIdsRetrievedFromCart.stream()
-                                                    .anyMatch((id)-> productIdString.equals(id));
-
-        if(check){
-            logger.error("product with id {} already exists in cart",productIdString);
-            return ResponseEntity.badRequest().body(createErrorResponse("Product already in cart", HttpStatus.BAD_REQUEST));
-        }
-
-        productIdsRetrievedFromCart.add(productIdString);
-        Cookie cartCookie = cookieService.createCartCookie(jacksonService.convertProductIdsToString(productIdsRetrievedFromCart));
-        logger.info("cookie updated for non authenticated user with session id with existing cart");
+        // Create and update cookie
+        Cookie cartCookie = cookieService.createCartCookie(updatedCart);
         resp.addCookie(cartCookie);
 
+        logger.info("Product {} successfully added to cart for a non-authenticated user", productId);
         return ResponseEntity.ok().body(createErrorResponse("Product added to cart", HttpStatus.OK));
-
-
-
 
     }
 

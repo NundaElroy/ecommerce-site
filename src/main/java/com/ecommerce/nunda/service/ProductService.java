@@ -16,6 +16,10 @@ public interface ProductService {
 
     Product getProductById(Long id);
 
+    Product getProductById(Long id, String className);
+
+
+
     ProductForm convertToForm(Product product);
 
     Product convertToEntity(ProductForm productForm, Long id);

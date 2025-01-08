@@ -7,10 +7,8 @@ import com.ecommerce.nunda.entity.CartItem;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.repository.CartRepo;
-import com.ecommerce.nunda.service.CartItemService;
-import com.ecommerce.nunda.service.CartService;
-import com.ecommerce.nunda.service.ProductService;
-import com.ecommerce.nunda.service.UserService;
+import com.ecommerce.nunda.service.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,13 +27,17 @@ public class CartServiceImp implements CartService {
     private final CartItemService cartItemService;
     private final UserService userService;
     private final ProductService productService;
+    private final CookieService cookieService;
+    private final JacksonService jacksonService;
     private static final Logger logger = LoggerFactory.getLogger(CartServiceImp.class);
 
-    public CartServiceImp(CartRepo cartRepo, CartItemService cartItemService, UserService userService, ProductService productService) {
+    public CartServiceImp(CartRepo cartRepo, CartItemService cartItemService, UserService userService, ProductService productService, CookieService cookieService, JacksonService jacksonService) {
         this.cartRepo = cartRepo;
         this.cartItemService = cartItemService;
         this.userService = userService;
         this.productService = productService;
+        this.cookieService = cookieService;
+        this.jacksonService = jacksonService;
     }
 
     @Override
@@ -83,11 +85,7 @@ public class CartServiceImp implements CartService {
         Cart cart = Optional.ofNullable(user.getCart())
                 .orElseGet(this::createCart);
 
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            logger.warn("Product {} not found or inactive", productId);
-            throw new ProductNotFoundException("Product not found or inactive");
-        }
+        Product product = productService.getProductById(productId,"CartServiceImp");
 
         if (cartItemService.isProductInCart(cart, product)) {
             throw new IllegalArgumentException("Product already in cart");
@@ -97,6 +95,36 @@ public class CartServiceImp implements CartService {
         logger.info("Product {} successfully added to cart for user {}", productId, userEmail);
 
     }
+
+    @Override
+    public String addProductToGuestCart(String usercart, Long productId) throws JsonProcessingException {
+        Product product = productService.getProductById(productId, "CartServiceImp");
+
+        List<String> productIds = Optional.ofNullable(usercart)
+                .map(cookie -> {
+                    try {
+                        return jacksonService.convertStringCookieToList(cookieService.decodeCookie(cookie));
+                    } catch (JsonProcessingException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                })
+                .orElse(new ArrayList<>());
+
+        if (productIds.contains(productId.toString())) {
+            logger.info("Product {} already in cart", productId);
+            throw new IllegalArgumentException("Product already in cart");
+        }
+
+        productIds.add(productId.toString());
+
+
+
+        return jacksonService.convertProductIdsToString(productIds);
+
+
+    }
+
+
 
 
 }
