@@ -504,7 +504,7 @@
                 }, 5000);
 
             } catch (errorResponse) {
-                if (errorResponse.status === 404) {
+                if (errorResponse.status === 404 || errorResponse.status === 400) {
                     notification.className = "alert alert-danger";
                     notificationMessage.textContent = errorResponse.message || "An error occurred!";
                 } else {

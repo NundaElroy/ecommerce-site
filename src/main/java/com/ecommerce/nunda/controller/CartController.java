@@ -52,48 +52,8 @@ public class CartController {
     @Transactional
     public ResponseEntity<?> addItemToCart(@RequestBody Map<String, String> requestBody, Principal principal) {
 
-        String productIdString = requestBody.get("productId");
-        if (productIdString == null) {
-            return ResponseEntity.badRequest().body(createErrorResponse("Product ID is missing", HttpStatus.BAD_REQUEST));
-        }
-
-        Long productId;
-        try {
-            productId = Long.parseLong(productIdString);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().body(createErrorResponse("Invalid product ID", HttpStatus.BAD_REQUEST));
-        }
-
-        logger.info("User {} is adding product {} to cart", principal.getName(), productId);
-
-        Optional<User> user = userService.getUserByEmail(principal.getName());
-        if (user.isEmpty()) {
-            logger.error("User not found for email: {}", principal.getName());
-            throw new UserNotFoundException("User not found");
-        }
-
-        Product product = productService.getProductById(productId);
-        if (product == null) {
-            logger.warn("Product {} not found or inactive", productId);
-            throw new ProductNotFoundException("Product not found or inactive");
-        }
-
-        Cart cart = user.get().getCart();
-        if (cart == null) {
-            logger.info("Creating a new cart for user {}", principal.getName());
-            user.get().setCart(cartService.createCart());
-            cart = user.get().getCart();
-        }
-
-        //check if product is already in cart
-        if (cartItemService.isProductInCart(cart, product)) {
-            logger.info("Product {} is already in cart for user {}", productId, principal.getName());
-            return ResponseEntity.badRequest().body(createErrorResponse("Product already in cart", HttpStatus.BAD_REQUEST));
-        }
-
-        cartItemService.addItemToCart(cart, product);
-
-        logger.info("Product {} successfully added to cart for user {}", productId, principal.getName());
+        Long productId = parseProductId(requestBody.get("productId"));
+        cartService.addProductToUserCart(principal.getName(), productId);
 
         return ResponseEntity.ok().body(createErrorResponse("Product added to cart", HttpStatus.OK));
     }
@@ -101,23 +61,7 @@ public class CartController {
 
 
 
-    /*
-    * Helper method to create a structured error response
-    *
-    * @return Map<String, Object> errorResponse
-    *        {
-             "status": 404,
-             "message": "Product not found or inactive"
-              }
-    *
-    *
-    * */
-    private Map<String, String > createErrorResponse(String message, HttpStatus status) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("status", String.valueOf(status.value()));
-        errorResponse.put("message", message);
-        return errorResponse;
-    }
+
 
     @PostMapping("/guest/add")
     public ResponseEntity<?>  addiTemToCartForNonAuthedUsers(@RequestBody Map<String, String> requestBody ,
@@ -172,6 +116,37 @@ public class CartController {
 
 
 
+    }
+
+
+    /*
+   * Helper method to create a structured error response
+   *
+   * @return Map<String, Object> errorResponse
+   *        {
+            "status": 404,
+            "message": "Product not found or inactive"
+             }
+   *
+   *
+   * */
+    private Map<String, String > createErrorResponse(String message, HttpStatus status) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("status", String.valueOf(status.value()));
+        errorResponse.put("message", message);
+        return errorResponse;
+    }
+
+
+    private Long parseProductId(String productIdString) {
+        if (productIdString == null || productIdString.isBlank()) {
+            throw new IllegalArgumentException("Product ID is missing");
+        }
+        try {
+            return Long.parseLong(productIdString);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid product ID format");
+        }
     }
 
 

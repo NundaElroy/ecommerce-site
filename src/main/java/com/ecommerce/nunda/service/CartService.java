@@ -13,4 +13,6 @@ public interface CartService {
     Cart getUserCart(Long user_id);
 
     List<CartItem> convertCookieListToCartItems(List<String> cartProductsInCookieCart);
+
+    void addProductToUserCart(String name, Long productId);
 }

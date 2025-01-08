@@ -6,6 +6,8 @@ import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.repository.CartItemRepo;
 import com.ecommerce.nunda.service.CartItemService;
 import com.ecommerce.nunda.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +15,7 @@ public class CartItemServiceImp implements CartItemService {
 
     private final CartItemRepo cartItemRepo;
     private final ProductService productService;
+    private static final Logger logger = LoggerFactory.getLogger(CartItemServiceImp.class);
 
     public CartItemServiceImp(CartItemRepo cartItemRepo, ProductService productService) {
         this.cartItemRepo = cartItemRepo;
@@ -25,6 +28,8 @@ public class CartItemServiceImp implements CartItemService {
         cartItem.setCart(cart);
         cartItem.setProduct(product);
         cartItemRepo.save(cartItem);
+        logger.info("Product added to cart: {}", product.getName());
+
     }
 
     @Override
