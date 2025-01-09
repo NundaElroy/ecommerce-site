@@ -49,7 +49,6 @@ public class CartController {
 
     @PostMapping("/addItemToCart")
     @PreAuthorize("hasRole('ROLE_USER')")
-    @Transactional
     public ResponseEntity<?> addItemToCart(@RequestBody Map<String, String> requestBody, Principal principal) {
 
         Long productId = parseProductId(requestBody.get("productId"));
@@ -57,8 +56,6 @@ public class CartController {
 
         return ResponseEntity.ok().body(createErrorResponse("Product added to cart", HttpStatus.OK));
     }
-
-
 
 
 

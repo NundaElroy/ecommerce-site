@@ -223,7 +223,7 @@
                     <div class="header-ctn">
                         <!-- Wishlist -->
                         <div>
-                            <a href="#">
+                            <a th:href="@{/wishlist}">
                                 <i class="fa fa-heart-o"></i>
                                 <span>Your Wishlist</span>
                                 <div class="qty">2</div>
@@ -375,7 +375,19 @@
                     console.log('Add to cart button clicked');
                     const product_id = button.parentElement.querySelector('input[name="productId"]').value;
                     const data = { productId: product_id };
-                    submitFormData(data);
+                    submitFormData(data,'/addItemToCart');
+                });
+            });
+        });
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.add-to-wishlist').forEach(button => {
+                button.addEventListener('click', () => {
+                    console.log('Add to wishlist button clicked');
+                    const product_id = button.parentElement.querySelector('input[name="productId"]').value;
+                    const data = { productId: product_id };
+                    submitFormData(data,'/addItemToWishlist');
                 });
             });
         });
@@ -405,13 +417,13 @@
             });
         }
 
-        async function submitFormData(data) {
+        async function submitFormData(data,endpoint) {
             const notification = document.getElementById("notification");
             const notificationContainer = notification.parentElement;
             const notificationMessage = document.getElementById("notification-message");
 
             try {
-                const response = await makeRequest(data, '/addItemToCart'); // Add your API endpoint here
+                const response = await makeRequest(data, endpoint); // Add your API endpoint here
 
                 notification.className = "alert alert-success";
                 notificationMessage.textContent = response.message || "Request successful!";
@@ -452,6 +464,29 @@
                     const product_id = button.parentElement.querySelector('input[name="productId"]').value;
                     const data = { productId: product_id };
                     submitFormData(data);
+                });
+            });
+        });
+
+         document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.add-to-wishlist').forEach(button => {
+                button.addEventListener('click', () => {
+                    console.log('Add to wishlist button clicked');
+                    const product_id = button.parentElement.querySelector('input[name="productId"]').value;
+
+
+                    const notification = document.getElementById("notification");
+                    const notificationContainer = notification.parentElement;
+                    const notificationMessage = document.getElementById("notification-message");
+                    notification.className = "alert alert-success";
+                    notificationMessage.textContent = "Register or login to use wishlist";
+
+
+                    notificationContainer.style.display = "block";
+                    setTimeout(() => {
+                        notificationContainer.style.display = "none";
+                    }, 5000);
+
                 });
             });
         });

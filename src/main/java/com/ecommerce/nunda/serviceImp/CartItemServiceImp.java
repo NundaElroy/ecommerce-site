@@ -35,7 +35,7 @@ public class CartItemServiceImp implements CartItemService {
     @Override
     public boolean isProductInCart(Cart cart, Product product) {
         if (cart == null || cart.getCartItemList() == null || product == null) {
-            return false; // Null safety check
+            return false;
         }
 
         return cart.getCartItemList().stream()

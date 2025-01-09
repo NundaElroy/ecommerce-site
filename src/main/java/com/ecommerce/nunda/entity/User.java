@@ -33,6 +33,11 @@ public class User implements Serializable {
     private List<Orders> orders;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Cart cart;
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    private Wishlist wishlist;
+
+
+
 
 
     public User(Long user_id, String role, String profilePictureUrl, String phoneNumber, String password, String lastName, String firstName, String email, LocalDateTime createdAt) {
@@ -124,6 +129,17 @@ public class User implements Serializable {
         if (cart != null) {
             cart.setUser(null);  // Remove the sync
             this.cart = null;
+        }
+    }
+
+    public Wishlist getWishlist() {
+        return wishlist;
+    }
+
+    public void setWishlist(Wishlist wishlist) {
+        if(wishlist != null){
+            wishlist.setUser(this);
+            this.wishlist = wishlist;
         }
     }
     public String getEmail() {

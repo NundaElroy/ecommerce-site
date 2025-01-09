@@ -86,10 +86,7 @@ public class UserController {
 
     //when viewing wishlist
     @GetMapping("/wishlist")
-    public String getUserWishList(Model model, Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
+    public String getUserWishList(Model model) {
         return "user/wishlist";
     }
 
