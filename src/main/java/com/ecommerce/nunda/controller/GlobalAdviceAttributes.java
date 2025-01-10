@@ -5,6 +5,7 @@ package com.ecommerce.nunda.controller;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.User;
+import com.ecommerce.nunda.entity.Wishlist;
 import com.ecommerce.nunda.service.*;
 import com.ecommerce.nunda.serviceImp.JacksonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -72,4 +73,25 @@ public class GlobalAdviceAttributes {
          return size;
     }
 
+    @ModelAttribute("wishlistCount")
+    public int populateWishlistCount(Principal principal){
+        //authenticated user
+        if(principal == null){
+            //Todo:return error page not authorized
+            return 0;
+        }
+
+
+        assert principal != null;
+        Optional<User> user = userService.getUserByEmail(principal.getName());
+        Wishlist wishlist = user.get().getWishlist();
+        if (wishlist == null) {
+            return 0;
+        }
+        int size = wishlist.getWishlistItems().size();
+        logger.info("Number of products in wishlist: {}", size);
+        return  size;
+
+
+    }
 }

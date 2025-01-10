@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.controller;
 
 
+import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
 import com.ecommerce.nunda.entity.Product;
@@ -86,9 +87,18 @@ public class UserController {
 
     //when viewing wishlist
     @GetMapping("/wishlist")
-    public String getUserWishList(Model model) {
+    public String getUserWishList(Model model,Principal principal) {
+        if (principal == null) {
+            return  "redirect:/login";
+        }
+        User user = userService.getUserByEmail(principal.getName()).
+                                                        orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        model.addAttribute("wishlistItems",user.getWishlist().getWishlistItems());
         return "user/wishlist";
     }
+
+
 
 
 

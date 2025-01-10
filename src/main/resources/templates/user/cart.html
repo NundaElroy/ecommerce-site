@@ -25,7 +25,7 @@
                     <img th:src="@{/images/products/{main} (main = ${item.product.productImage})}" alt="Product" class="img-responsive product-image img-rounded">
                 </div>
                 <div class="col-xs-12 col-sm-4">
-                    <h5 class="mb-10">Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor</h5>
+                    <h5 class="mb-10"  th:text="${item.product.description}">Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor</h5>
 
                     <div class="clearfix">
                         <div class="product-label" th:if="${item.product.discountPercentage != null}">
@@ -33,7 +33,7 @@
                         </div>
                         <small class="units-left pull-right" >
 
-                            <i class="glyphicon glyphicon-time"></i> <span th:text="${item.product.stockQuantity} + ' units left'"></span>
+                            <i class="fa fa-clock-o"></i> <span th:text="${item.product.stockQuantity} + ' units left'"></span>
 
                         </small>
 

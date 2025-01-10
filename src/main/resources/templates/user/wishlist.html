@@ -14,28 +14,39 @@
 <div class="container" style="margin-top: 20px;">
 
     <!-- Wishlist Items -->
-    <div class="panel panel-default mb-20">
+    <div class="panel panel-default mb-20"  th:each=" wishlistItem : ${wishlistItems}">
         <div class="panel-body">
-            <div class="row wishlist-item">
+            <div class="row wishlist-item" >
                 <div class="col-xs-12 col-sm-2 text-center">
-                    <img src=" assets/img_user/product02.png" alt="Product" class="img-responsive product-image img-rounded">
+                    <img th:src="@{/images/products/{main} (main = ${wishlistItem.product.productImage})}" alt="Product" class="img-responsive product-image img-rounded">
                 </div>
                 <div class="col-xs-12 col-sm-4">
-                    <h5 class="mb-10">Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor</h5>
+                    <h5 class="mb-10"  th:text="${wishlistItem.product.description}">Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor</h5>
 
                     <div class="clearfix">
-                        <div class="product-label">
-                            <span class="discount-badge">-39%</span>
+                        <div class="product-label" th:if="${wishlistItem.product.discountPercentage != null}">
+                            <span class="discount-badge"  th:text="${wishlistItem.product.discountPercentage} + '%'">-39%</span>
                         </div>
-                        <small class="units-left pull-right">
-                            <i class="fa fa-clock-o"></i> <span>20 units left</span>
+                        <small class="units-left pull-right" >
+
+                            <i class="fa fa-clock-o"></i> <span th:text="${wishlistItem.product.stockQuantity} + ' units left'"></span>
+
                         </small>
+
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-3 text-right">
                     <div class="mb-10">
-                        <span class="fw-bold price-per-unit">UGX 28,242</span>
-                        <del>UGX 46,094</del>
+
+                        <th:block th:if="${wishlistItem.product.discountPercentage != null}">
+                            <span  class="fw-bold price-per-unit" th:text="${'UGX ' + (wishlistItem.product.price - (wishlistItem.product.price * wishlistItem.product.discountPercentage / 100))}"></span>
+                            <del th:text="${#numbers.formatDecimal(wishlistItem.product.price, 0, 'COMMA', 0, 'POINT')}"></del>
+                        </th:block>
+                        <th:block th:unless="${wishlistItem.product.discountPercentage != null}">
+                            <span class="fw-bold price-per-unit" th:text="${'UGX ' + #numbers.formatDecimal(wishlistItem.product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                        </th:block>
+                        <!--                        <div class="original-price">UGX 46,094</div>-->
+                        <!--                        <div class="fw-bold price-per-unit">UGX 28,242</div>-->
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-3 text-right">
@@ -76,7 +87,7 @@
 <script>
 
 
-    //change item quantity using buttons
+    //change wishlistItem quantity using buttons
     function changeItemQuantity(button) {
         const unitsLeftElement = button.closest('.cart-item').querySelector('.units-left');
         //regex pattern to get numeric value
