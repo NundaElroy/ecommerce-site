@@ -61,4 +61,16 @@ public class WishlistServiceImp implements WishlistService {
         logger.info("Creating a wishlist for {}", user.getEmail());
         return wishlistRepo.save(wishlist);
     }
+
+    @Override
+    public void removeProductFromWishlist(Wishlist wishlist, Long productId) {
+        Product product = productService.getProductById(productId,"WishlistServiceImp");
+        wishlistItemService.removeItemFromWishlist(wishlist, product);
+        logger.info("Product {} removed from wishlist", productId);
+    }
+
+    @Override
+    public void saveWishlist(Wishlist wishlist) {
+        wishlistRepo.save(wishlist);
+    }
 }

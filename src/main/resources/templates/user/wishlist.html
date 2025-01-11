@@ -10,6 +10,8 @@
 <th:block th:replace="user/userfragments :: header"></th:block>
 <th:block th:replace="user/userfragments :: navbar"></th:block>
 
+<div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
 
 <div class="container" style="margin-top: 20px;">
 
@@ -50,12 +52,26 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-3 text-right">
-                    <button class="btn btn-danger btn-sm">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                    <button class="btn btn-default btn-sm">
-                        <i class="fa fa-shopping-cart"></i>
-                    </button>
+                    <div class="col-xs-12 col-sm-3 text-right">
+                        <!-- Form for removing an item from the wishlist -->
+                        <form th:action="@{/removeItemFromWishList}" method="post" style="display: inline;">
+                            <input type="hidden" name="product_id" th:value="${wishlistItem.product.product_id}" />
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-link">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+
+                        <!-- Form for adding an item to the cart -->
+                        <form th:action="@{/addItemToCartFromWishlist}" method="post" style="display: inline;">
+                            <input type="hidden" name="product_id" th:value="${wishlistItem.product.product_id}" />
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-link">
+                                <i class="fa fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div>

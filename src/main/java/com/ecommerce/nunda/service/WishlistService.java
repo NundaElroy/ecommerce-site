@@ -7,4 +7,8 @@ public interface WishlistService {
     void addProductToUserWishlist(String name, Long productId);
 
     Wishlist createWishlist(User user);
+
+    void removeProductFromWishlist(Wishlist wishlist, Long productId);
+
+    void saveWishlist(Wishlist wishlist);
 }

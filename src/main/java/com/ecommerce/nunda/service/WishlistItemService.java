@@ -7,4 +7,6 @@ public interface WishlistItemService {
     boolean isProductInWishlist(Wishlist wishlist, Product product);
 
     void addItemToWishlist(Wishlist wishlist, Product product);
+
+    void removeItemFromWishlist(Wishlist wishlist, Product product);
 }

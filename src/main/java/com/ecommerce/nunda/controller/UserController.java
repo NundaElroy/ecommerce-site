@@ -12,8 +12,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.security.Principal;
 import java.util.List;
@@ -28,14 +29,16 @@ public class UserController {
     private final UserService userService;
     private final JacksonService jacksonService;
     private final CookieService cookieService;
+    private final WishlistService wishlistService;
 
-    public UserController(CategoryService categoryService, ProductService productService, CartService cartService, UserService userService, JacksonService jacksonService, CookieService cookieService) {
+    public UserController(CategoryService categoryService, ProductService productService, CartService cartService, UserService userService, JacksonService jacksonService, CookieService cookieService, WishlistService wishlistService) {
         this.categoryService = categoryService;
         this.productService = productService;
         this.cartService = cartService;
         this.userService = userService;
         this.jacksonService = jacksonService;
         this.cookieService = cookieService;
+        this.wishlistService = wishlistService;
     }
 
     //guest page for non auth users
@@ -52,7 +55,8 @@ public class UserController {
     public String getUserCart(Model model, Principal principal,
                               @CookieValue(value = "usercart",required = false) String usercart) throws JsonProcessingException {
 
-        //handling cart items for non authenticated users
+        //handling cart items for
+        // non-authenticated users
         if (principal == null) {
             if(usercart == null) {
                 return "user/cart";
@@ -96,6 +100,55 @@ public class UserController {
 
         model.addAttribute("wishlistItems",user.getWishlist().getWishlistItems());
         return "user/wishlist";
+    }
+
+    @PostMapping("/removeItemFromWishList")
+    public String removeItemFromWishlIst(
+            @RequestParam("product_id") Long product_id,
+            Principal principal,
+            RedirectAttributes redirectAttributes) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        // TODO: Return an error page instead of redirecting to login
+        User user = userService.getUserByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        wishlistService.removeProductFromWishlist(user.getWishlist(), product_id);
+
+        // Add a success message as a redirect attribute
+        redirectAttributes.addFlashAttribute("successMessage", "Product removed from wishlist successfully.");
+
+        return "redirect:/wishlist";
+    }
+
+
+    @PostMapping("/addItemToCartFromWishlist")
+    public String addItemToCart(
+            @RequestParam("product_id") Long product_id,
+            Principal principal,
+            RedirectAttributes redirectAttributes){
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        // TODO: Return an error page instead of redirecting to login
+        User user = userService.getUserByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        // Add the product to the user's cart
+        cartService.addProductToUserCart(user.getEmail(), product_id);
+
+        //remove it from wishlist
+        wishlistService.removeProductFromWishlist(user.getWishlist(), product_id);
+
+        // Add a success message as a redirect attribute
+        redirectAttributes.addFlashAttribute("successMessage", "Product added to cart successfully.");
+
+        return "redirect:/wishlist";
     }
 
 

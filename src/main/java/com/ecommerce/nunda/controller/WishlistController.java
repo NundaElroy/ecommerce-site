@@ -4,6 +4,7 @@ import com.ecommerce.nunda.service.WishlistService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,9 @@ public class WishlistController {
 
         return ResponseEntity.ok().body(createErrorResponse("Product added to wishlist", HttpStatus.OK));
     }
+
+
+
 
     //@TO DO move to product service
     private Long parseProductId(String productIdString) {
