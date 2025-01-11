@@ -61,6 +61,7 @@ public class ProductServiceImp implements ProductService {
         Product product = productRepo.findById(id).orElse(null);
         if (product == null) {
             logger.warn("Product {} not found or inactive in class {} ", id , className );
+            //Todo:use an error page to handle this instead of an endpoint
             throw new ProductNotFoundException("Product not found or inactive");
         }
         return product;
