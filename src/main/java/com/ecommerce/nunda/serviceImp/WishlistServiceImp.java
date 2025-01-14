@@ -66,7 +66,7 @@ public class WishlistServiceImp implements WishlistService {
     public void removeProductFromWishlist(Wishlist wishlist, Long productId) {
         Product product = productService.getProductById(productId,"WishlistServiceImp");
         wishlistItemService.removeItemFromWishlist(wishlist, product);
-        logger.info("Product {} removed from wishlist", productId);
+        logger.info("Product {} removed from wishlist for userid {}", productId, wishlist.getUser().getUser_id());
     }
 
     @Override

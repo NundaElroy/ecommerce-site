@@ -18,4 +18,6 @@ public interface CartService {
     void addProductToUserCart(String name, Long productId);
 
     String addProductToGuestCart(String usercart, Long productId) throws JsonProcessingException;
+
+    void removeProductFromCart(Cart cart, Long productId);
 }

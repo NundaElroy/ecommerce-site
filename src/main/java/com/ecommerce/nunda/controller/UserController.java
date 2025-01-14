@@ -102,8 +102,46 @@ public class UserController {
         return "user/wishlist";
     }
 
+
+    @PostMapping("/removeItemFromCart")
+    public String removeItemFromCart(
+            @RequestParam("product_id") Long product_id,
+            Principal principal,
+            RedirectAttributes redirectAttributes) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        // TODO: Return an error page instead of redirecting to login
+        User user = userService.getUserByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        cartService.removeProductFromCart(user.getCart(), product_id);
+
+        // Add a success message as a redirect attribute
+        redirectAttributes.addFlashAttribute("successMessage", "Product removed from cart successfully.");
+
+        return "redirect:/cart";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @PostMapping("/removeItemFromWishList")
-    public String removeItemFromWishlIst(
+    public String removeItemFromWishlist(
             @RequestParam("product_id") Long product_id,
             Principal principal,
             RedirectAttributes redirectAttributes) {

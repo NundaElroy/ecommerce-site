@@ -1,11 +1,7 @@
 package com.ecommerce.nunda.serviceImp;
 
-import com.ecommerce.nunda.customexceptions.ProductNotFoundException;
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
-import com.ecommerce.nunda.entity.Cart;
-import com.ecommerce.nunda.entity.CartItem;
-import com.ecommerce.nunda.entity.Product;
-import com.ecommerce.nunda.entity.User;
+import com.ecommerce.nunda.entity.*;
 import com.ecommerce.nunda.repository.CartRepo;
 import com.ecommerce.nunda.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -122,6 +118,13 @@ public class CartServiceImp implements CartService {
         return jacksonService.convertProductIdsToString(productIds);
 
 
+    }
+
+    @Override
+    public void removeProductFromCart(Cart cart, Long productId) {
+        Product product = productService.getProductById(productId,"CartServiceImp");
+        cartItemService.removeItemFromCart(cart, product);
+        logger.info("Product {} removed from cart for userid {}", productId, cart.getUser().getUser_id());
     }
 
 

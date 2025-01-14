@@ -48,4 +48,17 @@ public class CartItemServiceImp implements CartItemService {
           cartItem.setProduct(productService.getProductById(productid));
           return  cartItem;
     }
+
+    @Override
+    public void removeItemFromCart(Cart cart, Product product) {
+        if (cart == null || cart.getCartItemList() == null || product == null) {
+            //Todo: throw exception that will be handled using an error page
+            return;
+        }
+
+        cart.getCartItemList().removeIf(cartItem -> cartItem.getProduct().equals(product));
+        //save the wishlist
+        cartItemRepo.saveAll(cart.getCartItemList());
+        logger.info("Product removed from wishlist: {}", product.getName());
+    }
 }

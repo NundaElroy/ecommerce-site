@@ -11,6 +11,9 @@
 <th:block th:replace="user/userfragments :: navbar"></th:block>
 
 
+
+
+<div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
 <!--section-->
 <!-- Cart Section -->
 <!-- Cart Section -->
@@ -67,9 +70,17 @@
                             </span>
                         </div>
                     </div>
-                    <button class="btn btn-danger btn-sm">
-                        Remove
-                    </button>
+
+
+                    <form th:action="@{/removeItemFromCart}" method="post" style="display: inline;">
+                        <input type="hidden" name="product_id" th:value="${item.product.product_id}" />
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                        <button class="btn btn-danger btn-sm">
+                            Remove
+                        </button>
+                    </form>
+
+
 
                     <div class="item-total-price">UGX 28,242</div>
 
