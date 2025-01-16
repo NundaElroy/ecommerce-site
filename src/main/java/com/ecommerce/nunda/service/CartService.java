@@ -23,4 +23,9 @@ public interface CartService {
     List<CartItemsDto>  convertCartItemsToCartItemsDTO(List<CartItem> cartItemList);
 
     void removeProductFromCart(Cart cart, Long productId);
+
+    boolean checkIfProductsExistAndQuantityIsSufficient(List<CartItemsDto> items );
+
+
+    boolean changeCartStatus(String email, List<CartItemsDto> items);
 }

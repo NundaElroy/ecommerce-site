@@ -14,4 +14,6 @@ public interface CartItemService {
     CartItem createCartItem(Long productid);
 
     void removeItemFromCart(Cart cart, Product product);
+
+    void updateCartItemQuantity(Cart cart, Product product, Integer quantity);
 }

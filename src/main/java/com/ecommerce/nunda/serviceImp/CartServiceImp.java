@@ -5,6 +5,7 @@ import com.ecommerce.nunda.entity.*;
 import com.ecommerce.nunda.formvalidators.CartItemsDto;
 import com.ecommerce.nunda.repository.CartRepo;
 import com.ecommerce.nunda.service.*;
+import com.ecommerce.nunda.enums.CartStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+
 
 
 @Service
@@ -147,7 +150,52 @@ public class CartServiceImp implements CartService {
         logger.info("Product {} removed from cart for userid {}", productId, cart.getUser().getUser_id());
     }
 
+    @Override
+    public boolean checkIfProductsExistAndQuantityIsSufficient(List<CartItemsDto> items) {
+        for(CartItemsDto item : items){
+            Product product = productService.getProductById(item.getProduct_id(),"CartServiceImp");
+            if (product == null || product.getStockQuantity() < item.getQuantity()){
+                return false;
+            }
+        }
+        return true;
+    }
 
+    @Transactional
+    @Override
+    public boolean changeCartStatus(String email, List<CartItemsDto> items) {
+        User user = userService.getUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Cart cart = user.getCart();
+        if (cart == null){
+            return false;
+        }
+
+        if (!updateCartItemsQuantity(items, cart)){
+            return false;
+        }
+
+
+        cart.setStatus(CartStatus.CHECKOUT);
+        cartRepo.save(cart);
+        return true;
+    }
+
+
+
+    private boolean updateCartItemsQuantity(List<CartItemsDto> items, Cart cart) {
+
+        for (CartItemsDto item : items){
+            Product product = productService.getProductById(item.getProduct_id(),"CartServiceImp");
+            if (product == null){
+                return false;
+            }
+            cartItemService.updateCartItemQuantity(cart, product, item.getQuantity());
+        }
+
+        return true;
+    }
 
 
 }

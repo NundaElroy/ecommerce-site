@@ -1,5 +1,6 @@
 package com.ecommerce.nunda.serviceImp;
 
+import com.ecommerce.nunda.customexceptions.CartException;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
 import com.ecommerce.nunda.entity.Product;
@@ -60,5 +61,20 @@ public class CartItemServiceImp implements CartItemService {
         //save the wishlist
         cartItemRepo.saveAll(cart.getCartItemList());
         logger.info("Product removed from wishlist: {}", product.getName());
+    }
+
+    @Override
+    public void updateCartItemQuantity(Cart cart, Product product, Integer quantity) {
+        if (cart == null || cart.getCartItemList() == null || product == null) {
+            //Todo: throw exception that will be handled using an error page
+            throw  new CartException("Cart or product is null");
+        }
+
+        cart.getCartItemList().stream()
+                .filter(cartItem -> cartItem.getProduct().equals(product))
+                .forEach(cartItem -> cartItem.setQuantity(quantity));
+
+        //save the cart
+        cartItemRepo.saveAll(cart.getCartItemList());
     }
 }

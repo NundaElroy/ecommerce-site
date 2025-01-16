@@ -1,5 +1,6 @@
 package com.ecommerce.nunda.entity;
 
+import com.ecommerce.nunda.enums.CartStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -28,6 +29,12 @@ public class Cart {
 
     @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItemList = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)  // Store as STRING in database for readability
+    @Column(nullable = false)
+    private CartStatus status = CartStatus.ACTIVE;  // Default to ACTIVE
+
+
 
 
      public Cart(){}
@@ -64,6 +71,15 @@ public class Cart {
 
     public void setCartItemList(List<CartItem> cartItemList) {
         this.cartItemList = cartItemList;
+    }
+
+    // Add getter and setter
+    public CartStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(CartStatus status) {
+        this.status = status;
     }
 
 }

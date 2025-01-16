@@ -16,6 +16,7 @@ import jakarta.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -113,6 +114,12 @@ public class UserController {
     }
 
 
+    @GetMapping("/checkout")
+    public String getCheckout(){
+        return "user/checkout";
+    }
+
+
     @PostMapping("/removeItemFromCart")
     public String removeItemFromCart(
             @RequestParam("product_id") Long product_id,
@@ -190,8 +197,9 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping("/usercheckout")
-    public String checkout( @ModelAttribute("cartForm") CartFormDTO cartFormDTO, RedirectAttributes redirectAttributes) {
+    public String checkout( @ModelAttribute("cartForm") CartFormDTO cartFormDTO, RedirectAttributes redirectAttributes,Principal principal) {
 
         // If no validation errors, proceed with the checkout process
         for (CartItemsDto item : cartFormDTO.getCartItems()) {
@@ -199,9 +207,28 @@ public class UserController {
             logger.info("Quantity: {}", item.getQuantity());
         }
 
-        // Add success message to redirect attributes
-        redirectAttributes.addFlashAttribute("successMessage", "Checkout form submitted successfully!");
-        return "redirect:/cart";
+        //check if product quantity is greater than ten or ten items
+        if (cartFormDTO.getCartItems().size() > 10 || cartFormDTO.getCartItems().stream().anyMatch(item -> item.getQuantity() > 10)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You can only order 10 items at a time.");
+            return "redirect:/cart";
+        }
+
+        //first check if products exist, you can only order 10 items at a time and max ten
+        if (!cartService.checkIfProductsExistAndQuantityIsSufficient(cartFormDTO.getCartItems())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Product does not exist or quantity is insufficient.");
+            return "redirect:/cart";
+        }
+
+        //so if the customer meets all the requirements  change there cart status to CHECKOUT from ACTIVE
+        if (!cartService.changeCartStatus(principal.getName(), cartFormDTO.getCartItems() )) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error occurred while processing your request.");
+            return "redirect:/cart";
+        }
+
+
+
+        return "redirect:/checkout";
+
     }
 
 
