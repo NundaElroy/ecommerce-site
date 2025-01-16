@@ -2,6 +2,7 @@ package com.ecommerce.nunda.serviceImp;
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.*;
+import com.ecommerce.nunda.formvalidators.CartItemsDto;
 import com.ecommerce.nunda.repository.CartRepo;
 import com.ecommerce.nunda.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -118,6 +119,25 @@ public class CartServiceImp implements CartService {
         return jacksonService.convertProductIdsToString(productIds);
 
 
+    }
+
+    @Override
+    public List<CartItemsDto>  convertCartItemsToCartItemsDTO(List<CartItem> cartItemList){
+        List<CartItemsDto>  cartItemsDtos = new ArrayList<>();
+
+        for (CartItem cartItem : cartItemList){
+            CartItemsDto cartItemsDto = new CartItemsDto();
+            cartItemsDto.setProduct_id(cartItem.getProduct().getProduct_id());
+            cartItemsDto.setName(cartItem.getProduct().getName());
+            cartItemsDto.setPrice(cartItem.getProduct().getPrice());
+            cartItemsDto.setProductImage(cartItem.getProduct().getProductImage());
+            cartItemsDto.setDescription(cartItem.getProduct().getDescription());
+            cartItemsDto.setDiscountPercentage(cartItem.getProduct().getDiscountPercentage());
+            cartItemsDto.setStockQuantity(cartItem.getProduct().getStockQuantity());
+            cartItemsDtos.add(cartItemsDto);
+        }
+
+        return cartItemsDtos;
     }
 
     @Override
