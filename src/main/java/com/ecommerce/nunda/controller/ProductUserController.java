@@ -101,6 +101,14 @@ public class ProductUserController {
 
         Page<Product> productPage = productService.searchProductsUsingKeyword(page,size,keyword);
 
+
+        // Check if no products are found
+        if (productPage.isEmpty()) {
+            model.addAttribute("noResultsMessage", true);
+        }else{
+            model.addAttribute("noResultsMessage",false);
+        }
+
         // Pass data to the model
         model.addAttribute("products", productPage.getContent()); // Current page's products
         model.addAttribute("totalProducts", productPage.getTotalElements()); // Total number of products
@@ -108,6 +116,7 @@ public class ProductUserController {
         model.addAttribute("currentPage", productPage.getNumber()); // Current page number (0-based)
         model.addAttribute("size", productPage.getSize()); // Page size
         model.addAttribute("keyword", keyword); // keyword name
+
 
 
 

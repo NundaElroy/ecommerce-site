@@ -88,13 +88,19 @@
                 </div>
                 <!-- /store top filter -->
 
-                <div>
+                <!-- No results message -->
+                <div th:if="${noResultsMessage}" class="alert alert-warning" role="alert" style="margin-top: 20px;">
+                    <span >Sorry, we couldn't find any products matching your search.</span>
+                </div>
+
+                <!-- Total Results -->
+                <div th:if="${!noResultsMessage}">
                     Total Results: <span th:text="${totalProducts}"></span>
                 </div>
 
 
                 <!-- store products -->
-                <div class="row">
+                <div class="row"   th:if="${!noResultsMessage}" >
 
                     <!--product-->
                     <!-- product -->
