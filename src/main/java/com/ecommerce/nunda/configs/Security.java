@@ -16,19 +16,21 @@ import org.springframework.security.core.GrantedAuthority;
 @EnableWebSecurity
 @Configuration
 public class Security {
+
     private final CustomUserDetailsService customUserDetailsService;
 
 
     public Security(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
+
     @Bean
     public SecurityFilterChain webSecurity(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         // Permit access to static resources
                         .requestMatchers("/assets/**").permitAll()
-                        .requestMatchers("/hotdeals","/view_product/**","/category/**","/home","/cart","/guest/add").permitAll()
+                        .requestMatchers("/hotdeals","/view_product/**","/category/**","/home","/cart","/guest/add","/search").permitAll()
                         .requestMatchers("/guest").permitAll()
                         .requestMatchers("/images/products/**").permitAll()
                         .requestMatchers("/login", "/register", "/guest").permitAll() // Open routes
