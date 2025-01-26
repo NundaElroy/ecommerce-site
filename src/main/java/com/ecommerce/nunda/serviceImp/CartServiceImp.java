@@ -1,13 +1,11 @@
 package com.ecommerce.nunda.serviceImp;
 
-import com.ecommerce.nunda.customexceptions.ProductNotFoundException;
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
-import com.ecommerce.nunda.entity.Cart;
-import com.ecommerce.nunda.entity.CartItem;
-import com.ecommerce.nunda.entity.Product;
-import com.ecommerce.nunda.entity.User;
+import com.ecommerce.nunda.entity.*;
+import com.ecommerce.nunda.formvalidators.CartItemsDto;
 import com.ecommerce.nunda.repository.CartRepo;
 import com.ecommerce.nunda.service.*;
+import com.ecommerce.nunda.enums.CartStatus;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+
 
 
 @Service
@@ -124,7 +124,78 @@ public class CartServiceImp implements CartService {
 
     }
 
+    @Override
+    public List<CartItemsDto>  convertCartItemsToCartItemsDTO(List<CartItem> cartItemList){
+        List<CartItemsDto>  cartItemsDtos = new ArrayList<>();
 
+        for (CartItem cartItem : cartItemList){
+            CartItemsDto cartItemsDto = new CartItemsDto();
+            cartItemsDto.setProduct_id(cartItem.getProduct().getProduct_id());
+            cartItemsDto.setName(cartItem.getProduct().getName());
+            cartItemsDto.setPrice(cartItem.getProduct().getPrice());
+            cartItemsDto.setProductImage(cartItem.getProduct().getProductImage());
+            cartItemsDto.setDescription(cartItem.getProduct().getDescription());
+            cartItemsDto.setDiscountPercentage(cartItem.getProduct().getDiscountPercentage());
+            cartItemsDto.setStockQuantity(cartItem.getProduct().getStockQuantity());
+            cartItemsDtos.add(cartItemsDto);
+        }
+
+        return cartItemsDtos;
+    }
+
+    @Override
+    public void removeProductFromCart(Cart cart, Long productId) {
+        Product product = productService.getProductById(productId,"CartServiceImp");
+        cartItemService.removeItemFromCart(cart, product);
+        logger.info("Product {} removed from cart for userid {}", productId, cart.getUser().getUser_id());
+    }
+
+    @Override
+    public boolean checkIfProductsExistAndQuantityIsSufficient(List<CartItemsDto> items) {
+        for(CartItemsDto item : items){
+            Product product = productService.getProductById(item.getProduct_id(),"CartServiceImp");
+            if (product == null || product.getStockQuantity() < item.getQuantity()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Transactional
+    @Override
+    public boolean changeCartStatus(String email, List<CartItemsDto> items) {
+        User user = userService.getUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Cart cart = user.getCart();
+        if (cart == null){
+            return false;
+        }
+
+        if (!updateCartItemsQuantity(items, cart)){
+            return false;
+        }
+
+
+        cart.setStatus(CartStatus.CHECKOUT);
+        cartRepo.save(cart);
+        return true;
+    }
+
+
+
+    private boolean updateCartItemsQuantity(List<CartItemsDto> items, Cart cart) {
+
+        for (CartItemsDto item : items){
+            Product product = productService.getProductById(item.getProduct_id(),"CartServiceImp");
+            if (product == null){
+                return false;
+            }
+            cartItemService.updateCartItemQuantity(cart, product, item.getQuantity());
+        }
+
+        return true;
+    }
 
 
 }

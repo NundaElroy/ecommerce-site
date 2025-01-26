@@ -34,40 +34,36 @@ public class ProductUserController {
         return "product/hotdeals";
     }
 
-//get products by category
-@GetMapping("/category/{category_name}/{id}")
-public String viewCategoryProducts(
-        @PathVariable("category_name") String categoryName,
-        @PathVariable("id") Long id,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "9") int size,
-        Model model) {
-    // Fetch paginated products for the given category
-    Page<Product> productPage = productService.getProductsByCategory(page, size,id);
+    //get products by category
+    @GetMapping("/category/{category_name}/{id}")
+    public String viewCategoryProducts(
+            @PathVariable("category_name") String categoryName,
+            @PathVariable("id") Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "9") int size,
+            Model model) {
 
-    // Add data to the model
-    // Pass data to the model
-    model.addAttribute("products", productPage.getContent()); // Current page's products
-    model.addAttribute("totalProducts", productPage.getTotalElements()); // Total number of products
-    model.addAttribute("totalPages", productPage.getTotalPages()); // Total pages
-    model.addAttribute("currentPage", productPage.getNumber()); // Current page number (0-based)
-    model.addAttribute("size", productPage.getSize()); // Page size
-    model.addAttribute("category_name", categoryName); // Category name
-    model.addAttribute("id", id); // Category ID
+        Page<Product> productPage = productService.getProductsByCategory(page, size,id);
+
+        model.addAttribute("products", productPage.getContent()); // Current page's products
+        model.addAttribute("totalProducts", productPage.getTotalElements()); // Total number of products
+        model.addAttribute("totalPages", productPage.getTotalPages()); // Total pages
+        model.addAttribute("currentPage", productPage.getNumber()); // Current page number (0-based)
+        model.addAttribute("size", productPage.getSize()); // Page size
+        model.addAttribute("category_name", categoryName); // Category name
+        model.addAttribute("id", id); // Category ID
 
 
-    return "product/hotdeals"; // View name
+        return "product/hotdeals"; // View name
 
-    }
+        }
 
-//view individual products
+     //view individual product
     @GetMapping("/view_product/{id}")
     public String viewProduct(@PathVariable("id")Long id,Model model){
         Product product = productService.getProductById(id);
 
-        //model.addAttribute("review", new ReviewForm());
         model.addAttribute("product", product);
-        // Get related products
         model.addAttribute("relatedProducts", productService.getRelatedProducts(product));
 
         return "product/viewindividualproduct";
@@ -79,9 +75,11 @@ public String viewCategoryProducts(
             @ModelAttribute("review") @Valid ReviewForm review,
             BindingResult result,
             Model model) {
+
+
         if (result.hasErrors()) {
                  result.getAllErrors().forEach(error -> {
-                logger.error(error.getDefaultMessage());
+                 logger.error(error.getDefaultMessage());
             });
             model.addAttribute("product", productService.getProductById(id));
             return "redirect:/view_product/" + id; // Redirect back to the form page
@@ -91,5 +89,42 @@ public String viewCategoryProducts(
         logger.debug("Review added successfully for product ID: {}", id);
         return "redirect:/view_product/" + id;
     }
+
+
+    @GetMapping("/search")
+    public String searchProducts(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "9") int size,
+            Model model) {
+
+
+        Page<Product> productPage = productService.searchProductsUsingKeyword(page,size,keyword);
+
+
+        // Check if no products are found
+        if (productPage.isEmpty()) {
+            model.addAttribute("noResultsMessage", true);
+        }else{
+            model.addAttribute("noResultsMessage",false);
+        }
+
+        // Pass data to the model
+        model.addAttribute("products", productPage.getContent()); // Current page's products
+        model.addAttribute("totalProducts", productPage.getTotalElements()); // Total number of products
+        model.addAttribute("totalPages", productPage.getTotalPages()); // Total pages
+        model.addAttribute("currentPage", productPage.getNumber()); // Current page number (0-based)
+        model.addAttribute("size", productPage.getSize()); // Page size
+        model.addAttribute("keyword", keyword); // keyword name
+
+
+
+
+        return "product/search";
+
+    }
+
+
+
 
 }

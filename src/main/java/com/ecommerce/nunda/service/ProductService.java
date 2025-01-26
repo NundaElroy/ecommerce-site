@@ -38,4 +38,6 @@ public interface ProductService {
     Page<Product> getProductsByCategory(int page, int size,Long id);
 
     Page<Product> getNewProduct(int page , int size);
+
+    Page<Product>  searchProductsUsingKeyword(int page, int size,String keyword);
 }

@@ -10,11 +10,18 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepo extends JpaRepository<Product,Long> {
+
     @Query("SELECT p FROM Product p WHERE p.category.category_id = :categoryId")
     Page<Product> findProductsByCategoryId(@Param("categoryId") Long categoryId, Pageable pageable);
 
     //select products less that are less than three months old
     @Query(value = "SELECT * FROM product WHERE created_at >= CURRENT_DATE - INTERVAL 3 MONTH ORDER BY RAND()", nativeQuery = true)
     Page <Product> getNewProducts(Pageable pageable);
+
+    @Query(value = "SELECT * FROM product WHERE LOWER(name) LIKE LOWER(CONCAT('%', :keyword, '%'))", nativeQuery = true)
+    Page<Product> searchProductsByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+
+
 
 }

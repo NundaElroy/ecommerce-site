@@ -12,4 +12,8 @@ public interface CartItemService {
     boolean isProductInCart(Cart cart, Product product);
 
     CartItem createCartItem(Long productid);
+
+    void removeItemFromCart(Cart cart, Product product);
+
+    void updateCartItemQuantity(Cart cart, Product product, Integer quantity);
 }

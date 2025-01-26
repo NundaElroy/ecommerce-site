@@ -6,12 +6,21 @@ import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.User;
+import com.ecommerce.nunda.formvalidators.CartFormDTO;
+import com.ecommerce.nunda.formvalidators.CartItemsDto;
 import com.ecommerce.nunda.service.*;
 import com.ecommerce.nunda.serviceImp.JacksonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+
 
 @Controller
 public class UserController {
@@ -30,6 +40,7 @@ public class UserController {
     private final JacksonService jacksonService;
     private final CookieService cookieService;
     private final WishlistService wishlistService;
+    private final static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     public UserController(CategoryService categoryService, ProductService productService, CartService cartService, UserService userService, JacksonService jacksonService, CookieService cookieService, WishlistService wishlistService) {
         this.categoryService = categoryService;
@@ -66,12 +77,10 @@ public class UserController {
                                jacksonService.convertStringCookieToList(cookieService.decodeCookie(usercart)));
 
 
-            model.addAttribute("cartItems", items);
+            model.addAttribute("cartItems", cartService.convertCartItemsToCartItemsDTO(items));
             return "user/cart";
 
         }
-
-
 
         //get user using principal
         Optional<User> user = userService.getUserByEmail(principal.getName());
@@ -84,10 +93,12 @@ public class UserController {
             userService.saveUser(user.get());
         }
 
-
-        model.addAttribute("cartItems", cart.getCartItemList());
+        CartFormDTO cartFormDTO = new CartFormDTO();
+        cartFormDTO.setCartItems(cartService.convertCartItemsToCartItemsDTO(cart.getCartItemList()));
+        model.addAttribute("cartForm", cartFormDTO);
         return "user/cart";
     }
+    
 
     //when viewing wishlist
     @GetMapping("/wishlist")
@@ -102,8 +113,40 @@ public class UserController {
         return "user/wishlist";
     }
 
+
+    @GetMapping("/checkout")
+    public String getCheckout(){
+        return "user/checkout";
+    }
+
+
+    @PostMapping("/removeItemFromCart")
+    public String removeItemFromCart(
+            @RequestParam("product_id") Long product_id,
+            Principal principal,
+            RedirectAttributes redirectAttributes) {
+
+        if (principal == null) {
+            //Todo: handle for non auth user
+            return "redirect:/login";
+        }
+
+        // TODO: Return an error page instead of redirecting to login
+        User user = userService.getUserByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        cartService.removeProductFromCart(user.getCart(), product_id);
+
+        // Add a success message as a redirect attribute
+        redirectAttributes.addFlashAttribute("successMessage", "Product removed from cart successfully.");
+
+        return "redirect:/cart";
+    }
+
+
+
     @PostMapping("/removeItemFromWishList")
-    public String removeItemFromWishlIst(
+    public String removeItemFromWishlist(
             @RequestParam("product_id") Long product_id,
             Principal principal,
             RedirectAttributes redirectAttributes) {
@@ -123,6 +166,8 @@ public class UserController {
 
         return "redirect:/wishlist";
     }
+
+
 
 
     @PostMapping("/addItemToCartFromWishlist")
@@ -150,6 +195,42 @@ public class UserController {
 
         return "redirect:/wishlist";
     }
+
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/usercheckout")
+    public String checkout( @ModelAttribute("cartForm") CartFormDTO cartFormDTO, RedirectAttributes redirectAttributes,Principal principal) {
+
+        // If no validation errors, proceed with the checkout process
+        for (CartItemsDto item : cartFormDTO.getCartItems()) {
+            logger.info("Product ID: {}", item.getProduct_id());
+            logger.info("Quantity: {}", item.getQuantity());
+        }
+
+        //check if product quantity is greater than ten or ten items
+        if (cartFormDTO.getCartItems().size() > 10 || cartFormDTO.getCartItems().stream().anyMatch(item -> item.getQuantity() > 10)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You can only order 10 items at a time.");
+            return "redirect:/cart";
+        }
+
+        //first check if products exist, you can only order 10 items at a time and max ten
+        if (!cartService.checkIfProductsExistAndQuantityIsSufficient(cartFormDTO.getCartItems())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Product does not exist or quantity is insufficient.");
+            return "redirect:/cart";
+        }
+
+        //so if the customer meets all the requirements  change there cart status to CHECKOUT from ACTIVE
+        if (!cartService.changeCartStatus(principal.getName(), cartFormDTO.getCartItems() )) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Error occurred while processing your request.");
+            return "redirect:/cart";
+        }
+
+
+
+        return "redirect:/checkout";
+
+    }
+
 
 
 

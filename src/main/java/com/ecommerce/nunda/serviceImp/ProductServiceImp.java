@@ -197,5 +197,12 @@ public class ProductServiceImp implements ProductService {
          return  productRepo.getNewProducts(pageable);
     }
 
+    @Override
+    public Page<Product> searchProductsUsingKeyword(int page, int size, String keyword) {
+        Pageable pageable = PageRequest.of(page,size);
+        return  productRepo.searchProductsByKeyword(keyword,pageable);
+
+    }
+
 
 }
