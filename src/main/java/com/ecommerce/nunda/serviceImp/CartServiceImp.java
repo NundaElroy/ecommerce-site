@@ -100,15 +100,7 @@ public class CartServiceImp implements CartService {
     public String addProductToGuestCart(String usercart, Long productId) throws JsonProcessingException {
         Product product = productService.getProductById(productId, "CartServiceImp");
 
-        List<String> productIds = Optional.ofNullable(usercart)
-                .map(cookie -> {
-                    try {
-                        return jacksonService.convertStringCookieToList(cookieService.decodeCookie(cookie));
-                    } catch (JsonProcessingException e) {
-                        throw new IllegalArgumentException(e);
-                    }
-                })
-                .orElse(new ArrayList<>());
+        List<String> productIds =  convertStringCookieToList(usercart);
 
         if (productIds.contains(productId.toString())) {
             logger.info("Product {} already in cart", productId);
@@ -183,7 +175,6 @@ public class CartServiceImp implements CartService {
     }
 
 
-
     private boolean updateCartItemsQuantity(List<CartItemsDto> items, Cart cart) {
 
         for (CartItemsDto item : items){
@@ -196,6 +187,38 @@ public class CartServiceImp implements CartService {
 
         return true;
     }
+
+
+    @Override
+    public String removeProductFromGuestCart(String userCart, Long product_id) throws JsonProcessingException {
+        List<String> productIds = convertStringCookieToList(userCart);
+
+        if(!productIds.contains(product_id.toString()) ||  productIds.isEmpty()){
+            logger.info("Product {} not in cart", product_id);
+            throw new IllegalArgumentException("Product not in cart");
+        }
+
+        productIds.remove(product_id.toString());
+
+        return jacksonService.convertProductIdsToString(productIds);
+    }
+
+
+    //convert cookie string to list or return empty list
+    private List<String>  convertStringCookieToList(String userCart){
+
+        return  Optional.ofNullable(userCart)
+                .map(cookie -> {
+                    try {
+                        return jacksonService.convertStringCookieToList(cookieService.decodeCookie(cookie));
+                    } catch (JsonProcessingException e) {
+                        throw new IllegalArgumentException(e);
+                    }
+                })
+                .orElse(new ArrayList<>());
+
+    }
+
 
 
 }
