@@ -1,4 +1,4 @@
-package com.ecommerce.nunda.controller;
+package com.ecommerce.nunda.ajaxcontrollers;
 
 
 import com.ecommerce.nunda.customexceptions.ProductNotFoundException;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "com.ecommerce.nunda.ajaxcontrollers")
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
