@@ -30,4 +30,6 @@ public interface CartService {
     boolean changeCartStatus(String email, List<CartItemsDto> items);
 
     String removeProductFromGuestCart(String userCart,Long  product_id) throws JsonProcessingException;
+
+    void moveCookieCartItemsToCartForRegisteringUser(String userCart,String email) throws JsonProcessingException;
 }

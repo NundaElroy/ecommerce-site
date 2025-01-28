@@ -2,13 +2,16 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.formvalidators.UserForm;
+import com.ecommerce.nunda.service.CartService;
 import com.ecommerce.nunda.service.EmailService;
 import com.ecommerce.nunda.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,11 +22,13 @@ public class AuthController {
     private final UserService userService;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final CartService cartService;
 
-    public AuthController(UserService userService, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public AuthController(UserService userService, EmailService emailService, PasswordEncoder passwordEncoder, CartService cartService) {
         this.userService = userService;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
+        this.cartService = cartService;
     }
 
     @GetMapping("/login")
@@ -42,7 +47,9 @@ public class AuthController {
 
     //registering the user
     @PostMapping("/register")
-    public String registerUser(@Valid  @ModelAttribute("userForm") UserForm userForm, BindingResult bindingResult){
+    public String registerUser(@Valid  @ModelAttribute("userForm") UserForm userForm,
+                               BindingResult bindingResult,
+                               @CookieValue(value = "usercart",required = false) String usercart) throws JsonProcessingException {
 
         //input validation
         if(bindingResult.hasErrors()){
@@ -70,6 +77,10 @@ public class AuthController {
 
         //send email for confirmation
         emailService.sendConfirmationEmail(user.getFirstName(), user.getEmail());
+
+        if (usercart != null) {
+            cartService.moveCookieCartItemsToCartForRegisteringUser(usercart, user.getEmail());
+        }
 
         return  "redirect:/login";
 

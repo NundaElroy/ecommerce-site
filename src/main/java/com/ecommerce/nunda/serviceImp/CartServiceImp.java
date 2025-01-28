@@ -219,6 +219,18 @@ public class CartServiceImp implements CartService {
 
     }
 
+    @Override
+    public void moveCookieCartItemsToCartForRegisteringUser(String userCart,String email) throws JsonProcessingException {
+
+        List<CartItem> items = convertCookieListToCartItems(
+                jacksonService.convertStringCookieToList(cookieService.decodeCookie(userCart)));
+
+        items.stream().forEach( (item) ->
+                addProductToUserCart(email, item.getProduct().getProduct_id())
+        );
+
+    }
+
 
 
 }
