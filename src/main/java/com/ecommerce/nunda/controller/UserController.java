@@ -11,6 +11,8 @@ import com.ecommerce.nunda.formvalidators.CartItemsDto;
 import com.ecommerce.nunda.service.*;
 import com.ecommerce.nunda.serviceImp.JacksonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
@@ -65,7 +67,7 @@ public class UserController {
     @GetMapping("/cart")
     public String getUserCart(Model model, Principal principal,
                               @CookieValue(value = "usercart",required = false) String usercart) throws JsonProcessingException {
-
+        CartFormDTO cartFormDTO = new CartFormDTO();
         //handling cart items for
         // non-authenticated users
         if (principal == null) {
@@ -76,8 +78,9 @@ public class UserController {
             List<CartItem> items = cartService.convertCookieListToCartItems(
                                jacksonService.convertStringCookieToList(cookieService.decodeCookie(usercart)));
 
+            cartFormDTO.setCartItems(cartService.convertCartItemsToCartItemsDTO(items));
 
-            model.addAttribute("cartItems", cartService.convertCartItemsToCartItemsDTO(items));
+            model.addAttribute("cartForm", cartFormDTO);
             return "user/cart";
 
         }
@@ -91,9 +94,10 @@ public class UserController {
             //create cart
             user.get().setCart(cartService.createCart());
             userService.saveUser(user.get());
+            cart= user.get().getCart();
         }
 
-        CartFormDTO cartFormDTO = new CartFormDTO();
+
         cartFormDTO.setCartItems(cartService.convertCartItemsToCartItemsDTO(cart.getCartItemList()));
         model.addAttribute("cartForm", cartFormDTO);
         return "user/cart";
@@ -124,11 +128,17 @@ public class UserController {
     public String removeItemFromCart(
             @RequestParam("product_id") Long product_id,
             Principal principal,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            @CookieValue(value = "usercart",required = false) String usercart,
+            HttpServletResponse resp
+            ) throws JsonProcessingException {
 
         if (principal == null) {
             //Todo: handle for non auth user
-            return "redirect:/login";
+            String newUserCart = cartService.removeProductFromGuestCart(usercart, product_id);
+            Cookie  cookie = cookieService.createCartCookie(newUserCart);
+            resp.addCookie(cookie);
+            return "redirect:/cart";
         }
 
         // TODO: Return an error page instead of redirecting to login

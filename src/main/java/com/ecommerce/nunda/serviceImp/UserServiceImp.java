@@ -29,6 +29,9 @@ public class UserServiceImp  implements UserService {
 
     //register user
     public void registerUser(User user) {
+
+
+
         if (user.getEmail() == null || user.getPassword() == null) {
             throw new IllegalArgumentException("Email and password must not be null");
         }

@@ -225,8 +225,10 @@ public class CartServiceImp implements CartService {
         List<CartItem> items = convertCookieListToCartItems(
                 jacksonService.convertStringCookieToList(cookieService.decodeCookie(userCart)));
 
-        items.stream().forEach( (item) ->
-                addProductToUserCart(email, item.getProduct().getProduct_id())
+        items.stream().forEach( (item) -> {
+                    logger.info("Adding product {} to cart for user {}", item.getProduct().getProduct_id(), email);
+                    addProductToUserCart(email, item.getProduct().getProduct_id());
+                }
         );
 
     }
