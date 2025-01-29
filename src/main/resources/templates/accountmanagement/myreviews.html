@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{accountmanagement/accmanagementfragments :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Header Fragment -->
+<div th:replace="~{accountmanagement/accmanagementfragments :: header}"></div>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <!-- Sidebar Fragment -->
+
+        <div th:replace="~{accountmanagement/accmanagementfragments :: sidebar(${activeTab})}"></div>
+
+        <!-- Main Content Area -->
+        <!-- Content Area -->
+
+        <!-- Content Area -->
+        <div class="col-md-9">
+            <div class="content-area">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">My Reviews</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <div class="panel-body">
+                            <p>You have not submitted any reviews yet.</p>
+                            <a href="/products" class="btn btn-primary">Review Products</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Footer Fragment -->
+<div th:replace="~{accountmanagement/accmanagementfragments :: footer}"></div>
+
+<!-- Scripts Fragment -->
+<div th:replace="~{accountmanagement/accmanagementfragments :: scripts}"></div>
+</body>
+</html>

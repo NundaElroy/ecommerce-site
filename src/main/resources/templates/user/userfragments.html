@@ -158,7 +158,7 @@
             <ul class="header-links pull-right">
                 <!-- For authenticated users -->
                 <li sec:authorize="isAuthenticated()">
-                    <a href="#"><i class="fa fa-user-o"></i> My Account</a>
+                    <a th:href="@{/account-management}"><i class="fa fa-user-o"></i> My Account</a>
                 </li>
                 <li sec:authorize="isAuthenticated()">
                     <form id="logoutForm" method="post" th:action="@{/logout}" style="display: inline;">
