@@ -120,6 +120,10 @@ public class CartServiceImp implements CartService {
     public List<CartItemsDto>  convertCartItemsToCartItemsDTO(List<CartItem> cartItemList){
         List<CartItemsDto>  cartItemsDtos = new ArrayList<>();
 
+        if (cartItemList.isEmpty()){
+            return cartItemsDtos;
+        }
+
         for (CartItem cartItem : cartItemList){
             CartItemsDto cartItemsDto = new CartItemsDto();
             cartItemsDto.setProduct_id(cartItem.getProduct().getProduct_id());

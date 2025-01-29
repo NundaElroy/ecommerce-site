@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head  th:replace="~{user/userfragments  :: head(title ='cart')}">
     <meta charset="UTF-8">
-    <title>Title</title>
+
 </head>
 <body>
 
-<th:block th:replace="user/userfragments :: head(title ='cart')"></th:block>
+
 <th:block th:replace="user/userfragments :: header"></th:block>
 <th:block th:replace="user/userfragments :: navbar"></th:block>
 

@@ -71,7 +71,8 @@ public class UserController {
         //handling cart items for
         // non-authenticated users
         if (principal == null) {
-            if(usercart == null) {
+            if(usercart == null  || usercart.equals("")) {
+                model.addAttribute("cartForm", cartFormDTO);
                 return "user/cart";
             }
 
