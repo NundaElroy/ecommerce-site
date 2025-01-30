@@ -1,11 +1,31 @@
 package com.ecommerce.nunda.controller;
 
+import com.ecommerce.nunda.customexceptions.UserNotFoundException;
+import com.ecommerce.nunda.entity.User;
+import com.ecommerce.nunda.formvalidators.ChangePasswordDto;
+import com.ecommerce.nunda.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.security.Principal;
 
 @Controller
 public class AccountController {
+
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
+
+    public AccountController(UserService userService, PasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/account-management")
     public String accountManagement(Model model) {
@@ -39,6 +59,57 @@ public class AccountController {
     public String changePassword(Model model) {
         model.addAttribute("title", "Change Password");
         model.addAttribute("activeTab", "password");
+
+
+        // Ensure an empty DTO is passed to the view
+        if (!model.containsAttribute("changePasswordDto")) {
+            model.addAttribute("changePasswordDto", new ChangePasswordDto());
+        }
+
         return "accountmanagement/changepassword";
     }
+
+    @PostMapping("/change-password")
+    public String changePasswordPost(@Valid @ModelAttribute ChangePasswordDto changePasswordDto,
+                                     BindingResult result,
+                                     Model model,
+                                     RedirectAttributes redirectAttributes,
+                                     Principal principal) {
+
+        if (result.hasErrors()) {
+            return handleValidationErrors(model);
+        }
+
+        if (!changePasswordDto.isPasswordMatching()) {
+            result.rejectValue("confirmNewPassword", "error.changePasswordDto", "Passwords do not match");
+            return handleValidationErrors(model);
+        }
+
+
+        String email = principal.getName();
+        User user    = userService.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if(!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())) {
+            result.rejectValue("currentPassword", "error.changePasswordDto", "Current password is incorrect");
+            return handleValidationErrors(model);
+        }
+
+
+        user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userService.saveUser(user);
+
+
+        redirectAttributes.addFlashAttribute("success", "Password updated successfully!");
+        return "redirect:/change-password";
+    }
+
+    /**
+     * Handles validation errors by setting necessary attributes and returning the view.
+     */
+    private String handleValidationErrors(Model model) {
+        model.addAttribute("title", "Change Password");
+        model.addAttribute("activeTab", "password");
+        return "accountmanagement/changepassword";
+    }
+
 }
