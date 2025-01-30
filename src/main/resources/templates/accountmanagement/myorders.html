@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{accountmanagement/accmanagementfragments :: head">
+<head th:replace="~{accountmanagement/accmanagementfragments :: head}">
     <meta charset="UTF-8">
-    <title>Title</title>
+
 </head>
 <body>
 <!-- Header Fragment -->
@@ -29,7 +29,7 @@
 
                         <div class="panel-body">
                             <p>You have no orders yet.</p>
-                            <a th:href="@{/home}" class="btn btn-primary">Continue Shopping</a>
+                            <a th:href="@{/home}" class="btn btn-danger">Continue Shopping</a>
                         </div>
 
                     </div>
