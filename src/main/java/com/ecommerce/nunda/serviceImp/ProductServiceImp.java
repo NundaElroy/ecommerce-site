@@ -1,13 +1,12 @@
 package com.ecommerce.nunda.serviceImp;
 
 
-import com.ecommerce.nunda.controller.ProductController;
 import com.ecommerce.nunda.customexceptions.ProductNotFoundException;
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.ProductImage;
-import com.ecommerce.nunda.formvalidators.ProductForm;
-import com.ecommerce.nunda.formvalidators.PromotionsDTO;
+import com.ecommerce.nunda.dto.ProductForm;
+import com.ecommerce.nunda.dto.PromotionsDTO;
 import com.ecommerce.nunda.repository.ProductRepo;
 import com.ecommerce.nunda.service.CategoryService;
 import com.ecommerce.nunda.service.ProductImageService;

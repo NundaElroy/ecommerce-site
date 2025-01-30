@@ -1,12 +1,9 @@
 package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.entity.Product;
-import com.ecommerce.nunda.entity.Review;
-import com.ecommerce.nunda.formvalidators.ReviewForm;
-import com.ecommerce.nunda.service.CategoryService;
+import com.ecommerce.nunda.dto.ReviewForm;
 import com.ecommerce.nunda.service.ProductService;
 import com.ecommerce.nunda.service.ReviewService;
-import com.ecommerce.nunda.serviceImp.ProductServiceImp;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

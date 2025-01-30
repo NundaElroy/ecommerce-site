@@ -2,8 +2,8 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.User;
-import com.ecommerce.nunda.formvalidators.AccountDetailsDto;
-import com.ecommerce.nunda.formvalidators.ChangePasswordDto;
+import com.ecommerce.nunda.dto.AccountDetailsDto;
+import com.ecommerce.nunda.dto.ChangePasswordDto;
 import com.ecommerce.nunda.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;

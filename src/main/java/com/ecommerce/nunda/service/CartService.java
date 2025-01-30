@@ -2,7 +2,7 @@ package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
-import com.ecommerce.nunda.formvalidators.CartItemsDto;
+import com.ecommerce.nunda.dto.CartItemsDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;

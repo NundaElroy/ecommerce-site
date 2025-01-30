@@ -1,7 +1,6 @@
-package com.ecommerce.nunda.formvalidators;
+package com.ecommerce.nunda.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.Data;
 
 
 public class ReviewForm {

@@ -2,7 +2,7 @@ package com.ecommerce.nunda.serviceImp;
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.*;
-import com.ecommerce.nunda.formvalidators.CartItemsDto;
+import com.ecommerce.nunda.dto.CartItemsDto;
 import com.ecommerce.nunda.repository.CartRepo;
 import com.ecommerce.nunda.service.*;
 import com.ecommerce.nunda.enums.CartStatus;

@@ -3,7 +3,7 @@ package com.ecommerce.nunda.controller;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.entity.Wishlist;
-import com.ecommerce.nunda.formvalidators.UserForm;
+import com.ecommerce.nunda.dto.UserForm;
 import com.ecommerce.nunda.service.CartService;
 import com.ecommerce.nunda.service.EmailService;
 import com.ecommerce.nunda.service.UserService;

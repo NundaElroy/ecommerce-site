@@ -1,4 +1,4 @@
-package com.ecommerce.nunda.formvalidators;
+package com.ecommerce.nunda.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

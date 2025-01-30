@@ -1,4 +1,4 @@
-package com.ecommerce.nunda.formvalidators;
+package com.ecommerce.nunda.dto;
 
 import jakarta.validation.constraints.*;
 import org.springframework.web.multipart.MultipartFile;

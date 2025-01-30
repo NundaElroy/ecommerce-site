@@ -2,7 +2,7 @@ package com.ecommerce.nunda.serviceImp;
 
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.Review;
-import com.ecommerce.nunda.formvalidators.ReviewForm;
+import com.ecommerce.nunda.dto.ReviewForm;
 import com.ecommerce.nunda.repository.ReviewRepo;
 import com.ecommerce.nunda.service.ProductService;
 import com.ecommerce.nunda.service.ReviewService;

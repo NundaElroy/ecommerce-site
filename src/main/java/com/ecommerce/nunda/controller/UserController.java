@@ -2,27 +2,25 @@ package com.ecommerce.nunda.controller;
 
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
+import com.ecommerce.nunda.dto.OrderDetailsDTO;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.CartItem;
 import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.User;
-import com.ecommerce.nunda.formvalidators.CartFormDTO;
-import com.ecommerce.nunda.formvalidators.CartItemsDto;
+import com.ecommerce.nunda.dto.BillingDetailsDTO;
+import com.ecommerce.nunda.dto.CartFormDTO;
+import com.ecommerce.nunda.dto.CartItemsDto;
 import com.ecommerce.nunda.service.*;
 import com.ecommerce.nunda.serviceImp.JacksonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,6 +28,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.ecommerce.nunda.enums.CartStatus.ACTIVE;
 
 
 @Controller
@@ -120,7 +120,22 @@ public class UserController {
 
 
     @GetMapping("/checkout")
-    public String getCheckout(){
+    public String getCheckout(Model model,Principal principal,RedirectAttributes redirectAttributes){
+
+        model.addAttribute("billingDetails", new BillingDetailsDTO());
+        User user = user = userService.getUserByEmail(principal.getName())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+
+        if(user.getCart().getStatus() == ACTIVE){
+            redirectAttributes.addFlashAttribute("errorMessage", "You have no items in the checkout either checkout or start shopping.");
+            return "redirect:/cart";
+        }
+
+        OrderDetailsDTO orderDetails = new OrderDetailsDTO();
+        orderDetails.addCartItems(user.getCart().getCartItemList());
+        model.addAttribute("orderDetails", orderDetails);
+        model.addAttribute("cartItems", user.getCart().getCartItemList());
         return "user/checkout";
     }
 
@@ -241,6 +256,9 @@ public class UserController {
         return "redirect:/checkout";
 
     }
+
+
+
 
 
 

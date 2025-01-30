@@ -1,9 +1,8 @@
 package com.ecommerce.nunda.service;
 
-import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.Product;
-import com.ecommerce.nunda.formvalidators.ProductForm;
-import com.ecommerce.nunda.formvalidators.PromotionsDTO;
+import com.ecommerce.nunda.dto.ProductForm;
+import com.ecommerce.nunda.dto.PromotionsDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
