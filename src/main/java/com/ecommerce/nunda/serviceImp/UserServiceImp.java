@@ -2,9 +2,7 @@ package com.ecommerce.nunda.serviceImp;
 
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.repository.UserRepo;
-import com.ecommerce.nunda.service.EmailService;
 import com.ecommerce.nunda.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -45,7 +43,7 @@ public class UserServiceImp  implements UserService {
         user.setCreatedAt(LocalDateTime.now());
         userRepo.save(user);
 
-        //send confirmation email
+
 
     }
 
@@ -56,6 +54,11 @@ public class UserServiceImp  implements UserService {
 
     public void saveUser(User user) {
         userRepo.save(user);
+    }
+
+    @Override
+    public boolean checkIfUserEmailAlreadyExists(String email){
+         return userRepo.findByEmail(email).isPresent();
     }
 }
 

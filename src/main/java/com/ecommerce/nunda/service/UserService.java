@@ -14,4 +14,5 @@ public interface UserService {
      void  saveUser(User user);
 
 
+    boolean checkIfUserEmailAlreadyExists(String email);
 }

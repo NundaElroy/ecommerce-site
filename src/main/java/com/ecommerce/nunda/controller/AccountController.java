@@ -2,6 +2,7 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.User;
+import com.ecommerce.nunda.formvalidators.AccountDetailsDto;
 import com.ecommerce.nunda.formvalidators.ChangePasswordDto;
 import com.ecommerce.nunda.service.UserService;
 import jakarta.validation.Valid;
@@ -28,11 +29,69 @@ public class AccountController {
     }
 
     @GetMapping("/account-management")
-    public String accountManagement(Model model) {
+    public String accountManagement(Model model, Principal principal) {
+        String email = principal.getName();
+        User user = userService.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        AccountDetailsDto dto = new AccountDetailsDto();
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setPhone(user.getPhoneNumber());
+
+        model.addAttribute("accountDetailsDto", dto);
+        model.addAttribute("title", "Account Management");
+        model.addAttribute("activeTab", "account-details");
+
+        return "accountmanagement/accountmanagement";
+    }
+
+
+    @PostMapping("/account-management")
+    public String accountManagementPost(@Valid @ModelAttribute AccountDetailsDto accountDetailsDto,
+                                        BindingResult result,
+                                        Model model,
+                                        RedirectAttributes redirectAttributes,
+                                        Principal principal) {
+
+        if (result.hasErrors()) {
+            return setupAccountManagementView(model);
+        }
+
+
+        String email = principal.getName();
+        User user = userService.getUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+
+        if(userService.checkIfUserEmailAlreadyExists(accountDetailsDto.getEmail())){
+            result.rejectValue("email", "error.accountDetailsDto", "Email already exists");
+            return setupAccountManagementView(model);
+        }
+
+
+        // Update user details
+        user.setFirstName(accountDetailsDto.getFirstName());
+        user.setLastName(accountDetailsDto.getLastName());
+        user.setPhoneNumber(accountDetailsDto.getPhone());
+        user.setEmail(accountDetailsDto.getEmail());
+        userService.saveUser(user);
+
+        // Flash success message and redirect
+        redirectAttributes.addFlashAttribute("success", "Profile updated successfully!");
+        return "redirect:/account-management";
+    }
+
+    /**
+     * Sets up the model attributes for the account management page.
+     */
+    private String setupAccountManagementView(Model model) {
         model.addAttribute("title", "Account Management");
         model.addAttribute("activeTab", "account-details");
         return "accountmanagement/accountmanagement";
     }
+
+
 
     @GetMapping("/my-orders")
     public String myOrders(Model model) {
