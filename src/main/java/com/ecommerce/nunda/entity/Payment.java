@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -10,15 +11,19 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payment_id;
 
+    private String transactionRef;
+
     private String paymentMethod;
     private Double amount;
+
+    @CreationTimestamp
     private LocalDateTime paymentDate;
 
     @OneToOne
     @JoinColumn(name = "order_id")
     private Orders order;
 
-    Payment(){}
+    public Payment(){}
 
     public Double getAmount() {
         return amount;
@@ -58,5 +63,13 @@ public class Payment {
 
     public void setPaymentDate(LocalDateTime paymentDate) {
         this.paymentDate = paymentDate;
+    }
+
+    public String getTransactionRef() {
+        return transactionRef;
+    }
+
+    public void setTransactionRef(String transactionRef) {
+        this.transactionRef = transactionRef;
     }
 }

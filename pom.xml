@@ -149,6 +149,16 @@
 		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/com.flutterwave/f4b-java -->
+		<dependency>
+			<groupId>com.flutterwave</groupId>
+			<artifactId>f4b-java</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+
+
+
+
 
 
 
