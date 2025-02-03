@@ -35,7 +35,7 @@ public class PaymentController {
 
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/process-order")
+    @PostMapping("/initiate-payment")
     public void processUserOrder(HttpSession session,
                                  HttpServletRequest request,
                                  HttpServletResponse response,

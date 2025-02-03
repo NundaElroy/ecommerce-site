@@ -18,7 +18,6 @@ import java.security.Principal;
 
 
 @Controller
-@SessionAttributes("billingDetails")
 public class OrderController {
 
     private final OrderService orderService;
