@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -30,7 +31,7 @@ public class User implements Serializable {
     @Column
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Orders> orders;
+    private List<Orders> orders = new ArrayList<>();
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Cart cart;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
@@ -109,7 +110,6 @@ public class User implements Serializable {
 
     public void addOrder(Orders order){
         orders.add(order);
-        order.setUser(this);
     }
 
     //handling the bidirectional relationship

@@ -1,6 +1,8 @@
 package com.ecommerce.nunda.controller;
 
 
+import com.ecommerce.nunda.customexceptions.FlutterWavePaymentException;
+import com.ecommerce.nunda.customexceptions.InsufficientProductException;
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,4 +28,21 @@ public class ViewExceptionHandler {
         modelAndView.addObject("status", HttpStatus.NOT_FOUND.value());
         return modelAndView;
     }
+
+    @ExceptionHandler(InsufficientProductException.class)
+    public ModelAndView handleException(InsufficientProductException ex) {
+        ModelAndView modelAndView = new ModelAndView("error/error");
+        modelAndView.addObject("message", ex.getMessage());
+        modelAndView.addObject("status", HttpStatus.BAD_REQUEST.value());
+        return modelAndView;
+    }
+
+    @ExceptionHandler(FlutterWavePaymentException.class)
+    public ModelAndView handleException(FlutterWavePaymentException ex) {
+        ModelAndView modelAndView = new ModelAndView("error/error");
+        modelAndView.addObject("message", ex.getMessage());
+        modelAndView.addObject("status", HttpStatus.BAD_REQUEST.value());
+        return modelAndView;
+    }
+
 }

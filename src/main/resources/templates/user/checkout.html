@@ -43,25 +43,48 @@
                 <div class="billing-details">
                     <div class="section-title">
                         <h3 class="title">Billing address</h3>
+                        <div th:if="${errorMessage}" class="alert alert-warning" th:text="${errorMessage}"></div>
                     </div>
 
                     <form action="#" th:action="@{/checkout}" method="post" th:object="${billingDetails}">
+
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
                         <div class="form-group">
-                            <input class="input" type="text" th:field="*{address}" placeholder="Place in Kampala">
+                            <input class="input" type="text" th:field="*{fullName}" placeholder=" full name e.g Kaguta Museveni">
+                            <small class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <input class="input" type="text" th:field="*{email}" placeholder=" email e.g KagutaMuseveni@gmail.com">
+                            <small class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+                            <div class="alert alert-warning" role="alert">
+                                <strong>Note:</strong> This should be a registered Mobile number on mobile money thats going to be charged.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input class="input" type="text" th:field="*{address}" placeholder="Place in Kampala eg Makerere">
                             <small class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></small>
                         </div>
                         <div class="form-group">
-                            <input class="input" type="text" th:field="*{city}" placeholder="Kampala">
+                            <input class="input" type="hidden" th:field="*{city}" placeholder="Kampala">
                             <small class="text-danger" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></small>
                         </div>
                         <div class="form-group">
-                            <input class="input" type="text" th:field="*{country}" placeholder="Uganda">
+                            <input class="input" type="hidden" th:field="*{country}" placeholder="Uganda">
                             <small class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></small>
                         </div>
 
                         <div class="form-group">
-                            <input class="input" type="tel" th:field="*{tel}" placeholder="+256 12357689">
-                            <small class="text-danger" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></small>
+                            <input class="input" type="phoneNumber" th:field="*{phoneNumber}" placeholder=" phone number e.g +256 12357689">
+                            <small class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></small>
+                        </div>
+
+
+                        <div class="form-group">
+                            <input type="hidden" class="input"  th:value="*{amount}" >
+                            <small class="text-danger" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></small>
                         </div>
 
                         <!-- Delivery Warning -->
@@ -101,7 +124,7 @@
                     </div>
 
                     <div class="order-col">
-                        <div>Shipping</div>
+                        <div>Delivery Fee</div>
                         <div><strong th:text="'UGX' + ${#numbers.formatDecimal(orderDetails.deliveryFee, 1, 2)}">FREE</strong></div>
                     </div>
 

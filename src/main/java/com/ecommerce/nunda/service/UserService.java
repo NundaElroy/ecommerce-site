@@ -10,6 +10,7 @@ public interface UserService {
      void  registerUser(User user);
      List<User> getAllUsers();
      void  saveUser(User user);
+     User  returnSavedUser(User user);
 
 
     boolean checkIfUserEmailAlreadyExists(String email);

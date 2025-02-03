@@ -57,6 +57,11 @@ public class UserServiceImp  implements UserService {
     }
 
     @Override
+    public User returnSavedUser(User user) {
+        return  userRepo.save(user);
+    }
+
+    @Override
     public boolean checkIfUserEmailAlreadyExists(String email){
          return userRepo.findByEmail(email).isPresent();
     }

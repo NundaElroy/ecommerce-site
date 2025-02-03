@@ -1,9 +1,11 @@
 package com.ecommerce.nunda.serviceImp;
 
-import com.ecommerce.nunda.dto.PayLoadDTO;
+import com.ecommerce.nunda.dto.BillingDetailsDTO;
+import com.ecommerce.nunda.entity.Orders;
 import com.ecommerce.nunda.entity.Payment;
 import com.ecommerce.nunda.repository.PaymentRepo;
 import com.ecommerce.nunda.service.PaymentAuditService;
+import org.hibernate.query.Order;
 import org.springframework.stereotype.Service;
 
 
@@ -19,9 +21,10 @@ public class PaymentAuditServiceImp implements PaymentAuditService {
 
 
     @Override
-    public void auditIncomingRequest(String transactionRef, PayLoadDTO payLoadDTO) {
+    public void auditIncomingRequest(String transactionRef, BillingDetailsDTO payLoadDTO, Orders order) {
 
         Payment payment = new Payment();
+        payment.setOrder(order);
         payment.setAmount(Double.valueOf(payLoadDTO.getAmount()));
         payment.setTransactionRef(transactionRef);
 

@@ -38,6 +38,7 @@ public class Payment {
     }
 
     public void setOrder(Orders order) {
+        order.setPayment(this);
         this.order = order;
     }
 
