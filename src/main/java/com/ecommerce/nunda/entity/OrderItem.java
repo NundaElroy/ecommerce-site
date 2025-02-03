@@ -10,7 +10,9 @@ public class OrderItem {
     private Long order_item_id;
 
     private Integer quantity;
+
     private Double price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Orders order;
@@ -19,14 +21,9 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    OrderItem(){}
+    public OrderItem(){}
 
-//    public void setOrder(Order order) {
-//        this.order = order;
-//        if (order != null) {
-//            order.addOrderItem(this);  // Sync the relationship
-//        }
-//    }
+
 
 
     public Orders getOrder() {

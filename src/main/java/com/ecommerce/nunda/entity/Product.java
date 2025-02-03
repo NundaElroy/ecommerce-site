@@ -58,15 +58,6 @@ public class Product {
 
 
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void addReviews(Review review) {
-        review.setProduct(this);
-        reviews.add(review);
-    }
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
 
@@ -209,8 +200,26 @@ public class Product {
         return discountPercentage;
     }
 
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void addReviews(Review review) {
+        review.setProduct(this);
+        reviews.add(review);
+    }
+
     public void setDiscountPercentage(Double discountPercentage) {
         this.discountPercentage = discountPercentage;
+    }
+
+    public Double getProductPrice(){
+        //check if product has discount and is still valid
+        if(LocalDateTime.now().isBefore(discountEndTime)){
+            return   price - ( price * discountPercentage/100);
+        }
+
+        return price;
     }
 
 

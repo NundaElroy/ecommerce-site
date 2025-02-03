@@ -237,6 +237,21 @@ public class CartServiceImp implements CartService {
 
     }
 
+    @Override
+    @Transactional
+    public void processCartAfterOrderProcess(String name) {
+        User user = userService.getUserByEmail(name)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        Cart cart = user.getCart();
+        if (cart == null){
+            return;
+        }
+
+        cart.getCartItemList().clear();
+        cart.setStatus(CartStatus.CHECKOUT);
+        cartRepo.save(cart);
+    }
 
 
 }

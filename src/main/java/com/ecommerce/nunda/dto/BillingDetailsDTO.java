@@ -1,23 +1,17 @@
 package com.ecommerce.nunda.dto;
 
-import jakarta.validation.constraints.*;
-import lombok.*;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-public class BillingDetailsDTO {
+public class PayLoadDTO {
 
-    @NotBlank(message = "Street address is required")
-    private String address;
+    private String fullName;
+    private String phoneNumber;
+    private String Network;
+    private String amount;
+    private String email;
 
-    @NotBlank(message = "City is required")
-    @Pattern(regexp = "Kampala", message = "City must be Kampala")
-    private String city = "Kampala";
-
-    @NotBlank(message = "Country is required")
-    private String country;
-
-    @NotBlank(message = "Phone number is required")
-    @Pattern(regexp = "\\+2567[0-9]{8}|07[0-9]{8}", message = "Invalid phone number format")
-    private String tel;
 }
