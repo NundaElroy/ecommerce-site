@@ -103,7 +103,7 @@
                             <!-- Original image code -->
                             <div class="product-img" style="width: 100%; aspect-ratio: 16/9;">
                                 <img th:src="@{/images/products/{main} (main = ${product.productImage})}" alt="" style="width: 100%; height: 100%; object-fit: contain;">
-                                <div class="product-label" th:if="${product.discountPercentage != null}">
+                                <div class="product-label" th:if="${product.discountPercentage != null and product.discountEndTime != null and product.discountEndTime.isAfter(#temporals.createNow())}">
                                     <span th:text="${product.discountPercentage} + '%'" class="sale">-30%</span>
                                 </div>
                             </div>
@@ -114,11 +114,11 @@
                                     <a href="#" th:text="${product.name}" style="text-decoration: none; color: inherit;">product name goes here</a>
                                 </h3>
                                 <h4 class="product-price" style="font-size: 1.5rem;">
-                                    <th:block th:if="${product.discountPercentage != null}">
+                                    <th:block th:if="${product.discountPercentage != null and product.discountEndTime != null and product.discountEndTime.isAfter(#temporals.createNow())}">
                                         <span th:text="${'UGX ' + (product.price - (product.price * product.discountPercentage / 100))}"></span>
                                         <del th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></del>
                                     </th:block>
-                                    <th:block th:unless="${product.discountPercentage != null}">
+                                    <th:block th:unless="${product.discountPercentage != null and product.discountEndTime != null and product.discountEndTime.isAfter(#temporals.createNow())}">
                                         <span th:text="${'UGX ' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
                                     </th:block>
                                 </h4>

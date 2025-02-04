@@ -35,8 +35,10 @@
                             Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor
                         </h5>
                         <div class="clearfix">
-                            <div class="product-label" th:if="${item.discountPercentage != null}">
-                                <span class="discount-badge" th:text="${item.discountPercentage} + '%'">-39%</span>
+                            <!-- Discount Label (Only Show If Discount Is Active) -->
+                            <div class="product-label"
+                                 th:if="${item.discountPercentage != null and item.discountEndTime != null and item.discountEndTime.isAfter(#temporals.createNow())}">
+                                <span class="discount-badge" th:text="${item.discountPercentage} + '%'"></span>
                             </div>
                             <small class="units-left pull-right">
                                 <i class="fa fa-clock-o"></i> <span th:text="${item.stockQuantity} + ' units left'"></span>
@@ -44,12 +46,13 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-3 text-right">
+                        <!-- Price Display (With Discount Check) -->
                         <div class="mb-10">
-                            <th:block th:if="${item.discountPercentage != null}">
+                            <th:block th:if="${item.discountPercentage != null and item.discountEndTime != null and item.discountEndTime.isAfter(#temporals.createNow())}">
                                 <span class="fw-bold price-per-unit" th:text="${'UGX ' + (item.price - (item.price * item.discountPercentage / 100))}"></span>
                                 <del th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></del>
                             </th:block>
-                            <th:block th:unless="${item.discountPercentage != null}">
+                            <th:block th:unless="${item.discountPercentage != null and item.discountEndTime != null and item.discountEndTime.isAfter(#temporals.createNow())}">
                                 <span class="fw-bold price-per-unit" th:text="${'UGX ' + #numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></span>
                             </th:block>
                         </div>

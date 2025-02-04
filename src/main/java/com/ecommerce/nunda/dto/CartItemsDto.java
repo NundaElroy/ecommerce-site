@@ -3,9 +3,12 @@ package com.ecommerce.nunda.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
-public class CartItemsDto {
+public class
+CartItemsDto {
 
     private Long product_id;
 
@@ -20,6 +23,8 @@ public class CartItemsDto {
     private String description;
 
     private Double discountPercentage;
+
+    private LocalDateTime discountEndTime;
 
     private Double price;
 

@@ -133,6 +133,7 @@ public class CartServiceImp implements CartService {
             cartItemsDto.setDescription(cartItem.getProduct().getDescription());
             cartItemsDto.setDiscountPercentage(cartItem.getProduct().getDiscountPercentage());
             cartItemsDto.setStockQuantity(cartItem.getProduct().getStockQuantity());
+            cartItemsDto.setDiscountEndTime(cartItem.getProduct().getDiscountEndTime());
             cartItemsDtos.add(cartItemsDto);
         }
 

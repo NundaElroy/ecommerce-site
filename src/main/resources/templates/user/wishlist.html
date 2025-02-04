@@ -26,8 +26,10 @@
                     <h5 class="mb-10"  th:text="${wishlistItem.product.description}">Machislet High Quality Elegant Clothes Printed Dress Halter For Summer-Multicolor</h5>
 
                     <div class="clearfix">
-                        <div class="product-label" th:if="${wishlistItem.product.discountPercentage != null}">
-                            <span class="discount-badge"  th:text="${wishlistItem.product.discountPercentage} + '%'">-39%</span>
+                        <!-- Discount Label (Only Show If Discount Is Active) -->
+                        <div class="product-label"
+                             th:if="${wishlistItem.product.discountPercentage != null and wishlistItem.product.discountEndTime != null and wishlistItem.product.discountEndTime.isAfter(#temporals.createNow())}">
+                            <span class="discount-badge" th:text="${wishlistItem.product.discountPercentage} + '%'"></span>
                         </div>
                         <small class="units-left pull-right" >
 
@@ -38,17 +40,15 @@
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-3 text-right">
+                    <!-- Price Display (With Discount Check) -->
                     <div class="mb-10">
-
-                        <th:block th:if="${wishlistItem.product.discountPercentage != null}">
-                            <span  class="fw-bold price-per-unit" th:text="${'UGX ' + (wishlistItem.product.price - (wishlistItem.product.price * wishlistItem.product.discountPercentage / 100))}"></span>
+                        <th:block th:if="${wishlistItem.product.discountPercentage != null and wishlistItem.product.discountEndTime != null and wishlistItem.product.discountEndTime.isAfter(#temporals.createNow())}">
+                            <span class="fw-bold price-per-unit" th:text="${'UGX ' + (wishlistItem.product.price - (wishlistItem.product.price * wishlistItem.product.discountPercentage / 100))}"></span>
                             <del th:text="${#numbers.formatDecimal(wishlistItem.product.price, 0, 'COMMA', 0, 'POINT')}"></del>
                         </th:block>
-                        <th:block th:unless="${wishlistItem.product.discountPercentage != null}">
+                        <th:block th:unless="${wishlistItem.product.discountPercentage != null and wishlistItem.product.discountEndTime != null and wishlistItem.product.discountEndTime.isAfter(#temporals.createNow())}">
                             <span class="fw-bold price-per-unit" th:text="${'UGX ' + #numbers.formatDecimal(wishlistItem.product.price, 0, 'COMMA', 0, 'POINT')}"></span>
                         </th:block>
-                        <!--                        <div class="original-price">UGX 46,094</div>-->
-                        <!--                        <div class="fw-bold price-per-unit">UGX 28,242</div>-->
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-3 text-right">
