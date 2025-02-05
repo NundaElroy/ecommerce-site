@@ -198,14 +198,12 @@
                 <!-- SEARCH BAR -->
                 <div class="col-md-6">
                     <div class="header-search">
-                        <select class="input-select">
-                            <option value="0">All Categories</option>
-                            <option th:each="category ,iter : ${categories}"
-                                    th:value="${iter.count}"
-                                    th:text ="${category.name}">
-                                Category 01
+                        <select class="input-select" onchange="redirectToCategory(this)">
+                            <option value="">Categories</option>
+                            <option th:each="category : ${categories}"
+                                    th:value="@{/category/{name}/{id}(name=${category.name}, id=${category.category_id})}"
+                                    th:text="${category.name}">
                             </option>
-
                         </select>
                         <form  th:action="@{/search}"    method="GET">
                             <input class="input" name="keyword" placeholder="Search for products...">
@@ -585,6 +583,17 @@
     <script src="/assets/js_user/nouislider.min.js"></script>
     <script src="/assets/js_user/jquery.zoom.min.js"></script>
     <script src="/assets/js_user/main.js"></script>
+
+
+   <script>
+       function redirectToCategory(selectElement) {
+   const selectedValue = selectElement.value;
+   if (selectedValue) {
+   window.location.href = selectedValue;
+   }
+   }
+   </script>
+
 
 </div>
 </html>
