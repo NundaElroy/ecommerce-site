@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="~{user/userfragments  :: head(title ='Return Policy')}">
+  <meta charset="UTF-8">
+
+</head>
+<body>
+<th:block th:replace="user/userfragments :: header"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+
+<div class="content-area">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Orders & Returns</h3>
+    </div>
+    <div class="panel-body">
+      <h4>Order Processing:</h4>
+      <p>All orders placed with Electro Uganda are processed within <strong>24 hours</strong> and shipped within <strong>2-5 business days</strong>. You will receive a confirmation email once your order has been dispatched.</p>
+      <h4>Returns & Refunds:</h4>
+      <p>We want you to be completely satisfied with your purchase. If you need to return an item, please ensure:</p>
+      <ul>
+        <li>The item is in its original packaging.</li>
+        <li>A return request is made within <strong>7 days</strong> of delivery.</li>
+        <li>The product is unused and in resalable condition.</li>
+      </ul>
+      <p>Refunds will be processed within <strong>7-10 business days</strong> after the returned item is inspected.</p>
+      <p>For returns, email us at <a href="mailto:support@electro.co.ug">support@electro.co.ug</a> or call <strong>+256 700 123456</strong>.</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
+</body>
+</html>

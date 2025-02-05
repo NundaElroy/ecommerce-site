@@ -39,6 +39,9 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+
+
+
     <style>
         .btn-danger {
             background-color: #dc0000;
@@ -106,6 +109,30 @@
                 max-width: 100%;
             }
         }
+
+       .content-area {
+    margin-top: 20px;
+    margin-bottom: 20px; /* Add margin at the bottom */
+    padding: 15px; /* Padding inside the content area */
+}
+
+.panel-primary {
+    border-color: #d00027;
+    margin-bottom: 20px; /* Add margin at the bottom of the panel */
+}
+
+.panel-primary > .panel-heading {
+    background-color: #d00027;
+    border-color: #d00027;
+    padding: 15px; /* Padding inside the heading */
+}
+
+.panel-primary .panel-body {
+    padding: 20px; /* Padding inside the panel body */
+    margin-top: 10px; /* Margin at the top for spacing */
+}
+
+
     </style>
 
 </head>
@@ -144,12 +171,14 @@
     <!-- TOP HEADER -->
     <div id="top-header">
         <div class="container">
-            <!-- Left section remains the same -->
-            <ul class="header-links pull-left">
-                <li><a href="#"><i class="fa fa-phone"></i> +256 707070707</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> @duuka.co.ug</a></li>
-                <li><a href="#"><i class="fa fa-map-marker"></i> Kololo Road</a></li>
-            </ul>
+            <!-- Left section remains the same --><ul class="header-links pull-left">
+            <li><a href="tel:+256707070707"><i class="fa fa-phone"></i> +256 707070707</a></li>
+            <li><a href="mailto:contact@electro.co.ug"><i class="fa fa-envelope-o"></i> contact@electro.co.ug</a></li>
+            <li><a href="https://www.google.com/maps?q=Kololo,Kampala" target="_blank">
+                <i class="fa fa-map-marker"></i> Kololo Road
+            </a></li>
+        </ul>
+
 
             <!-- Right section changes based on authentication -->
             <ul class="header-links pull-right">
@@ -277,11 +306,13 @@
                     <div class="col-md-3 col-xs-6">
                         <div class="footer">
                             <h3 class="footer-title">About Us</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.</p>
+                            <p>Electro Uganda is a premier online destination for high-quality electronics and accessories.</p>
                             <ul class="footer-links">
-                                <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
-                                <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
-                                <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+                                <li><a href="https://www.google.com/maps?q=Kololo,Kampala" target="_blank">
+                                    <i class="fa fa-map-marker"></i> Kololo Road
+                                </a></li>
+                                <li><a href="tel:+256707070707"><i class="fa fa-phone"></i> +256 707070707</a></li>
+                                <li><a href="mailto:electro@email.com"><i class="fa fa-envelope-o"></i> electro@email.com</a></li>
                             </ul>
                         </div>
                     </div>
@@ -305,11 +336,11 @@
                         <div class="footer">
                             <h3 class="footer-title">Information</h3>
                             <ul class="footer-links">
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Orders and Returns</a></li>
-                                <li><a href="#">Terms & Conditions</a></li>
+                                <li><a th:href="@{/about}">About Us</a></li>
+                                <li><a th:href="@{/contact}">Contact Us</a></li>
+                                <li><a th:href="@{/privacy-policy}">Privacy Policy</a></li>
+                                <li><a th:href="@{/return-policy}">Orders and Returns</a></li>
+                                <li><a th:href="@{/terms-and-conditions}">Terms & Conditions</a></li>
                             </ul>
                         </div>
                     </div>
@@ -318,11 +349,11 @@
                         <div class="footer">
                             <h3 class="footer-title">Service</h3>
                             <ul class="footer-links">
-                                <li><a href="@{/account-management}">My Account</a></li>
+                                <li><a th:href="@{/account-management}">My Account</a></li>
                                 <li><a th:href="@{/cart}">View Cart</a></li>
                                 <li><a th:href="@{/wishlist}">Wishlist</a></li>
                                 <li><a th:href="@{/my-orders}">Track My Order</a></li>
-                                <li><a href="#">Help</a></li>
+                                <li><a th:href="@{/contact}">Help</a></li>
                             </ul>
                         </div>
                     </div>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="~{user/userfragments  :: head(title ='Contact us')}">
+  <meta charset="UTF-8">
+
+</head>
+<body>
+<th:block th:replace="user/userfragments :: header"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+
+
+<div class="content-area">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Contact Us</h3>
+    </div>
+    <div class="panel-body">
+      <p><strong>Have a question or need assistance? We’re here to help!</strong></p>
+      <p>Feel free to reach out to us via any of the following channels:</p>
+      <ul>
+        <li><strong>Email:</strong> <a href="mailto:info@electro.co.ug">info@electro.co.ug</a></li>
+        <li><strong>Phone:</strong> +256 700 123456</li>
+        <li><strong>Location:</strong> Kololo, Kampala, Uganda</li>
+      </ul>
+      <p>Our customer support team is available <strong>Monday - Saturday, 9 AM - 6 PM</strong> to assist you with any inquiries, order tracking, or product information.</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
+</body>
+</html>

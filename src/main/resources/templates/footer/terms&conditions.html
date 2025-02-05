@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="~{user/userfragments  :: head(title ='Terms and Conditions')}">
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<th:block th:replace="user/userfragments :: header"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+
+<div class="content-area">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Terms & Conditions</h3>
+        </div>
+        <div class="panel-body">
+            <p>By accessing and using Electro Uganda, you agree to abide by the following terms and conditions:</p>
+            <h4>1. General Terms</h4>
+            <ul>
+                <li>All prices are in <strong>Ugandan Shillings (UGX)</strong> and inclusive of VAT.</li>
+                <li>We reserve the right to update our pricing and product availability without prior notice.</li>
+                <li>Orders are only confirmed once payment has been successfully processed.</li>
+            </ul>
+            <h4>2. Payment & Security</h4>
+            <p>We accept secure online payments via <strong>Mobile Money, Visa, and Mastercard</strong>. Your payment details are encrypted for security purposes.</p>
+            <h4>3. Delivery</h4>
+            <p>Orders are delivered within <strong>2-5 business days</strong>. If delays occur, we will notify you via email or phone.</p>
+            <h4>4. Warranty & Returns</h4>
+            <p>Some products come with manufacturer warranties. Please check product descriptions for warranty details. Returns must comply with our <a th:href="@{/return-policy}">Orders & Returns Policy</a>.</p>
+            <h4>5. Limitation of Liability</h4>
+            <p>Electro Uganda is not liable for damages caused by third-party couriers, incorrect product use, or technical issues beyond our control.</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
+</body>
+</html>

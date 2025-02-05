@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="~{user/userfragments  :: head(title ='About us')}">
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<th:block th:replace="user/userfragments :: header"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+
+<div class="content-area">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">About Us</h3>
+        </div>
+        <div class="panel-body">
+            <p><strong>Welcome to Electro Uganda – Your Trusted Electronics Store!</strong></p>
+            <p>Electro Uganda is a premier online destination for high-quality electronics and accessories. We specialize in offering the latest gadgets, home appliances, and tech essentials at unbeatable prices. Based in <strong>Kololo, Kampala</strong>, we serve customers across Uganda with fast delivery and reliable service.</p>
+            <p>Our mission is simple: to provide top-tier products while ensuring a seamless shopping experience. Whether you’re looking for smartphones, laptops, or household appliances, we’ve got you covered with <strong>affordable prices and excellent customer support.</strong></p>
+            <p>Thank you for choosing Electro Uganda. We look forward to serving you!</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
+</body>
+</html>

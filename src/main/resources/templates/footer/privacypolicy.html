@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="~{user/userfragments  :: head(title ='Privacy Policy')}">
+    <meta charset="UTF-8">
+
+</head>
+<body>
+<th:block th:replace="user/userfragments :: header"></th:block>
+<th:block th:replace="user/userfragments :: navbar"></th:block>
+
+<div class="content-area">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Privacy Policy</h3>
+        </div>
+        <div class="panel-body">
+            <p>Your privacy is important to us at <strong>Electro Uganda</strong>. This policy outlines how we collect, use, and protect your personal information.</p>
+            <h4>Information We Collect:</h4>
+            <p>We may collect personal details such as your name, email address, phone number, and delivery information to process your orders efficiently.</p>
+            <h4>How We Use Your Information:</h4>
+            <ul>
+                <li>To process and deliver your orders.</li>
+                <li>To improve our website and customer experience.</li>
+                <li>To send order confirmations and updates.</li>
+                <li>To provide customer support and respond to inquiries.</li>
+            </ul>
+            <p>We do not sell, trade, or share your personal data with third parties. For more details, please read our full privacy policy.</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<th:block th:replace="user/userfragments :: footer"></th:block>
+<th:block th:replace="user/userfragments :: scripts"></th:block>
+</body>
+</html>
