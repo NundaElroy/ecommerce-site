@@ -16,7 +16,6 @@
         <div th:replace="~{accountmanagement/accmanagementfragments :: sidebar(${activeTab})}"></div>
 
         <!-- Main Content Area -->
-        <!-- Content Area -->
 
         <!-- Content Area -->
         <div class="col-md-9">
@@ -27,38 +26,32 @@
                     </div>
                     <div class="panel-body">
 
-                        <div class="panel-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Street Address/Road</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" placeholder="Kampala Road/Luwum Street">
+                        <!-- If no orders exist -->
+                        <div th:if="${orders.empty}" class="text-center">
+                            <p>You have no addresses associated with any orders yet.</p>
+                            <a th:href="@{/home}" class="btn btn-danger">Continue Shopping</a>
+                        </div>
+
+                        <!-- Display Addresses -->
+                        <div th:unless="${orders.empty}">
+                            <div th:each="order : ${orders}" class="panel panel-default">
+                                <div class="panel-body">
+                                    <h4>
+                                        <strong>Order #<span th:text="${order.order_id}"></span></strong>
+                                    </h4>
+
+                                    <div th:if="${order.deliveryAddress}">
+                                        <p><strong>Full Name:</strong> <span th:text="${order.deliveryAddress.fullName}"></span></p>
+                                        <p><strong>Email:</strong> <span th:text="${order.deliveryAddress.email}"></span></p>
+                                        <p><strong>Address:</strong> <span th:text="${order.deliveryAddress.address}"></span></p>
+                                        <p><strong>City:</strong> <span th:text="${order.deliveryAddress.city}"></span></p>
+                                        <p><strong>Country:</strong> <span th:text="${order.deliveryAddress.country}"></span></p>
+                                        <p><strong>Phone:</strong> <span th:text="${order.deliveryAddress.phoneNumber}"></span></p>
                                     </div>
+
+
                                 </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">City/Town</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" placeholder="Kampala">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">District</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" placeholder="Kampala">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Contact</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" placeholder="+256703012345">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-3 col-sm-9">
-                                        <button type="submit" class="btn btn-danger">Update Address</button>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
 
                     </div>

@@ -115,7 +115,12 @@ public class AccountController {
     }
 
     @GetMapping("/address-book")
-    public String addressBook(Model model) {
+    public String addressBook(Model model,Principal principal) {
+        String email = principal.getName();
+        List<Orders> orders = userService.getAllCustomerOrders(email);
+
+
+        model.addAttribute("orders", orders );
         model.addAttribute("title", "Address Book");
         model.addAttribute("activeTab", "address");
         return "accountmanagement/address";
