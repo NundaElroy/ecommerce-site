@@ -1,5 +1,6 @@
 package com.ecommerce.nunda.service;
 
+import com.ecommerce.nunda.entity.Orders;
 import com.ecommerce.nunda.entity.User;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface UserService {
 
 
     boolean checkIfUserEmailAlreadyExists(String email);
+
+    List<Orders> getAllCustomerOrders(String email);
 }

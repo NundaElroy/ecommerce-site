@@ -1,5 +1,7 @@
 package com.ecommerce.nunda.serviceImp;
 
+import com.ecommerce.nunda.customexceptions.UserNotFoundException;
+import com.ecommerce.nunda.entity.Orders;
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.repository.UserRepo;
 import com.ecommerce.nunda.service.UserService;
@@ -64,6 +66,16 @@ public class UserServiceImp  implements UserService {
     @Override
     public boolean checkIfUserEmailAlreadyExists(String email){
          return userRepo.findByEmail(email).isPresent();
+    }
+
+
+    @Override
+    public  List<Orders> getAllCustomerOrders(String email){
+        User user = getUserByEmail(email).orElseThrow(() -> {
+            throw new UserNotFoundException("User no Found");
+        });
+
+        return  user.getOrders();
     }
 }
 

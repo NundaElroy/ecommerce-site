@@ -63,6 +63,16 @@
        .sidebar ul.nav > li > a:hover {
            background-color: #f8d7da;
        }
+
+        .panel-danger {
+        border-color: #d9534f;
+       }
+
+    .panel-danger > .panel-heading {
+        background-color: #d9534f;
+        color: #fff;
+        border-color: #d9534f;
+    }
     </style>
 
 </head>
@@ -200,7 +210,7 @@
                             <li><a href="#">My Account</a></li>
                             <li><a href="#">View Cart</a></li>
                             <li><a href="#">Wishlist</a></li>
-                            <li><a href="#">Track My Order</a></li>
+                            <li><a th:href="@{/my-orders}">Track My Order</a></li>
                             <li><a href="#">Help</a></li>
                         </ul>
                     </div>

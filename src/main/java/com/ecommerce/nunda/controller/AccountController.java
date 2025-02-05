@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
+import com.ecommerce.nunda.entity.Orders;
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.dto.AccountDetailsDto;
 import com.ecommerce.nunda.dto.ChangePasswordDto;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class AccountController {
@@ -94,9 +96,14 @@ public class AccountController {
 
 
     @GetMapping("/my-orders")
-    public String myOrders(Model model) {
+    public String myOrders(Model model,Principal principal) {
         model.addAttribute("title", "My Orders");
         model.addAttribute("activeTab", "orders");
+
+        String email = principal.getName();
+        List<Orders> orders = userService.getAllCustomerOrders(email);
+
+        model.addAttribute("orders", orders );
         return "accountmanagement/myorders";
     }
 
