@@ -1,12 +1,12 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:replace="fragments :: head(title ='Product Page')"></th:block>
+<th:block th:replace="~{fragments :: head(title ='Product Page')}"></th:block>
 <body>
 <!-- Body content goes here -->
-<th:block th:replace="fragments :: header"></th:block>
+<th:block th:replace="~{fragments :: header}"></th:block>
 
-<th:block th:replace="fragments :: sidebar"></th:block>
+<th:block th:replace="~{fragments :: sidebar}"></th:block>
 
 <main id="main" class="main">
 
@@ -96,7 +96,11 @@
 
 </main><!-- End #main -->
 
+<th:block th:replace="~{fragments :: scripts}"></th:block>
+<th:block th:replace="~{fragments :: footer}"></th:block>
 
-<th:block th:replace="fragments :: scripts"></th:block>
+
+
+
 </body>
 </html>

@@ -8,6 +8,6 @@ public class AdminContoller {
 
     @GetMapping("/admin/home")
     public String adminPage() {
-        return "index";
+        return "admin/dashboard";
     }
 }
