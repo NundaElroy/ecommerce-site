@@ -617,13 +617,24 @@
 
 
    <script>
+       //search category
        function redirectToCategory(selectElement) {
    const selectedValue = selectElement.value;
    if (selectedValue) {
    window.location.href = selectedValue;
    }
    }
+
+   //  search accessories , laptops and phones
+       function redirectToCategory(category) {
+    if (category) {
+    window.location.href = `/search?keyword=${encodeURIComponent(category)}`;
+    }
+    }
    </script>
+
+
+
 
 
 </div>
