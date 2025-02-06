@@ -17,4 +17,6 @@ public interface UserService {
     boolean checkIfUserEmailAlreadyExists(String email);
 
     List<Orders> getAllCustomerOrders(String email);
+
+    long getAllCustomers();
 }

@@ -77,6 +77,11 @@ public class UserServiceImp  implements UserService {
 
         return  user.getOrders();
     }
+
+    @Override
+    public long getAllCustomers(){
+        return userRepo.getTotalNumberOfCustomers();
+    }
 }
 
 
