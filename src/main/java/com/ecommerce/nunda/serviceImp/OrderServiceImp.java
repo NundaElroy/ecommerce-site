@@ -3,6 +3,7 @@ package com.ecommerce.nunda.serviceImp;
 import com.ecommerce.nunda.customexceptions.InsufficientProductException;
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.dto.BillingDetailsDTO;
+import com.ecommerce.nunda.dto.SalesData;
 import com.ecommerce.nunda.entity.*;
 import com.ecommerce.nunda.repository.OrderRepo;
 import com.ecommerce.nunda.service.OrderService;
@@ -11,6 +12,7 @@ import com.ecommerce.nunda.service.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -100,6 +102,31 @@ public class OrderServiceImp implements OrderService {
 
         return deliveryAddress;
     }
+
+
+    //getting sales
+    @Override
+    public SalesData getSalesByPeriod(String period) {
+        LocalDate startDate;
+        LocalDate endDate = LocalDate.now();
+
+        switch (period.toLowerCase()) {
+            case "month":
+                startDate = endDate.withDayOfMonth(1);
+                break;
+            case "year":
+                startDate = endDate.withDayOfYear(1);
+                break;
+            default: // "today"
+                startDate = endDate;
+        }
+
+        long totalOrders = orderRepo.countCompletedOrders(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+
+
+        return new SalesData(totalOrders);
+    }
+
 
 
 }
