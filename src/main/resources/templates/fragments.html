@@ -372,7 +372,21 @@
 
                      });
 
+
+                     document.querySelectorAll('.revenue-item').forEach(item => {
+                              item.addEventListener('click', function(event) {
+
+                              event.preventDefault();
+                              const period = this.innerText.toLowerCase().replace(" ", "").replace("this", "");; // Convert "This Month" -> "month"
+                              console.log(period);
+
+                              fetchRevenueData(period);
+                          });
+
+                     });
+
                     fetchSalesData('Today');
+                    fetchRevenueData('Today');
                });
 
 
@@ -386,6 +400,19 @@
 
                       })
                       .catch(error => console.error("Error fetching sales data:", error));
+              }
+
+              function fetchRevenueData(period) {
+                  fetch(`/dashboard/revenue?period=${encodeURIComponent(period)}`)
+                      .then(response => response.json())
+                      .then(data => {
+                           console.log(data);
+
+                          document.querySelector(".card-title span").innerText =  `| This ${capitalize(period)}`;
+                          document.querySelector(".revenue h6").innerText = `UGX ${data.totalRevenue}`;
+
+                      })
+                      .catch(error => console.error("Error fetching revenue data:", error));
               }
 
               function capitalize(str) {

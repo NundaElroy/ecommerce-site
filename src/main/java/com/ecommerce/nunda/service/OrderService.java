@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.dto.BillingDetailsDTO;
+import com.ecommerce.nunda.dto.RevenueData;
 import com.ecommerce.nunda.dto.SalesData;
 import com.ecommerce.nunda.entity.Orders;
 
@@ -13,4 +14,6 @@ public interface OrderService {
 
     //getting sales
     SalesData getSalesByPeriod(String period);
+
+    RevenueData getRevenueByPeriod(String period);
 }

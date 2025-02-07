@@ -3,6 +3,7 @@ package com.ecommerce.nunda.serviceImp;
 import com.ecommerce.nunda.customexceptions.InsufficientProductException;
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.dto.BillingDetailsDTO;
+import com.ecommerce.nunda.dto.RevenueData;
 import com.ecommerce.nunda.dto.SalesData;
 import com.ecommerce.nunda.entity.*;
 import com.ecommerce.nunda.repository.OrderRepo;
@@ -125,6 +126,28 @@ public class OrderServiceImp implements OrderService {
 
 
         return new SalesData(totalOrders);
+    }
+
+    @Override
+    public RevenueData getRevenueByPeriod(String period) {
+        LocalDate startDate;
+        LocalDate endDate = LocalDate.now();
+
+        switch (period.toLowerCase()) {
+            case "month":
+                startDate = endDate.withDayOfMonth(1);
+                break;
+            case "year":
+                startDate = endDate.withDayOfYear(1);
+                break;
+            default: // "today"
+                startDate = endDate;
+        }
+
+        Double totalRevenue = orderRepo.getTotalRevenue(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
+
+
+        return new RevenueData(totalRevenue);
     }
 
 

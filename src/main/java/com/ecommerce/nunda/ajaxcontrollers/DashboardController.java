@@ -1,5 +1,6 @@
 package com.ecommerce.nunda.ajaxcontrollers;
 
+import com.ecommerce.nunda.dto.RevenueData;
 import com.ecommerce.nunda.dto.SalesData;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,12 @@ public class DashboardController {
     public ResponseEntity<SalesData> getSalesData(@RequestParam(value = "period", defaultValue = "today") String period) {
         SalesData salesData = orderService.getSalesByPeriod(period);
         return ResponseEntity.ok(salesData);
+    }
+
+    @GetMapping("/revenue")
+    public ResponseEntity<RevenueData> getRevenueData(@RequestParam(value = "period", defaultValue = "today") String period) {
+        RevenueData  revenueData = orderService.getRevenueByPeriod(period);
+        return ResponseEntity.ok(revenueData);
     }
 }
 

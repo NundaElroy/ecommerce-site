@@ -16,4 +16,8 @@ public interface OrderRepo  extends JpaRepository<Orders,Long> {
     @Query("SELECT COUNT(o) FROM Orders o WHERE o.status = 'COMPLETE' AND o.timeStamp BETWEEN :start AND :end")
     Long countCompletedOrders(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 
+    @Query("SELECT COALESCE(SUM(p.amount), 0) FROM Orders o JOIN o.payment p WHERE o.status = 'COMPLETE' AND o.timeStamp BETWEEN :start AND :end")
+    Double getTotalRevenue(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+
+
 }
