@@ -12,6 +12,7 @@ public class AdminController {
     private final UserService userService;
     private final ProductService productService;
 
+
     public AdminController(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService;
@@ -20,6 +21,7 @@ public class AdminController {
     @GetMapping("/admin/home")
     public String adminPage(Model model) {
         model.addAttribute("totalProducts",productService.getTotalNumberOfProducts());
+        model.addAttribute("totalCategories",productService.getTotalNumberOfCategories());
         model.addAttribute("totalCustomers",userService.getAllCustomers());
         return "admin/dashboard";
     }

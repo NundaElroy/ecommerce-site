@@ -41,4 +41,6 @@ public interface ProductService {
     Page<Product>  searchProductsUsingKeyword(int page, int size,String keyword);
 
     long getTotalNumberOfProducts();
+
+    long getTotalNumberOfCategories();
 }

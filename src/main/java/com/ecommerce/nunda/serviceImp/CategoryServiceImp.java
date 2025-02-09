@@ -36,5 +36,10 @@ public class CategoryServiceImp implements CategoryService {
         return categoryRepo.findById(id).orElse(null);
     }
 
+    @Override
+    public long getTotalNumberOfCategories() {
+        return categoryRepo.count();
+    }
+
 
 }
