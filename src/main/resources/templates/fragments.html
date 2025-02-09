@@ -386,7 +386,7 @@
                      });
 
                     fetchSalesData('Today');
-                    fetchRevenueData('Today');
+                    fetchRevenueData('Month');
                });
 
 
@@ -408,7 +408,7 @@
                       .then(data => {
                            console.log(data);
 
-                          document.querySelector(".card-title span").innerText =  `| This ${capitalize(period)}`;
+                          document.querySelector(".rev  span").innerText =  `| This ${capitalize(period)}`;
                           document.querySelector(".revenue h6").innerText = `UGX ${data.totalRevenue}`;
 
                       })
