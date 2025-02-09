@@ -203,5 +203,10 @@ public class ProductServiceImp implements ProductService {
 
     }
 
+    @Override
+    public long getTotalNumberOfProducts() {
+        return productRepo.count();
+    }
+
 
 }
