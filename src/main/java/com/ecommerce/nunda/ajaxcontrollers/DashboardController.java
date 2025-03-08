@@ -2,12 +2,15 @@ package com.ecommerce.nunda.ajaxcontrollers;
 
 import com.ecommerce.nunda.dto.RevenueData;
 import com.ecommerce.nunda.dto.SalesData;
+import com.ecommerce.nunda.dto.TopSellingProductDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.ecommerce.nunda.service.OrderService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/dashboard")
@@ -31,5 +34,12 @@ public class DashboardController {
         RevenueData  revenueData = orderService.getRevenueByPeriod(period);
         return ResponseEntity.ok(revenueData);
     }
+
+    @GetMapping("/top-selling")
+    public ResponseEntity<List<TopSellingProductDTO>> getTopSellingProducts(@RequestParam(value = "period", defaultValue = "today") String period) {
+        List<TopSellingProductDTO>  topSellingProductData = orderService.getTopSellingProductsByPeriod(period);
+        return ResponseEntity.ok(topSellingProductData);
+    }
 }
+
 

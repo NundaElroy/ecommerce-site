@@ -5,6 +5,7 @@ import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.dto.BillingDetailsDTO;
 import com.ecommerce.nunda.dto.RevenueData;
 import com.ecommerce.nunda.dto.SalesData;
+import com.ecommerce.nunda.dto.TopSellingProductDTO;
 import com.ecommerce.nunda.entity.*;
 import com.ecommerce.nunda.repository.OrderRepo;
 import com.ecommerce.nunda.service.OrderService;
@@ -14,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -105,33 +107,29 @@ public class OrderServiceImp implements OrderService {
     }
 
 
-    //getting sales
     @Override
     public SalesData getSalesByPeriod(String period) {
-        LocalDate startDate;
-        LocalDate endDate = LocalDate.now();
-
-        switch (period.toLowerCase()) {
-            case "month":
-                startDate = endDate.withDayOfMonth(1);
-                break;
-            case "year":
-                startDate = endDate.withDayOfYear(1);
-                break;
-            default: // "today"
-                startDate = endDate;
-        }
-
-        long totalOrders = orderRepo.countCompletedOrders(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
-
-
+        DateRange dateRange = getDateRange(period);
+        long totalOrders = orderRepo.countCompletedOrders(dateRange.getStartDateTime(), dateRange.getEndDateTime());
         return new SalesData(totalOrders);
     }
 
     @Override
     public RevenueData getRevenueByPeriod(String period) {
-        LocalDate startDate;
+        DateRange dateRange = getDateRange(period);
+        Double totalRevenue = orderRepo.getTotalRevenue(dateRange.getStartDateTime(), dateRange.getEndDateTime());
+        return new RevenueData(totalRevenue);
+    }
+
+    @Override
+    public List<TopSellingProductDTO> getTopSellingProductsByPeriod(String period) {
+        DateRange dateRange = getDateRange(period);
+        return orderRepo.getBestSellingProducts(dateRange.getStartDateTime(), dateRange.getEndDateTime());
+    }
+
+    private DateRange getDateRange(String period) {
         LocalDate endDate = LocalDate.now();
+        LocalDate startDate;
 
         switch (period.toLowerCase()) {
             case "month":
@@ -144,12 +142,27 @@ public class OrderServiceImp implements OrderService {
                 startDate = endDate;
         }
 
-        Double totalRevenue = orderRepo.getTotalRevenue(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
-
-
-        return new RevenueData(totalRevenue);
+        return new DateRange(startDate.atStartOfDay(), endDate.atTime(23, 59, 59));
     }
 
+    // Helper inner
+    // class to hold date range
+    private static class DateRange {
+        private final LocalDateTime startDateTime;
+        private final LocalDateTime endDateTime;
 
+        public DateRange(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+            this.startDateTime = startDateTime;
+            this.endDateTime = endDateTime;
+        }
+
+        public LocalDateTime getStartDateTime() {
+            return startDateTime;
+        }
+
+        public LocalDateTime getEndDateTime() {
+            return endDateTime;
+        }
+    }
 
 }
