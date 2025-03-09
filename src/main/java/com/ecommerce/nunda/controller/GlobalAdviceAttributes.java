@@ -2,6 +2,7 @@ package com.ecommerce.nunda.controller;
 
 
 
+import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.Cart;
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.entity.User;
@@ -11,6 +12,7 @@ import com.ecommerce.nunda.serviceImp.JacksonService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -94,4 +96,20 @@ public class GlobalAdviceAttributes {
 
 
     }
+
+
+    @ModelAttribute("username")
+    public String getAdminName(Principal principal){
+
+        if(principal == null){
+            return "Guest";
+        }
+
+        User user = userService.getUserByEmail(principal.getName()).orElseThrow(()->
+                new UserNotFoundException("User not found"));
+
+
+        return user.getFirstName() + " " + user.getLastName();
+    }
+
 }
