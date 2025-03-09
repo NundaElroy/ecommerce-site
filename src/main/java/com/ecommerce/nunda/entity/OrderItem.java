@@ -66,3 +66,15 @@ public class OrderItem {
         this.quantity = quantity;
     }
 }
+
+//SELECT
+//product.product_id,
+//product.product_image,
+//product.name,
+//COUNT(order_item.product_id) AS sold,
+//SUM(order_item.price * order_item.quantity) AS revenue
+//FROM order_item
+//INNER JOIN product ON order_item.product_id = product.product_id
+//INNER JOIN orders ON order_item.order_id = orders.order_id
+//WHERE orders.time_stamp BETWEEN DATE_FORMAT(NOW(), '%Y-01-01') AND NOW()
+//GROUP BY product.product_id, product.product_image, product.name;

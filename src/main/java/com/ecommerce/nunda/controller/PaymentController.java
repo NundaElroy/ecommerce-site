@@ -4,6 +4,7 @@ import com.ecommerce.nunda.customexceptions.FlutterWavePaymentException;
 import com.ecommerce.nunda.customexceptions.PaymentException;
 import com.ecommerce.nunda.dto.BillingDetailsDTO;
 import com.ecommerce.nunda.entity.Orders;
+import com.ecommerce.nunda.service.PaymentAuditService;
 import com.ecommerce.nunda.service.PaymentMoMoService;
 import com.flutterwave.bean.Response;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.security.Principal;
@@ -22,14 +24,17 @@ import java.io.IOException;
 public class PaymentController {
 
     private final PaymentMoMoService paymentMoMoService;
+    private final PaymentAuditService paymentAuditService;
 
-    public PaymentController(PaymentMoMoService paymentMoMoService) {
+    public PaymentController(PaymentMoMoService paymentMoMoService, PaymentAuditService paymentAuditService) {
         this.paymentMoMoService = paymentMoMoService;
+        this.paymentAuditService = paymentAuditService;
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin/payments")
-    public String getPayment(){
+    public String getPayment(Model model){
+        model.addAttribute("payments",paymentAuditService.getAllPaymentInfo());
         return "payment/payment";
     }
 

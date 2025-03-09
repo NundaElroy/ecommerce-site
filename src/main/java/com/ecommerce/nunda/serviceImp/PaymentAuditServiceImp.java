@@ -5,8 +5,9 @@ import com.ecommerce.nunda.entity.Orders;
 import com.ecommerce.nunda.entity.Payment;
 import com.ecommerce.nunda.repository.PaymentRepo;
 import com.ecommerce.nunda.service.PaymentAuditService;
-import org.hibernate.query.Order;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -30,5 +31,10 @@ public class PaymentAuditServiceImp implements PaymentAuditService {
 
         paymentRepo.save(payment);
 
+    }
+
+    @Override
+    public List<Payment> getAllPaymentInfo(){
+        return paymentRepo.findAll();
     }
 }
