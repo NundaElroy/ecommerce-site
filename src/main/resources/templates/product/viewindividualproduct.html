@@ -88,23 +88,19 @@
 
 
                     <div class="add-to-cart">
-                        <div class="qty-label">
-                            Qty
-                            <div class="input-number" >
-                                <input type="number">
-                                <span class="qty-up">+</span>
-                                <span class="qty-down">-</span>
-                            </div>
+
                         </div>
                         <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart
                             <input type="hidden" name="productId" th:value=${product.product_id}>
                             <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
 
 
-                    </div>
+                       </div>
 
                     <ul class="product-btns">
-                        <li><a href="#"><i class="fa fa-heart-o"></i> add to wishlist</a></li>
+                        <input type="hidden" name="productId" th:value=${product.product_id}>
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i></button> add to wishlist
 
                     </ul>
 
@@ -114,13 +110,7 @@
 
                     </ul>
 
-                    <ul class="product-links">
-                        <li>Share:</li>
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-envelope"></i></a></li>
-                    </ul>
+
 
                 </div>
             </div>
