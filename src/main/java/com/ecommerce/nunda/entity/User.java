@@ -36,6 +36,8 @@ public class User implements Serializable {
     private Cart cart;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private Wishlist wishlist;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews  =  new ArrayList<>();
 
 
 

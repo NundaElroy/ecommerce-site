@@ -133,6 +133,67 @@
 }
 
 
+        /* Custom CSS for Reviews Section */
+#reviews .panel-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#reviews .average-rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#reviews .review-stars {
+    color: #F8694A;
+}
+
+#reviews .review-item {
+    margin-bottom: 15px;
+}
+
+#reviews .review-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+#reviews .review-rating {
+    color: #F8694A;
+}
+
+#reviews .review-date {
+    color: #777;
+}
+
+#reviews .review-content {
+    padding-left: 5px;
+}
+
+/* Make responsive */
+@media (max-width: 768px) {
+    #reviews .panel-heading {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #reviews .average-rating {
+        margin-top: 10px;
+    }
+
+    #reviews .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+
     </style>
 
 </head>

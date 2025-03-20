@@ -43,4 +43,6 @@ public interface ProductService {
     long getTotalNumberOfProducts();
 
     long getTotalNumberOfCategories();
+
+     Double getAverageRating(Product product, Double rating);
 }

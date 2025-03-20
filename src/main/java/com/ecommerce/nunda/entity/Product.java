@@ -25,7 +25,7 @@ public class Product {
     private Integer stockQuantity;
 
     // New ratings field
-    private Double ratings;
+    private Double ratings = 0.0;
     private String productImage;
 
     @CreationTimestamp
@@ -48,7 +48,7 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews;
+    private List<Review> reviews  =  new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;

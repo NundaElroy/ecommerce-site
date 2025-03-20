@@ -19,7 +19,7 @@ public class Review {
     @Column(columnDefinition = "MEDIUMTEXT") // For longer reviews
     private String review;
 
-    private Integer rating;
+    private Double rating;
 
     private LocalDateTime createdAt;
 
@@ -33,4 +33,8 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

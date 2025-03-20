@@ -18,6 +18,50 @@
         <!-- Main Content Area -->
         <!-- Content Area -->
 
+        <!-- Add Review Modal -->
+        <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">Submit Review</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <!-- Form Section -->
+                        <div id="reviewFormContainer">
+                            <form id="reviewForm">
+                                <input type="hidden" id="productId" name="productId">
+                                <label for="rating">Rating (1-5):</label>
+                                <input type="number" id="rating" name="rating" class="form-control" min="1" max="5" required>
+                                <input type="hidden" id="csrfToken" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                <label for="reviewText" class="mt-2">Your Review:</label>
+                                <textarea id="reviewText" name="reviewText" class="form-control" rows="3" required></textarea>
+
+                                <!-- Submit Button with Spinner -->
+                                <button type="submit" id="submitReviewBtn" class="btn btn-danger mt-3">
+                                    Submit Review
+                                    <i class="fa fa-spinner fa-spin" id="loadingSpinner" style="display: none; margin-left: 5px;"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Success / Error Message Section (Hidden Initially) -->
+                        <div id="reviewMessageContainer" style="display: none; text-align: center;">
+                            <i class="fa fa-check-circle text-success" id="successIcon" style="font-size: 24px;"></i>
+                            <i class="fa fa-times-circle text-danger" id="errorIcon" style="font-size: 24px; display: none;"></i>
+                            <p id="reviewMessage" class="mt-2"></p>
+                            <button type="button" class="btn btn-primary" onclick="resetModal()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Content Area -->
         <div class="col-md-9">
             <div class="content-area">
@@ -48,7 +92,11 @@
                                     <p th:text="${product.name}" class="product-name"></p>
 
                                     <!-- Add Review Button -->
-                                    <button class="btn btn-danger btn-sm">Add Review</button>
+                                    <button class="btn btn-danger btn-sm" onclick="openReviewModal(this)"
+                                            th:data-product-id="${product.product_id}">
+                                        Add Review
+                                    </button>
+
                                 </div>
                             </div>
                         </div>

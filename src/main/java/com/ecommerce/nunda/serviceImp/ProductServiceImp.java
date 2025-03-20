@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.ecommerce.nunda.entity.Review;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -212,6 +213,27 @@ public class ProductServiceImp implements ProductService {
     public long getTotalNumberOfCategories() {
         return categoryService.getTotalNumberOfCategories();
     }
+
+    @Override
+    @Transactional
+    public Double getAverageRating(Product product, Double newRating) {
+        // Count existing reviews
+        int totalReviews = product.getReviews().size();
+
+        // Compute new average
+        double totalRatingSum = product.getReviews().stream()
+                .mapToDouble(Review::getRating)
+                .sum() + newRating; // Include new rating
+
+        double averageRating = totalRatingSum / (totalReviews + 1); // Update average
+
+        // Save updated average rating to the product
+        product.setRatings(averageRating);
+        productRepo.save(product);
+
+        return averageRating;
+    }
+
 
 
 }

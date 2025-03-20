@@ -15,12 +15,12 @@ public class ReviewForm {
     @NotNull(message = "Rating is required")
     @Min(value = 1, message = "Rating must be at least 1")
     @Max(value = 5, message = "Rating cannot be more than 5")
-    private Integer rating;
+    private Double rating;
 
     public ReviewForm() {
     }
 
-    public ReviewForm(String name, String email, String review, Integer rating) {
+    public ReviewForm(String name, String email, String review, Double rating) {
         this.name = name;
         this.email = email;
         this.reviewText = review;
@@ -43,11 +43,11 @@ public class ReviewForm {
         this.name = name;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
