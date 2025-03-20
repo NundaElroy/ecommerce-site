@@ -17,7 +17,7 @@ public class ServiceProviderDetector {
         if (numberWithoutCode.startsWith("77") || numberWithoutCode.startsWith("78")) {
             return "MTN";
         } else if (numberWithoutCode.startsWith("75") || numberWithoutCode.startsWith("70")) {
-            return "Airtel";
+            return "AIRTEL";
         }
 
         throw new PaymentException("service provider not supported");

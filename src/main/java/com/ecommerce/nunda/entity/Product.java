@@ -215,7 +215,7 @@ public class Product {
 
     public Double getProductPrice(){
         //check if product has discount and is still valid
-        if(LocalDateTime.now().isBefore(discountEndTime)){
+        if(discountEndTime != null && LocalDateTime.now().isBefore(discountEndTime)){
             return   price - ( price * discountPercentage/100);
         }
 

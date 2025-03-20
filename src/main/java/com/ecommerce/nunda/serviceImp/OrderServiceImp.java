@@ -96,8 +96,8 @@ public class OrderServiceImp implements OrderService {
     private DeliveryAddress createDeliveryAddress(BillingDetailsDTO billingDetailsDTO){
 
         DeliveryAddress deliveryAddress = new DeliveryAddress();
-        deliveryAddress.setCity(billingDetailsDTO.getCity());
-        deliveryAddress.setCountry(billingDetailsDTO.getCountry());
+//        deliveryAddress.setCity(billingDetailsDTO.getCity());
+//        deliveryAddress.setCountry(billingDetailsDTO.getCountry());
         deliveryAddress.setAddress(billingDetailsDTO.getAddress());
         deliveryAddress.setFullName(billingDetailsDTO.getFullName());
         deliveryAddress.setPhoneNumber(billingDetailsDTO.getPhoneNumber());

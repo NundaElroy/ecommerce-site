@@ -38,7 +38,7 @@ public class OrderDetailsDTO {
 
             //check if product has discount and is still valid
             Double price1 = cartItem.getProduct().getPrice();
-            if(LocalDateTime.now().isBefore(cartItem.getProduct().getDiscountEndTime())){
+            if(cartItem.getProduct().getDiscountEndTime() != null && LocalDateTime.now().isBefore(cartItem.getProduct().getDiscountEndTime())){
                 price =   (price1 - ( price1 * cartItem.getProduct().getDiscountPercentage()/100) ) * cartItem.getQuantity();
             }else{
                 price = price1 * cartItem.getQuantity();

@@ -79,26 +79,7 @@
                             <!-- Regular price if no discount -->
                             <th:block th:unless="${product.discountPercentage != null and product.discountEndTime != null and product.discountEndTime.isAfter(#temporals.createNow())}">
                                 <span th:text="${'UGX ' + #numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}"></span>
-                            </th:block>
-                        </h3>
-
-                        <!-- Stock status -->
-                        <!-- Stock status with enhanced visibility -->
-                        <span th:text="${product.stockQuantity > 0 ? 'In Stock' : 'Out of Stock'}"
-                              th:class="${product.stockQuantity > 0 ? 'badge bg-success fw-bold' : 'badge bg-danger fw-bold'}">
-                        </span>
-                    </div>
-                    <p th:text ="${product.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-
-
-
-                    <div class="add-to-cart">
-
-                        </div>
-                        <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart
-                            <input type="hidden" name="productId" th:value=${product.product_id}>
-                            <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-
+  x
 
                        </div>
 

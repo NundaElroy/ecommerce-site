@@ -20,51 +20,58 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
-@Controller
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
 public class PaymentController {
 
+    private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+
     private final PaymentMoMoService paymentMoMoService;
-    private final PaymentAuditService paymentAuditService;
 
-    public PaymentController(PaymentMoMoService paymentMoMoService, PaymentAuditService paymentAuditService) {
+    public PaymentController(PaymentMoMoService paymentMoMoService) {
         this.paymentMoMoService = paymentMoMoService;
-        this.paymentAuditService = paymentAuditService;
     }
-
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @GetMapping("/admin/payments")
-    public String getPayment(Model model){
-        model.addAttribute("payments",paymentAuditService.getAllPaymentInfo());
-        return "payment/payment";
-    }
-
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping("/initiate-payment")
+    @GetMapping("/initiate-payment")
     public void processUserOrder(HttpSession session,
                                  HttpServletRequest request,
                                  HttpServletResponse response,
-                                 Principal principal
-                                 ) throws IOException {
+                                 Principal principal) throws IOException {
+
+        logger.info("Initiating payment for user: {}", principal.getName());
 
         BillingDetailsDTO billingDetails = (BillingDetailsDTO) session.getAttribute("billingDetails");
         Orders order = (Orders) session.getAttribute("order");
 
+        if (billingDetails == null || order == null) {
+            logger.warn("Missing session attributes for payment processing - User: {}", principal.getName());
+            throw new IllegalStateException("Required session attributes missing.");
+        }
+
+        logger.info("Retrieved session details - User: {}, Order ID: {}", principal.getName(), order.getOrder_id());
+
+        logger.info("Calling MoMo payment service for User: {} with IP: {}", principal.getName(), request.getRemoteAddr());
         Response responseFromFlutterwave = paymentMoMoService.makeMoMoPayment(billingDetails, request.getRemoteAddr(), order);
 
         if (responseFromFlutterwave == null) {
-            throw new FlutterWavePaymentException("Payment failed due third please try again!");
+            logger.error("Payment failed for User: {} due to null response from Flutterwave", principal.getName());
+            throw new FlutterWavePaymentException("Payment failed due to an issue with the payment provider. Please try again.");
         }
 
-        // Clear session attributes
+        logger.info("Payment initiated successfully for User: {}, Redirecting to: {}", principal.getName(), responseFromFlutterwave.getMeta().getAuthorization().getRedirect());
+
+        // Clear session attributes after processing
         session.removeAttribute("billingDetails");
         session.removeAttribute("order");
+        logger.info("Session attributes cleared for User: {}", principal.getName());
 
         // Redirect to external payment page
         response.sendRedirect(responseFromFlutterwave.getMeta().getAuthorization().getRedirect());
     }
-
-
-
-
 }

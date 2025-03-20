@@ -122,7 +122,7 @@ public class UserController {
     @GetMapping("/checkout")
     public String getCheckout(Model model,Principal principal,RedirectAttributes redirectAttributes){
 
-        model.addAttribute("billingDetails", new BillingDetailsDTO());
+
         User user = user = userService.getUserByEmail(principal.getName())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
@@ -134,6 +134,9 @@ public class UserController {
 
         OrderDetailsDTO orderDetails = new OrderDetailsDTO();
         orderDetails.addCartItems(user.getCart().getCartItemList());
+        BillingDetailsDTO billingDetails = new BillingDetailsDTO();
+        billingDetails.setAmount(orderDetails.getTotalPrice());
+        model.addAttribute("billingDetails", billingDetails);
         model.addAttribute("orderDetails", orderDetails);
         model.addAttribute("cartItems", user.getCart().getCartItemList());
         return "user/checkout";
