@@ -2,6 +2,7 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.customexceptions.UserNotFoundException;
 import com.ecommerce.nunda.entity.Orders;
+import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.User;
 import com.ecommerce.nunda.dto.AccountDetailsDto;
 import com.ecommerce.nunda.dto.ChangePasswordDto;
@@ -108,7 +109,9 @@ public class AccountController {
     }
 
     @GetMapping("/my-review")
-    public String myReviews(Model model) {
+    public String myReviews(Model model,Principal principal) {
+        List<Product> productReview  = userService.getAllProductsForReview(principal.getName());
+        model.addAttribute("productReview", productReview);
         model.addAttribute("title", "My Reviews");
         model.addAttribute("activeTab", "reviews");
         return "accountmanagement/myreviews";

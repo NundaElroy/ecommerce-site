@@ -1,6 +1,7 @@
 package com.ecommerce.nunda.service;
 
 import com.ecommerce.nunda.entity.Orders;
+import com.ecommerce.nunda.entity.Product;
 import com.ecommerce.nunda.entity.User;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface UserService {
     List<Orders> getAllCustomerOrders(String email);
 
     long getAllCustomers();
+
+    List<Product> getAllProductsForReview(String email);
 }
