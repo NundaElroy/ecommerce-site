@@ -62,6 +62,10 @@ public class Security {
                         .logoutSuccessUrl("/guest") // Redirect after logout
                         .invalidateHttpSession(true) // Invalidate session
                         .deleteCookies("JSESSIONID") // Delete cookies
+                ) .rememberMe(rememberMe -> rememberMe
+                        .key("remember-me-key")
+                        .tokenValiditySeconds(86400) // 1 day
+                        .userDetailsService(customUserDetailsService)
                 );
 
         return http.build();
