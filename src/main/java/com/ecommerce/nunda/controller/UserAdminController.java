@@ -3,12 +3,14 @@ package com.ecommerce.nunda.controller;
 import com.ecommerce.nunda.customexceptions.PaymentException;
 import com.ecommerce.nunda.repository.PaymentRepo;
 import com.ecommerce.nunda.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserAdminController {
 
     private  final UserService userService;

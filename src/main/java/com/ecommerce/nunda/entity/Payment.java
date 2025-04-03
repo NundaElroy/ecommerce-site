@@ -2,10 +2,12 @@ package com.ecommerce.nunda.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.time.LocalDateTime;
 
 @Entity
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

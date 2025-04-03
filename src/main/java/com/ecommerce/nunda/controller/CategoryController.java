@@ -2,6 +2,7 @@ package com.ecommerce.nunda.controller;
 
 import com.ecommerce.nunda.entity.Category;
 import com.ecommerce.nunda.service.CategoryService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CategoryController {
      private  final CategoryService categoryService;
 

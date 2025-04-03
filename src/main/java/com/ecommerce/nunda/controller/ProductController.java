@@ -11,6 +11,7 @@ import com.ecommerce.nunda.service.*;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.io.IOException;
 
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class ProductController {
 
     private final CategoryService categoryService;
