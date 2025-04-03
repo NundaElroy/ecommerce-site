@@ -3,7 +3,11 @@ package com.ecommerce.nunda.serviceImp;
 import com.ecommerce.nunda.service.EmailService;
 import com.mailgun.api.v3.MailgunMessagesApi;
 import com.mailgun.model.message.Message;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.thymeleaf.TemplateEngine;
@@ -11,7 +15,7 @@ import org.thymeleaf.context.Context;
 
 
 
-@Service
+@Service("mailgunService")
 public class EmailServiceImp implements EmailService {
 
     @Value("${mailgun.domain}")
@@ -53,4 +57,6 @@ public class EmailServiceImp implements EmailService {
         mailgunMessagesApi.sendMessage(mailgunDomain, message);
     }
 }
+
+
 

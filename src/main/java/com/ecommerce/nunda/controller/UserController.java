@@ -60,6 +60,7 @@ public class UserController {
 
         Page<Product> page = productService.getNewProduct(0,5);
         model.addAttribute("newProducts",page.getContent());
+        model.addAttribute("categories", categoryService.getAllCategories() );
         return "user/guest_user" ;
     }
 

@@ -12,6 +12,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final CartService cartService;
 
-    public AuthController(UserService userService, EmailService emailService, PasswordEncoder passwordEncoder, CartService cartService) {
+    public AuthController(UserService userService, @Qualifier("javaMailService")EmailService emailService, PasswordEncoder passwordEncoder, CartService cartService) {
         this.userService = userService;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
