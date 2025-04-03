@@ -1,22 +1,17 @@
-package com.ecommerce.nunda.controller;
+package com.ecommerce.nunda.ajaxcontrollers;
 
 import com.ecommerce.nunda.customexceptions.FlutterWavePaymentException;
-import com.ecommerce.nunda.customexceptions.PaymentException;
 import com.ecommerce.nunda.dto.BillingDetailsDTO;
 import com.ecommerce.nunda.entity.Orders;
-import com.ecommerce.nunda.service.PaymentAuditService;
 import com.ecommerce.nunda.service.PaymentMoMoService;
 import com.flutterwave.bean.Response;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+
 import java.security.Principal;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 

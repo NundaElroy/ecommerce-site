@@ -1,4 +1,4 @@
-package com.ecommerce.nunda.controller;
+package com.ecommerce.nunda.ajaxcontrollers;
 
 
 import com.ecommerce.nunda.dto.ResponseDTO;
